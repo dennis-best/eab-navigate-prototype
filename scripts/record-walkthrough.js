@@ -1,6 +1,8 @@
 // Records a Playwright walkthrough of demos/navigate-app.html that mirrors
-// the actual sequence/timing observed in videos/original.mp4 (reconstructed
-// from 5-second frame sampling of the source recording).
+// the VERIFIED second-by-second timeline of videos/original.mp4, derived from
+// frame extraction (fps=1/3) and ffmpeg scene-change detection. Each action
+// below is anchored to a measured timestamp in the original recording, not a
+// guessed duration, to avoid cumulative drift.
 // Output: videos/prototype.webm (converted to .mp4 by the caller via ffmpeg).
 
 const path = require("path");
@@ -12,18 +14,26 @@ const DEMO_PATH = path.join(PROJECT_ROOT, "demos", "navigate-app.html");
 const VIDEO_DIR = path.join(PROJECT_ROOT, "videos");
 const VIEWPORT = { width: 1600, height: 1050 };
 
-// Target total runtime: ~515s to match videos/original.mp4.
-// TIME_SCALE lets a smoke test compress everything proportionally.
-const TIME_SCALE = Number(process.env.TIME_SCALE) || 1;
-
 let START;
+let elapsedScripted = 0; // ms of scripted wait time consumed so far (post-load)
+
 function log(msg) {
   const t = (Date.now() - START) / 1000;
   console.log(`[${t.toFixed(1)}s] ${msg}`);
 }
 
-async function wait(page, ms) {
-  await page.waitForTimeout(Math.max(0, ms * TIME_SCALE));
+// waitUntil(targetSeconds) waits just long enough that, cumulatively, we land
+// on the target timestamp from the verified timeline (measured from t=0 of
+// the original recording, i.e. right after LOAD_MS).
+const TIME_SCALE = Number(process.env.TIME_SCALE) || 1; // for compressed smoke tests
+
+async function waitUntil(page, targetSeconds) {
+  const targetMs = targetSeconds * 1000 * TIME_SCALE;
+  const remaining = targetMs - elapsedScripted;
+  if (remaining > 0) {
+    await page.waitForTimeout(remaining);
+    elapsedScripted = targetMs;
+  }
 }
 
 async function clickTab(page, forId) {
@@ -39,17 +49,17 @@ async function dispatchClick(page, selector) {
   }, selector);
 }
 
-async function tryHover(page, selector, timeout = 2000) {
+async function tryClick(page, selector, timeout = 2000) {
   try {
-    await page.hover(selector, { timeout });
+    await page.click(selector, { timeout });
   } catch (e) {
     /* ignore, keep pacing intact */
   }
 }
 
-async function tryClick(page, selector, timeout = 2000) {
+async function tryHover(page, selector, timeout = 2000) {
   try {
-    await page.click(selector, { timeout });
+    await page.hover(selector, { timeout });
   } catch (e) {
     /* ignore */
   }
@@ -59,161 +69,184 @@ async function run() {
   if (!fs.existsSync(VIDEO_DIR)) fs.mkdirSync(VIDEO_DIR, { recursive: true });
 
   const browser = await chromium.launch();
+
+  // Pre-warm the CDN-hosted HIF framework and hydrate a throwaway page first,
+  // so the *recorded* page's load is served from cache and completes almost
+  // instantly. This keeps the recording's t=0 tightly aligned with the
+  // moment the UI is actually interactive, matching the original video's
+  // timeline instead of drifting by however long the cold load took.
+  const warmupContext = await browser.newContext({ viewport: VIEWPORT });
+  const warmupPage = await warmupContext.newPage();
+  await warmupPage.goto(`file://${DEMO_PATH}`, { waitUntil: "load" });
+  await warmupPage.waitForFunction(
+    () => document.querySelectorAll("hi-tab").length > 0,
+    { timeout: 15000 }
+  );
+  await warmupPage.waitForTimeout(500);
+  await warmupContext.close();
+
   const context = await browser.newContext({
     viewport: VIEWPORT,
     recordVideo: { dir: VIDEO_DIR, size: VIEWPORT },
   });
   const page = await context.newPage();
 
-  START = Date.now();
-
-  log("Loading prototype...");
   await page.goto(`file://${DEMO_PATH}`, { waitUntil: "load" });
-  await wait(page, 4000); // let the remote HIF framework hydrate custom elements
+  await page.waitForFunction(
+    () => document.querySelectorAll("hi-tab").length > 0,
+    { timeout: 15000 }
+  );
 
-  // ~0:00-0:25 Staff Home > Students tab (default view)
-  log("Staff Home > Students tab");
-  await wait(page, 21000);
+  // START marks t=0 of the measured timeline, i.e. the moment the UI is
+  // actually ready and visible — this is what the recorded video's t=0
+  // should correspond to as closely as possible.
+  START = Date.now();
+  log("0:00 Staff Home > Students tab");
 
-  // ~0:25 open List Type dropdown
-  log("Open List Type dropdown");
+  // --- ~0:20-0:38 open List Type, Term, Relationship Type dropdowns ---
+  await waitUntil(page, 20);
+  log("0:20 Open List Type dropdown");
   await tryClick(page, "#filter-list-type");
-  await wait(page, 5000);
-  await tryClick(page, "#filter-list-type"); // close it again
-  await wait(page, 2000);
+  await waitUntil(page, 26);
+  await tryClick(page, "#filter-list-type");
 
-  // ~0:30 open Term dropdown
-  log("Open Term dropdown");
+  await waitUntil(page, 28);
+  log("0:28 Open Term dropdown");
   await tryClick(page, "#filter-term");
-  await wait(page, 5000);
+  await waitUntil(page, 33);
   await tryClick(page, "#filter-term");
-  await wait(page, 2000);
 
-  // ~0:38 open Relationship Type dropdown
-  log("Open Relationship Type dropdown");
+  await waitUntil(page, 35);
+  log("0:35 Open Relationship Type dropdown");
   await tryClick(page, "#filter-relationship");
-  await wait(page, 4000);
+  await waitUntil(page, 37.5);
   await tryClick(page, "#filter-relationship");
 
-  // ~0:40 Appointments tab
-  log("Staff Home > Appointments tab");
+  // --- 0:38 Appointments tab ---
+  await waitUntil(page, 38);
+  log("0:38 Staff Home > Appointments tab");
   await clickTab(page, "appointments");
-  await wait(page, 5000);
 
-  // ~0:48 change Care Unit filter
-  log("Change Care Unit filter");
+  // --- 0:54 open Care Unit dropdown ---
+  await waitUntil(page, 54);
+  log("0:54 Open Care Unit dropdown");
   await tryClick(page, "#upcoming-care-unit");
-  await wait(page, 3000);
+  await waitUntil(page, 58);
   await tryClick(page, "#upcoming-care-unit");
-  await wait(page, 4000);
 
-  // ~0:55 My Availability tab
-  log("Staff Home > My Availability tab");
+  // --- 1:05 My Availability tab ---
+  await waitUntil(page, 65);
+  log("1:05 Staff Home > My Availability tab");
   await clickTab(page, "availability");
-  await wait(page, 10000);
-  await page.mouse.wheel(0, 500);
-  await wait(page, 15000);
+  await page.mouse.wheel(0, 400);
 
-  // ~1:20 Appointment Requests tab
-  log("Staff Home > Appointment Requests tab");
+  // --- 1:15 Appointment Queues tab ---
+  await waitUntil(page, 75);
+  log("1:15 Staff Home > Appointment Queues tab");
+  await clickTab(page, "queues");
+
+  // --- 1:26 Appointment Requests tab ---
+  await waitUntil(page, 86);
+  log("1:26 Staff Home > Appointment Requests tab");
   await clickTab(page, "requests");
-  await wait(page, 10000);
 
-  // ~1:30 back to Students, type into search box, navigate to James Wyatt
-  log("Staff Home > Students tab, search for James Wyatt");
+  // --- 1:30-1:39 back to Students, search, navigate to James Wyatt ---
+  await waitUntil(page, 90);
+  log("1:30 Staff Home > Students tab, search for James Wyatt");
   await clickTab(page, "students");
-  await wait(page, 2000);
   try {
     await page.fill("#top-nav__quick-search", "james");
   } catch (e) {
     /* ignore */
   }
-  await wait(page, 4000);
+  await waitUntil(page, 96);
   await clickTab(page, "appointments");
-  await wait(page, 500);
   await dispatchClick(page, ".goto-wyatt-link");
-  await wait(page, 4000);
 
-  // ~1:50 James Wyatt Overview, open Message Student panel
-  log("James Wyatt > Overview (Message Student panel)");
+  // --- 1:39 James Wyatt Overview ---
+  await waitUntil(page, 99);
+  log("1:39 James Wyatt > Overview tab");
+
+  // --- 1:59-2:13 Message Student panel ---
+  await waitUntil(page, 119);
+  log("1:59 Open Message Student panel");
   await tryClick(page, "text=Message Student");
-  await wait(page, 15000);
+  await waitUntil(page, 133);
   await tryClick(page, "text=Cancel");
-  await wait(page, 500);
 
-  // ~2:15 History tab
-  log("James Wyatt > History tab");
+  // --- 2:15 History tab ---
+  await waitUntil(page, 135);
+  log("2:15 James Wyatt > History tab");
   await clickTab(page, "jw-history");
-  await page.mouse.wheel(0, 600);
-  await wait(page, 15000);
 
-  // ~2:30 back to Overview
-  log("James Wyatt > Overview tab");
+  // --- 2:23 back to Overview ---
+  await waitUntil(page, 143);
+  log("2:23 James Wyatt > Overview tab");
   await clickTab(page, "jw-overview");
-  await page.mouse.wheel(0, -600);
-  await wait(page, 15000);
 
-  // ~2:45 hover Course Grade D/F breakdown
-  log("Overview: hover Course Grade D/F");
-  await tryHover(page, "text=Course Grade D/F");
-  await wait(page, 15000);
-
-  // ~3:00-3:15 hover Missed Success Markers
-  log("Overview: hover Missed Success Markers");
+  // --- 2:30 hover Missed Success Markers tooltip (long dwell) ---
+  await waitUntil(page, 150);
+  log("2:30 Overview: hover Missed Success Markers");
   await tryHover(page, "text=Missed Success Markers");
-  await wait(page, 30000);
 
-  // ~3:50 scroll to bottom of Overview
-  log("Overview: scroll to Custom Attributes / Success Team");
-  await page.mouse.wheel(0, 1400);
-  await wait(page, 30000);
+  // --- 3:51 scroll to Categories/Tags/Custom Attributes ---
+  await waitUntil(page, 231);
+  log("3:51 Overview: scroll to Categories / Custom Attributes");
+  await page.mouse.wheel(0, 1200);
 
-  // ~4:50 Success Progress tab
-  log("James Wyatt > Success Progress tab");
+  // --- 4:36 Success Progress tab ---
+  await waitUntil(page, 276);
+  log("4:36 James Wyatt > Success Progress tab");
   await clickTab(page, "jw-success");
-  await wait(page, 30000);
 
-  // ~5:20 History tab (full feed)
-  log("James Wyatt > History tab (full feed)");
+  // --- 5:00 History tab (full activity feed) ---
+  await waitUntil(page, 300);
+  log("5:00 James Wyatt > History tab (full feed)");
   await clickTab(page, "jw-history");
-  await page.mouse.wheel(0, 400);
-  await wait(page, 25000);
+  await page.mouse.wheel(0, 500);
 
-  // ~5:45 Courses tab
-  log("James Wyatt > Courses tab");
+  // --- 5:45 Courses tab ---
+  await waitUntil(page, 345);
+  log("5:45 James Wyatt > Courses tab");
   await clickTab(page, "jw-courses");
   await page.mouse.wheel(0, 600);
-  await wait(page, 25000);
 
-  // ~6:15 Journeys tab
-  log("James Wyatt > Journeys tab");
+  // --- 6:38 Journeys tab ---
+  await waitUntil(page, 398);
+  log("6:38 James Wyatt > Journeys tab");
   await clickTab(page, "jw-journeys");
-  await wait(page, 15000);
 
-  // ~6:30 open journey detail panel
-  log("James Wyatt > Journeys detail panel");
+  // --- 6:42 open journey detail panel ---
+  await waitUntil(page, 402);
+  log("6:42 Open journey detail panel");
   await dispatchClick(page, "#journey-detail-link");
-  await wait(page, 25000);
 
-  // ~7:15 Checklist tab
-  log("James Wyatt > Checklist tab");
+  // --- 7:10 Checklist tab ---
+  await waitUntil(page, 430);
+  log("7:10 James Wyatt > Checklist tab");
   await clickTab(page, "jw-checklist");
-  await wait(page, 30000);
 
-  // ~7:50 Academic Plan tab
-  log("James Wyatt > Academic Plan tab");
+  // --- 7:26 Academic Plan tab ---
+  await waitUntil(page, 446);
+  log("7:26 James Wyatt > Academic Plan tab");
   await clickTab(page, "jw-academic-plan");
-  await wait(page, 20000);
 
-  // ~8:10 Conversations tab
-  log("James Wyatt > Conversations tab");
+  // --- 7:51 back to Overview ---
+  await waitUntil(page, 471);
+  log("7:51 James Wyatt > Overview tab");
+  await clickTab(page, "jw-overview");
+
+  // --- 8:06 Conversations tab ---
+  await waitUntil(page, 486);
+  log("8:06 James Wyatt > Conversations tab");
   await clickTab(page, "jw-conversations");
-  await wait(page, 15000);
 
-  // ~8:25 Staff Tasks tab, hold to end (~8:34)
-  log("James Wyatt > Staff Tasks tab (hold to end)");
+  // --- 8:18 Staff Tasks tab (hold to end, ~8:34) ---
+  await waitUntil(page, 498);
+  log("8:18 James Wyatt > Staff Tasks tab (hold to end)");
   await clickTab(page, "jw-staff-tasks");
-  await wait(page, 9000);
+
+  await waitUntil(page, 514.6);
 
   log("Recording complete, closing context...");
   await context.close();
