@@ -1,0 +1,2235 @@
+<!doctype html>
+<html lang="en" hip-font-size-dynamic>
+  <head>
+    <title>Navigate360 | Staff Home &amp; Student Profile</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="EAB Global Inc." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="Navigate360 staff home and James Wyatt student profile prototype" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, user-scalable=no, width=device-width, viewport-fit=cover"
+    />
+
+    <script
+      src="https://cdn.dev.eab.com/hif/latest/index.js"
+      auto-start
+      release="prod"
+      system-load-core
+      system-load-baseline
+      system-load-ds
+      system-load-os
+      library-stop-dragula
+      library-stop-moment
+    ></script>
+    <script>
+      $ip.flags.load([
+        ["/eip/hi-form/default-to-rest", true],
+        ["/pip/pi-ip/insert-css-after-script", true],
+        ["/eip/hi-http/enable-xss-purification-response", false],
+      ]);
+    </script>
+  </head>
+  <body x-layout-system="blueprint" x-hosting="owner">
+  <style>
+    .logo_container {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .application_title {
+      font-weight: var(--hi-font--weight-bold);
+      color: var(--hi-clr--theme-3);
+      text-transform: uppercase;
+      white-space: nowrap;
+      font-size: 1rem;
+    }
+    .top-nav__center-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex: 1;
+    }
+    .top-nav__quick-search {
+      flex: 1;
+    }
+    .right-controls-navigation {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5em;
+      margin-left: 0.5em;
+    }
+  </style>
+    <main id="app" x-area="screen" x-hosting="screen" x-layout-screen="main_right" region-width="1/3">
+      <hi-navigation-primary theme="university" x-region="navigation-primary">
+        WOODLEY COLLEGE
+      </hi-navigation-primary>
+
+      <hi-navigation-tertiary
+        x-region="navigation-tertiary"
+        navigation-actions='[
+          { "title": "Home",                "icon": "home",            "active": true },
+          { "title": "Dashboard",           "icon": "dashboard" },
+          { "title": "Conversations",       "icon": "envelope" },
+          { "title": "Calendar",            "icon": "calendar" },
+          { "title": "Cases",               "icon": "cases" },
+          { "title": "Campaigns & Events",  "icon": "campaign" },
+          { "title": "To-Dos & Tasks",      "icon": "pushpin" },
+          { "title": "Advanced Search",     "icon": "advanced_search" },
+          { "title": "Lists & Saved Items", "icon": "list" },
+          { "title": "Analytics",           "icon": "analytics" },
+          { "title": "Reporting",           "icon": "report" },
+          { "title": "Administration",      "icon": "gear" }
+        ]'
+      ></hi-navigation-tertiary>
+
+      <hi-navigation-secondary
+        x-region="navigation-secondary"
+        accessibility-tools
+        aria-label="Main Menu"
+        account-actions='[
+          { "href": "#/help-center", "title": "Help Center", "icon": "info" },
+          { "href": "#/user-profile", "title": "User Profile", "icon": "user" },
+          { "href": "#/logout", "title": "Logout", "icon": "logout" }
+        ]'
+        account-avatar='{
+          "initials": "JW",
+          "accountAvatarURI": "assets/jack-whitten-profile.png"
+        }'
+      >
+        <div slot="logo" class="logo_container">
+          <hi-image
+            aesthetic="icon"
+            src="https://bucks-qa-grey-mt.gradesfirst.com/images/eab_navigate360_logo.svg"
+            alt="EAB Navigate360 Logo"
+            height="27"
+            width="152"
+          ></hi-image>
+          <span class="application_title title_divider">|</span>
+          <span class="application_title title_text">Student Success</span>
+        </div>
+        <div class="top-nav__left-controls" slot="left-controls">
+          <hi-flyout cap-height="" aesthetic="ghost" label="Appointment Queue" alignment="left">
+            <hi-panel slot="anchor" flow="left-right">
+              <hi-icon kind="advising" size="large-x" aria-hidden="true"></hi-icon>
+              <hi-badge dock="top-right" theme="error" size="small" hidden mode="presentation"></hi-badge>
+            </hi-panel>
+          </hi-flyout>
+          <hi-flyout cap-height="" aesthetic="ghost" label="Unread Messages" alignment="left">
+            <hi-panel slot="anchor" flow="left-right">
+              <hi-icon kind="envelope" size="large-x" aria-hidden="true"></hi-icon>
+              <hi-badge dock="top-right" theme="error" size="small" hidden mode="presentation"></hi-badge>
+            </hi-panel>
+          </hi-flyout>
+          <hi-flyout cap-height="" aesthetic="ghost" label="Minimized Dialogs" alignment="left">
+            <hi-panel slot="anchor" flow="left-right">
+              <hi-icon kind="minimize" size="large-x" aria-hidden="true"></hi-icon>
+              <hi-badge dock="top-right" theme="error" size="small" hidden mode="presentation">0</hi-badge>
+            </hi-panel>
+          </hi-flyout>
+        </div>
+        <div class="top-nav__center-controls" slot="center-controls">
+          <div class="quick-search-container" style="display: flex; flex-direction: row; align-items: center; gap: 0.5rem; width: 100%;">
+            <hi-dropdown id="ss-quick-search-filter-dropdown" aesthetic="tight" cap-height="" alignment="left">
+              <hi-select id="ss-quick-search-filter" aesthetic="dropdown" mode="value" value="default">
+                <hi-option value="default" selected>School Users</hi-option>
+                <hi-option value="student">Student</hi-option>
+                <hi-option value="staff">Staff</hi-option>
+                <hi-option value="professor">Professor</hi-option>
+              </hi-select>
+            </hi-dropdown>
+            <hi-search
+              id="top-nav__quick-search"
+              class="top-nav__quick-search"
+              aria-label="quick search"
+              placeholder="Search"
+              hidden-result-message
+              hidden-status-message
+              style="flex: 1 1 auto; min-width: 0;"
+            ></hi-search>
+          </div>
+        </div>
+        <div slot="right-controls" class="right-controls-navigation">
+          <hi-button aesthetic="icon" size="large-x" layout="icon">
+            <hi-icon kind="question_circle" size="large-x" inherit-color></hi-icon>
+          </hi-button>
+          <hi-button aesthetic="icon" size="large-x" layout="icon">
+            <hi-icon kind="spatial_audio_off" size="large-x" inherit-color></hi-icon>
+          </hi-button>
+          <hi-flyout size="large" aesthetic="ghost" label="Navigate360 Apps" alignment="left">
+            <hi-icon slot="anchor" kind="app_switcher" size="large"></hi-icon>
+          </hi-flyout>
+        </div>
+      </hi-navigation-secondary>
+
+      <!-- ============================================================ -->
+      <!-- MAIN CONTENT: client-side switch between Staff Home and the -->
+      <!-- James Wyatt student profile (no page reload / no extra files) -->
+      <!-- ============================================================ -->
+      <section x-area="region" x-region="main" class="pl-8 pr-8 pb-8">
+        <hi-switch id="main-view" value="staff-home">
+          <!-- ======================================================== -->
+          <!-- STAFF HOME -->
+          <!-- ======================================================== -->
+          <hi-case id="staff-home" value="staff-home">
+            <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
+              <hi-title heading="Staff Home" level="1"></hi-title>
+              <hi-icon kind="school" size="large" theme="blue"></hi-icon>
+            </div>
+
+            <hi-tab-group id="staff-home-tabs" for="staff-home-panels" class="mb-8">
+              <hi-tab for="students" selected>Students</hi-tab>
+              <hi-tab for="appointments">Appointments</hi-tab>
+              <hi-tab for="availability">My Availability</hi-tab>
+              <hi-tab for="queues">Appointment Queues</hi-tab>
+              <hi-tab for="requests">Appointment Requests</hi-tab>
+            </hi-tab-group>
+
+            <hi-switch id="staff-home-panels" value="students">
+              <!-- ======================= STUDENTS ======================= -->
+              <hi-case id="students" value="students">
+                <section x-area="zone">
+                  <h2 class="mb-6">Assigned Students</h2>
+
+                  <hi-form class="mb-6">
+                    <div l-kind="hort" l-width-fixed l-align="end">
+                      <hi-input-group style="width: 14rem;">
+                        <hi-label for="filter-list-type">List Type</hi-label>
+                        <hi-dropdown kind="value" id="filter-list-type">
+                          <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
+                            <hi-option selected>Assigned Students</hi-option>
+                          </hi-select>
+                        </hi-dropdown>
+                      </hi-input-group>
+                      <hi-input-group class="ml-4" style="width: 14rem;">
+                        <hi-label for="filter-term">Term</hi-label>
+                        <hi-dropdown kind="value" id="filter-term">
+                          <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
+                            <hi-option selected>Spring 2026 (Default Term)</hi-option>
+                          </hi-select>
+                        </hi-dropdown>
+                      </hi-input-group>
+                      <hi-input-group class="ml-4" style="width: 14rem;">
+                        <hi-label for="filter-relationship">Relationship Type</hi-label>
+                        <hi-dropdown kind="value" id="filter-relationship">
+                          <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
+                            <hi-option selected>All Relationship Types</hi-option>
+                          </hi-select>
+                        </hi-dropdown>
+                      </hi-input-group>
+                    </div>
+                  </hi-form>
+
+                  <div class="mb-6" scroll-x="auto">
+                    <hi-button aesthetic="link">Actions</hi-button>
+
+                    <table kind="compact" class="mt-6">
+                      <thead>
+                        <tr>
+                          <th><hi-checkbox aria-label="Select all students"></hi-checkbox></th>
+                          <th class="text-uppercase">Name</th>
+                          <th class="text-uppercase">ID</th>
+                          <th class="text-uppercase">Student List</th>
+                          <th class="text-uppercase">Cumulative GPA</th>
+                          <th class="text-uppercase">Predicted Concern</th>
+                          <th class="text-uppercase">Category</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Adam, Michael"></hi-checkbox></td>
+                          <td><hi-link href="#">Adam, Michael</hi-link></td>
+                          <td>87650214</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            Completed probation requirement, Financial Aid, First generation student,
+                            Full-Time, Pre-enrollment risk, Study group member
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Aguila, Peggy"></hi-checkbox></td>
+                          <td><hi-link href="#">Aguila, Peggy</hi-link></td>
+                          <td>14538206</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            Completed probation requirement, Financial Aid, First generation student,
+                            Full-Time, Pre-enrollment risk, Study group member
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mt-6">
+                    <hi-pagination page-index="0" page-size="80" max="401" range-size="5"></hi-pagination>
+                    <p class="clr-gray_80-txt">401 total results</p>
+                  </div>
+                </section>
+              </hi-case>
+
+              <!-- ======================= APPOINTMENTS ======================= -->
+              <hi-case id="appointments" value="appointments" hidden>
+                <section x-area="zone">
+                  <h2 class="mb-6">Upcoming Appointments</h2>
+
+                  <hi-form class="mb-6">
+                    <hi-input-group style="width: 14rem;">
+                      <hi-label for="upcoming-care-unit">Care Unit</hi-label>
+                      <hi-dropdown kind="value" id="upcoming-care-unit">
+                        <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
+                          <hi-option selected>All Care Units</hi-option>
+                        </hi-select>
+                      </hi-dropdown>
+                    </hi-input-group>
+                  </hi-form>
+
+                  <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
+                    <hi-button aesthetic="link">Actions</hi-button>
+                    <hi-checkbox id="upcoming-show-cancelled">Show Cancelled</hi-checkbox>
+                  </div>
+
+                  <div scroll-x="auto" class="mb-8">
+                    <table kind="compact">
+                      <thead>
+                        <tr>
+                          <th><hi-checkbox aria-label="Select all upcoming appointments"></hi-checkbox></th>
+                          <th class="text-uppercase">Date/Time</th>
+                          <th class="text-uppercase">Attendee</th>
+                          <th class="text-uppercase">Service</th>
+                          <th class="text-uppercase">Comment</th>
+                          <th class="text-uppercase">Meeting Type</th>
+                          <th class="text-uppercase">Report Filed?</th>
+                          <th class="text-uppercase">Details</th>
+                          <th class="text-uppercase">Pre Appt Questions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td colspan="9" class="text-center clr-gray_80-txt">
+                            This user has no upcoming appointments.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <h2 class="mb-6">Reporting</h2>
+
+                  <hi-tab-group id="reporting-tabs" for="reporting-panels" class="mb-6">
+                    <hi-tab for="recent-appointments" selected>Recent Appointments</hi-tab>
+                    <hi-tab for="recent-reports">Recent Reports You Created</hi-tab>
+                  </hi-tab-group>
+
+                  <hi-switch id="reporting-panels" value="recent-appointments">
+                    <hi-case id="recent-appointments" value="recent-appointments">
+                      <div scroll-x="auto">
+                        <table kind="compact">
+                          <thead>
+                            <tr>
+                              <th class="text-uppercase">Date</th>
+                              <th class="text-uppercase">Service</th>
+                              <th class="text-uppercase">Course</th>
+                              <th class="text-uppercase">Comment</th>
+                              <th class="text-uppercase">Attendee</th>
+                              <th class="text-uppercase">Report Filed?</th>
+                              <th class="text-uppercase">Details</th>
+                              <th class="text-uppercase">Pre Appt Questions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>06/19/2026<br />11:15am - 12:00pm ET<br />(45m)</td>
+                              <td>Academic Planning</td>
+                              <td>N/A</td>
+                              <td></td>
+                              <td><hi-link href="#">Aguila, Peggy</hi-link></td>
+                              <td>Not Yet</td>
+                              <td><hi-link href="#">Details</hi-link></td>
+                              <td>N/A</td>
+                            </tr>
+                            <tr>
+                              <td>05/15/2026<br />9:00am - 9:45am ET<br />(45m)</td>
+                              <td>Course-based Tutoring</td>
+                              <td>BIO-101 Intro to Biology</td>
+                              <td></td>
+                              <td><hi-link href="#" class="goto-wyatt-link">Wyatt, James</hi-link></td>
+                              <td>Not Yet</td>
+                              <td><hi-link href="#">Details</hi-link></td>
+                              <td>N/A</td>
+                            </tr>
+                            <tr>
+                              <td>05/07/2026<br />7:57am - 8:00am ET<br />(3m)</td>
+                              <td>Campus Tour</td>
+                              <td>N/A</td>
+                              <td></td>
+                              <td><hi-link href="#">Adam, Michael</hi-link></td>
+                              <td><hi-button aesthetic="primary" size="small">Report Details</hi-button></td>
+                              <td><hi-link href="#">Details</hi-link></td>
+                              <td>N/A</td>
+                            </tr>
+                            <tr>
+                              <td>04/14/2026<br />11:01am - 11:02am ET<br />(1m)</td>
+                              <td>Academic Planning</td>
+                              <td>N/A</td>
+                              <td></td>
+                              <td><hi-link href="#">Andrews, Garland</hi-link></td>
+                              <td><hi-button aesthetic="primary" size="small">Report Details</hi-button></td>
+                              <td><hi-link href="#">Details</hi-link></td>
+                              <td>N/A</td>
+                            </tr>
+                            <tr>
+                              <td>04/07/2026<br />4:09pm - 4:12pm ET<br />(3m)</td>
+                              <td>Course-based Tutoring</td>
+                              <td>ANTH-101 Intro to Anthropology</td>
+                              <td></td>
+                              <td><hi-link href="#" class="goto-wyatt-link">Wyatt, James</hi-link></td>
+                              <td><hi-button aesthetic="primary" size="small">Report Details</hi-button></td>
+                              <td><hi-link href="#">Details</hi-link></td>
+                              <td>N/A</td>
+                            </tr>
+                            <tr>
+                              <td>04/07/2026<br />4:04pm - 4:06pm ET</td>
+                              <td>Course-based Tutoring</td>
+                              <td>ANTH-101 Intro to Anthropology</td>
+                              <td></td>
+                              <td><hi-link href="#" class="goto-wyatt-link">Wyatt, James</hi-link></td>
+                              <td>Not Yet</td>
+                              <td>Not Available</td>
+                              <td>N/A</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </hi-case>
+                    <hi-case id="recent-reports" value="recent-reports" hidden>
+                      <div scroll-x="auto">
+                        <table kind="compact">
+                          <thead>
+                            <tr>
+                              <th class="text-uppercase">Date</th>
+                              <th class="text-uppercase">Student Name</th>
+                              <th class="text-uppercase">Summary</th>
+                              <th class="text-uppercase">Follow-Up?</th>
+                              <th class="text-uppercase">Details</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>05/07/2026</td>
+                              <td><hi-link href="#">Adam, Michael</hi-link></td>
+                              <td>Jack Whitmore and Michael Adam discuss Michael's plans. M...</td>
+                              <td>No</td>
+                              <td><hi-link href="#">Details</hi-link> &nbsp; <hi-link href="#">Delete</hi-link></td>
+                            </tr>
+                            <tr>
+                              <td>04/14/2026</td>
+                              <td><hi-link href="#">Andrews, Garland</hi-link></td>
+                              <td></td>
+                              <td>No</td>
+                              <td><hi-link href="#">Details</hi-link> &nbsp; <hi-link href="#">Delete</hi-link></td>
+                            </tr>
+                            <tr>
+                              <td>04/07/2026</td>
+                              <td><hi-link href="#" class="goto-wyatt-link">Wyatt, James</hi-link></td>
+                              <td>went over this concept</td>
+                              <td>No</td>
+                              <td><hi-link href="#">Details</hi-link> &nbsp; <hi-link href="#">Delete</hi-link></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </hi-case>
+                  </hi-switch>
+                </section>
+              </hi-case>
+
+              <!-- ======================= MY AVAILABILITY ======================= -->
+              <hi-case id="availability" value="availability" hidden>
+                <section x-area="zone">
+                  <h2 class="mb-6">My Availability</h2>
+                  <div scroll-x="auto" class="mb-8">
+                    <table kind="compact">
+                      <thead>
+                        <tr>
+                          <th class="text-uppercase">Days of Week</th>
+                          <th class="text-uppercase">Times</th>
+                          <th class="text-uppercase">Dates</th>
+                          <th class="text-uppercase">Location</th>
+                          <th class="text-uppercase">Purpose</th>
+                          <th class="text-uppercase">Care Unit</th>
+                          <th class="text-uppercase">Personal Link</th>
+                          <th class="text-uppercase">Meeting Type</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Mon, Tue, Wed, Thu, Fri</td>
+                          <td>9:00am - 4:30pm</td>
+                          <td>Forever</td>
+                          <td>Hornet Tutoring Center</td>
+                          <td>Math Lab, Writing Lab<br />For: Appointments/Drop-Ins/Campaigns</td>
+                          <td>Tutoring</td>
+                          <td>Yes</td>
+                          <td>In-person</td>
+                          <td><hi-link href="#">Edit</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td>Mon, Tue, Wed, Thu, Fri</td>
+                          <td>8:00am - 5:00pm</td>
+                          <td>Forever</td>
+                          <td>Admissions Office</td>
+                          <td>Campus Tour<br />For: Appointments/Drop-Ins/Campaigns</td>
+                          <td>Admissions Counseling</td>
+                          <td>No</td>
+                          <td>In-person</td>
+                          <td><hi-link href="#">Edit</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td>Mon</td>
+                          <td>9:00am - 5:30pm</td>
+                          <td>Forever</td>
+                          <td>Financial Aid Center</td>
+                          <td>Applying for Financial Aid<br />For: Appointments/Drop-Ins/Campaigns</td>
+                          <td>Financial Aid</td>
+                          <td>No</td>
+                          <td>WhatsApp Video Call</td>
+                          <td><hi-link href="#">Edit</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td>Mon, Tue, Wed, Thu, Fri</td>
+                          <td>9:00am - 4:30pm</td>
+                          <td>Forever</td>
+                          <td>Hornet Tutoring Center</td>
+                          <td>ANTH-101, BIO-101, Course-based Tutoring</td>
+                          <td>Tutoring</td>
+                          <td>Yes</td>
+                          <td>In-person</td>
+                          <td><hi-link href="#">Edit</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td>Fri</td>
+                          <td>9:00am - 4:30pm</td>
+                          <td>Forever</td>
+                          <td>Financial Aid Center</td>
+                          <td>Applying for Financial Aid<br />For: Appointments/Drop-Ins/Campaigns</td>
+                          <td>Financial Aid</td>
+                          <td>No</td>
+                          <td>In Person</td>
+                          <td><hi-link href="#">Edit</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td>Tue, Wed, Thu</td>
+                          <td>8:00am - 4:00pm</td>
+                          <td>Forever</td>
+                          <td>Hornet Tutoring Center</td>
+                          <td>Academic Planning, Changing a Major, General Advising</td>
+                          <td>Advising</td>
+                          <td>Yes</td>
+                          <td>WhatsApp Video Call</td>
+                          <td><hi-link href="#">Edit</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td>Tue, Wed, Thu</td>
+                          <td>8:00am - 4:00pm</td>
+                          <td>Forever</td>
+                          <td>Financial Aid Center</td>
+                          <td>Applying for Financial Aid<br />For: Appointments/Drop-Ins/Campaigns</td>
+                          <td>Financial Aid</td>
+                          <td>No</td>
+                          <td>WhatsApp Video Call</td>
+                          <td><hi-link href="#">Edit</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td>Mon</td>
+                          <td>9:00am - 5:30pm</td>
+                          <td>Forever</td>
+                          <td>Hornet Tutoring Center</td>
+                          <td>Academic Planning, Changing a Major, General Advising</td>
+                          <td>Advising</td>
+                          <td>Yes</td>
+                          <td>In-person</td>
+                          <td><hi-link href="#">Edit</hi-link></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <h3 class="mb-4">Personal Availability Link</h3>
+                  <div l-kind="hort" l-width-fixed l-align="center" class="mb-4">
+                    <p style="width: 8rem;">Link for Students:</p>
+                    <hi-link href="#">https://woodley84.campus-demo1.eab.com/pal/g2nassp713</hi-link>
+                    <hi-button aesthetic="secondary" size="small" class="ml-4">Copy</hi-button>
+                  </div>
+                  <div l-kind="hort" l-width-fixed l-align="center" class="mb-8">
+                    <p style="width: 8rem;">Link for Prospects:</p>
+                    <hi-link href="#">https://woodley84.campus-demo1.eab.com/prospect_pal/g2nassp713</hi-link>
+                    <hi-button aesthetic="secondary" size="small" class="ml-4">Copy</hi-button>
+                  </div>
+
+                  <h3 class="mb-4">Scheduling Target Hours</h3>
+                  <hi-input-group class="mb-4" style="width: 12rem;">
+                    <hi-label for="target-hours">Target Hours Per Week</hi-label>
+                    <hi-input id="target-hours" type="number" value="0"></hi-input>
+                  </hi-input-group>
+                  <hi-checkbox>Block scheduling for the week when target is hit</hi-checkbox>
+                </section>
+              </hi-case>
+
+              <!-- ======================= APPOINTMENT QUEUES ======================= -->
+              <hi-case id="queues" value="queues" hidden>
+                <section x-area="zone">
+                  <h2 class="mb-6">Appointment Queues</h2>
+                  <div l-kind="hort" l-width-fixed l-align="center" class="mb-6">
+                    <span class="mr-4">Notification Methods:</span>
+                    <hi-checkbox checked class="mr-4">Ding</hi-checkbox>
+                    <hi-checkbox class="mr-4">E-mail</hi-checkbox>
+                    <hi-checkbox>Text Message</hi-checkbox>
+                  </div>
+                  <p class="clr-gray_80-txt text-center pa-8">Loading queue data&hellip;</p>
+                </section>
+              </hi-case>
+
+              <!-- ======================= APPOINTMENT REQUESTS ======================= -->
+              <hi-case id="requests" value="requests" hidden>
+                <section x-area="zone">
+                  <h2 class="mb-6">Appointment Requests</h2>
+                  <p class="clr-gray_80-txt text-center pa-8">
+                    No open appointment requests.
+                  </p>
+                </section>
+              </hi-case>
+            </hi-switch>
+          </hi-case>
+
+          <!-- ======================================================== -->
+          <!-- JAMES WYATT STUDENT PROFILE -->
+          <!-- ======================================================== -->
+          <hi-case id="james-wyatt" value="james-wyatt" hidden>
+            <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
+              <hi-title heading="James Wyatt" level="1"></hi-title>
+              <hi-icon kind="school" size="large" theme="blue"></hi-icon>
+            </div>
+
+            <hi-tab-group id="james-tabs" for="james-panels" class="mb-8" scroll-x="auto">
+              <hi-tab for="jw-overview" selected size="small">Overview</hi-tab>
+              <hi-tab for="jw-success" size="small">Success Progress</hi-tab>
+              <hi-tab for="jw-history" size="small">History</hi-tab>
+              <hi-tab for="jw-pre-enrollment" size="small">Pre-Enrollment History</hi-tab>
+              <hi-tab for="jw-form-submissions" size="small">Form Submissions</hi-tab>
+              <hi-tab for="jw-courses" size="small">Courses</hi-tab>
+              <hi-tab for="jw-major-explorer" size="small">Major Explorer</hi-tab>
+              <hi-tab for="jw-journeys" size="small">Journeys</hi-tab>
+              <hi-tab for="jw-checklist" size="small">Checklist</hi-tab>
+              <hi-tab for="jw-academic-plan" size="small">Academic Plan</hi-tab>
+              <hi-tab for="jw-calendar" size="small">Calendar</hi-tab>
+              <hi-tab for="jw-study-hall" size="small">Study Hall</hi-tab>
+              <hi-tab for="jw-appointments" size="small">Appointments</hi-tab>
+              <hi-tab for="jw-conversations" size="small">Conversations</hi-tab>
+              <hi-tab for="jw-staff-tasks" size="small">Staff Tasks</hi-tab>
+            </hi-tab-group>
+
+            <hi-switch id="james-panels" value="jw-overview">
+              <!-- ======================= OVERVIEW ======================= -->
+              <hi-case id="jw-overview" value="jw-overview">
+                <section x-area="zone">
+                  <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
+                    <h5 slot="title">Student Summary</h5>
+                    <div l-kind="hort" l-wrap l-width-fixed class="mb-4">
+                      <div style="width: 20%;">
+                        <p class="clr-gray_80-txt text-sz-s">Course Grade D/F</p>
+                        <p class="text-sz-l">3</p>
+                      </div>
+                      <div style="width: 20%;">
+                        <p class="clr-gray_80-txt text-sz-s">Repeated Courses</p>
+                        <p class="text-sz-l">1</p>
+                      </div>
+                      <div style="width: 20%;">
+                        <p class="clr-gray_80-txt text-sz-s">Withdrawn Courses</p>
+                        <p class="text-sz-l">0</p>
+                      </div>
+                      <div style="width: 20%;">
+                        <p class="clr-gray_80-txt text-sz-s">Missed Success Markers</p>
+                        <p class="text-sz-l">2</p>
+                      </div>
+                      <div style="width: 20%;">
+                        <p class="clr-gray_80-txt text-sz-s">Cumulative GPA</p>
+                        <p class="text-sz-l">2.64</p>
+                      </div>
+                    </div>
+                    <div l-kind="hort" l-wrap l-width-fixed>
+                      <div style="width: 33%;">
+                        <p class="clr-gray_80-txt text-sz-s">Total Credits Earned</p>
+                        <p>39.00</p>
+                      </div>
+                      <div style="width: 33%;">
+                        <p class="clr-gray_80-txt text-sz-s">Credit Completion % at this Institution</p>
+                        <p>72%</p>
+                      </div>
+                      <div style="width: 33%;">
+                        <p class="clr-gray_80-txt text-sz-s">Predicted Concern</p>
+                        <p>Unpredicted</p>
+                      </div>
+                    </div>
+                  </hi-tile>
+
+                  <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
+                    <h5 slot="title">Overview</h5>
+                    <div l-kind="hort" l-wrap l-width-fixed>
+                      <div style="width: 33%;">
+                        <p>Biology<br />Bachelor of Science<br />College of Sciences</p>
+                      </div>
+                      <div style="width: 33%;">
+                        <p class="clr-gray_80-txt text-sz-s">Student ID</p>
+                        <p class="mb-2">90634817</p>
+                        <p class="clr-gray_80-txt text-sz-s">Alternate ID</p>
+                        <p class="mb-2">90634817</p>
+                        <p class="clr-gray_80-txt text-sz-s">Classification</p>
+                        <p class="mb-2">Sophomore</p>
+                        <p class="clr-gray_80-txt text-sz-s">Most Recent Enrollment</p>
+                        <p>Spring 2026</p>
+                      </div>
+                      <div style="width: 33%;">
+                        <p class="clr-gray_80-txt text-sz-s">Last Login to LMS</p>
+                        <p class="mb-2">04/11/2026</p>
+                        <p class="clr-gray_80-txt text-sz-s">Additional Roles</p>
+                        <p><hi-link href="#">Super_user</hi-link>, <hi-link href="#">Tutor</hi-link></p>
+                      </div>
+                    </div>
+                  </hi-tile>
+
+                  <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
+                    <h5 slot="title">Goals &amp; Interests (supplied by the student)</h5>
+                    <div l-kind="hort" l-wrap l-width-fixed>
+                      <div style="width: 50%;">
+                        <p class="clr-gray_80-txt text-sz-s">Favorite Majors</p>
+                        <p class="mb-2">Anthropology<br />Sociology</p>
+                        <p class="clr-gray_80-txt text-sz-s">Favorite Subjects</p>
+                        <p>Government/Law<br />Psychology<br />Science</p>
+                      </div>
+                      <div style="width: 50%;">
+                        <p class="clr-gray_80-txt text-sz-s">Favorite Fields</p>
+                        <p class="mb-2">Environmental/Earth Science<br />Social Sciences</p>
+                        <p class="clr-gray_80-txt text-sz-s">Favorite Activities</p>
+                        <p class="mb-2">Being Outdoors<br />Learning about People and Cultures<br />Managing and Organizing Things</p>
+                        <p class="clr-gray_80-txt text-sz-s">Favorite Resources</p>
+                        <p>None</p>
+                      </div>
+                    </div>
+                  </hi-tile>
+
+                  <div l-kind="hort" l-wrap l-width-fixed class="mb-6">
+                    <hi-tile allow-toolbar aesthetic="outline" style="width: 49%;" class="mr-4">
+                      <h5 slot="title">Categories</h5>
+                      <hi-search placeholder="Search in Results" hidden-result-message hidden-status-message class="mb-4"></hi-search>
+                      <ul>
+                        <li>Active holds</li>
+                        <li>Completed probation requirement</li>
+                        <li>Financial Aid</li>
+                        <li>First generation student</li>
+                        <li>Good Academic Standing</li>
+                        <li>Honors student</li>
+                        <li>North Hall</li>
+                        <li>Pell-Eligible</li>
+                        <li>Pre-enrollment risk</li>
+                        <li>Re-enrollment grant recipient</li>
+                      </ul>
+                      <p class="clr-gray_80-txt text-sz-s mt-4">1-15 of 15</p>
+                    </hi-tile>
+                    <hi-tile allow-toolbar aesthetic="outline" style="width: 49%;">
+                      <h5 slot="title">Tags</h5>
+                      <hi-button aesthetic="secondary" size="small" class="mb-4">+ Add Tag</hi-button>
+                      <hi-search placeholder="Search in Results" hidden-result-message hidden-status-message class="mb-4"></hi-search>
+                      <ul>
+                        <li>1L</li>
+                        <li>3L</li>
+                        <li>Exploring Masters</li>
+                        <li>F26 M3 Start</li>
+                        <li>FAFSA</li>
+                        <li>FASS</li>
+                      </ul>
+                      <p class="clr-gray_80-txt text-sz-s mt-4">1-19 of 19</p>
+                    </hi-tile>
+                  </div>
+
+                  <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
+                    <h5 slot="title">Enrollment</h5>
+                    <div l-kind="hort" l-wrap l-width-fixed>
+                      <div style="width: 50%;">
+                        <p class="clr-gray_80-txt text-sz-s">Enrollment Status</p>
+                        <p>Full-Time</p>
+                      </div>
+                      <div style="width: 50%;">
+                        <p class="clr-gray_80-txt text-sz-s">Enrollment Goal</p>
+                        <p>Bachelor of Science</p>
+                      </div>
+                    </div>
+                  </hi-tile>
+
+                  <hi-tile allow-toolbar aesthetic="outline">
+                    <h5 slot="title">Custom Attributes</h5>
+                    <div scroll-x="auto">
+                      <table kind="compact">
+                        <thead>
+                          <tr>
+                            <th class="text-uppercase">Attribute</th>
+                            <th class="text-uppercase">Value</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Engagement Impact</td>
+                            <td>Student Council</td>
+                          </tr>
+                          <tr>
+                            <td>Last Meal Swipe Date</td>
+                            <td>2/14/25</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <p class="clr-gray_80-txt text-sz-s mt-4">1-2 of 2</p>
+                  </hi-tile>
+                </section>
+              </hi-case>
+
+              <!-- ======================= SUCCESS PROGRESS ======================= -->
+              <hi-case id="jw-success" value="jw-success" hidden>
+                <section x-area="zone">
+                  <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
+                    <h5 slot="title">Success Markers</h5>
+                    <p class="mb-4">
+                      The student has missed guidelines for progress. Acting on them can help get the
+                      student back on track for successful completion.
+                    </p>
+                    <hi-tab-group class="mb-4">
+                      <hi-tab>Completed</hi-tab>
+                      <hi-tab selected>Missing</hi-tab>
+                      <hi-tab>Upcoming</hi-tab>
+                    </hi-tab-group>
+                    <p class="mb-4">2 missed markers</p>
+                    <div scroll-x="auto">
+                      <table kind="compact">
+                        <thead>
+                          <tr>
+                            <th class="text-uppercase">Notification</th>
+                            <th class="text-uppercase">Outcome</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              BIO101, B, 0-30<br />
+                              Recommended grade: B (1 course)<br />
+                              Complete between 0 and 30 credits
+                            </td>
+                            <td>Needs attention<br />1 Attempt</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              MATH101, B, 0-30<br />
+                              Recommended grade: B (1 course)<br />
+                              Complete between 0 and 30 credits
+                            </td>
+                            <td>Needs attention<br />1 Attempt</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              BIO 201, B, 0-60<br />
+                              Recommended grade: B (1 course)<br />
+                              Complete between 0 and 60 credits
+                            </td>
+                            <td>Disabled</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </hi-tile>
+
+                  <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
+                    <h5 slot="title">GPA Trends By Term</h5>
+                    <p class="clr-gray_80-txt text-sz-s mb-4">* Terms with no attempted credits are not shown.</p>
+                    <div scroll-x="auto">
+                      <table kind="compact">
+                        <thead>
+                          <tr>
+                            <th class="text-uppercase">Term</th>
+                            <th class="text-uppercase">Term GPA</th>
+                            <th class="text-uppercase">Cum GPA</th>
+                            <th class="text-uppercase">Credits Attempted</th>
+                            <th class="text-uppercase">Credits Completed</th>
+                            <th class="text-uppercase">Total Credits</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Fall 2024</td>
+                            <td>2.6</td>
+                            <td>2.6</td>
+                            <td>15.00</td>
+                            <td>15.00</td>
+                            <td>15.00</td>
+                          </tr>
+                          <tr>
+                            <td>Spring 2025</td>
+                            <td>2.4</td>
+                            <td>2.5</td>
+                            <td>15.00</td>
+                            <td>12.00</td>
+                            <td>27.00</td>
+                          </tr>
+                          <tr>
+                            <td>Fall 2025</td>
+                            <td>3.0</td>
+                            <td>2.64</td>
+                            <td>12.00</td>
+                            <td>12.00</td>
+                            <td>39.00</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </hi-tile>
+                </section>
+              </hi-case>
+
+              <!-- ======================= HISTORY ======================= -->
+              <hi-case id="jw-history" value="jw-history" hidden>
+                <section x-area="zone">
+                  <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
+                    <h5 slot="title">James's To-Dos</h5>
+                    <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-4">
+                      <hi-button aesthetic="link">Actions <hi-icon kind="caret_down" size="small"></hi-icon></hi-button>
+                      <div>
+                        <hi-checkbox checked class="mr-4">Only Mine</hi-checkbox>
+                        <hi-checkbox checked>Hide Completed</hi-checkbox>
+                      </div>
+                    </div>
+                    <div scroll-x="auto">
+                      <table kind="compact">
+                        <thead>
+                          <tr>
+                            <th class="text-uppercase">To-Do</th>
+                            <th class="text-uppercase">Due Date</th>
+                            <th class="text-uppercase">Viewable to Student</th>
+                            <th class="text-uppercase">Created By</th>
+                            <th class="text-uppercase">Created On</th>
+                            <th class="text-uppercase">Completed On</th>
+                            <th class="text-uppercase">Completed By</th>
+                            <th class="text-uppercase">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td colspan="8" class="text-center clr-gray_80-txt">
+                              You have no upcoming or outstanding To-Dos.
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </hi-tile>
+
+                  <hi-tile allow-toolbar aesthetic="outline">
+                    <h5 slot="title">Cases For James</h5>
+                    <hi-input-group class="mb-4" style="width: 14rem;">
+                      <hi-label for="cases-view-as">View As</hi-label>
+                      <hi-dropdown kind="value" id="cases-view-as">
+                        <hi-select aesthetic="dropdown" selected-index="0">
+                          <hi-option selected>Cases for James</hi-option>
+                        </hi-select>
+                      </hi-dropdown>
+                    </hi-input-group>
+
+                    <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-4">
+                      <h3>Open Cases For James</h3>
+                      <div>
+                        <hi-button aesthetic="secondary" size="small">Open Cases</hi-button>
+                        <hi-button aesthetic="secondary" size="small">Closed Cases</hi-button>
+                      </div>
+                    </div>
+
+                    <div scroll-x="auto">
+                      <table kind="compact">
+                        <thead>
+                          <tr>
+                            <th class="text-uppercase">Case ID</th>
+                            <th class="text-uppercase">Date Opened</th>
+                            <th class="text-uppercase">Reasons</th>
+                            <th class="text-uppercase">Issued By</th>
+                            <th class="text-uppercase">Assigned To</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><hi-link href="#">511</hi-link></td>
+                            <td>07/01/2026</td>
+                            <td>Needs Tutoring</td>
+                            <td>Jack Whitten</td>
+                            <td>Unassigned</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">507</hi-link></td>
+                            <td>06/19/2026</td>
+                            <td>Noise Complaint</td>
+                            <td>Jack Whitten</td>
+                            <td>Joseph Gonzalez, Lee White, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">506</hi-link></td>
+                            <td>06/19/2026</td>
+                            <td>Student Accessibility Referral</td>
+                            <td>Jack Whitten</td>
+                            <td>Joseph Gonzalez, Lee White, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore, Jack Wheeler, Student Accessibility Services</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">505</hi-link></td>
+                            <td>06/19/2026</td>
+                            <td>Student Academic Issue</td>
+                            <td>Jack Whitten</td>
+                            <td>Joseph Gonzalez, Lee White, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore, Jack Wheeler</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">504</hi-link></td>
+                            <td>06/19/2026</td>
+                            <td>Career Services</td>
+                            <td>Jack Whitten</td>
+                            <td>Joseph Gonzalez, Lee White, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">503</hi-link></td>
+                            <td>06/18/2026</td>
+                            <td>I am seeking on-campus employment</td>
+                            <td>James Wyatt</td>
+                            <td>Career Services, Jack Whitmore, Jack Whitten</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">500</hi-link></td>
+                            <td>05/19/2026</td>
+                            <td>Concern for D or F</td>
+                            <td>Jack Wheeler</td>
+                            <td>Joseph Gonzalez, Lee White, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">498</hi-link></td>
+                            <td>05/14/2026</td>
+                            <td>Career Services</td>
+                            <td>Jack Whitten</td>
+                            <td>Joseph Gonzalez, Lee White, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">502</hi-link></td>
+                            <td>05/28/2026</td>
+                            <td>Needs Tutoring</td>
+                            <td>Jack Whitmore</td>
+                            <td>Unassigned</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">499</hi-link></td>
+                            <td>05/14/2026</td>
+                            <td>Needs Tutoring</td>
+                            <td>Jack Whitten</td>
+                            <td>Unassigned</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">497</hi-link></td>
+                            <td>05/13/2026</td>
+                            <td>Needs Tutoring</td>
+                            <td>Jack Whitten</td>
+                            <td>Unassigned</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">494</hi-link></td>
+                            <td>04/22/2026</td>
+                            <td>Student Academic Issue</td>
+                            <td>Jack Whitten</td>
+                            <td>Joseph Gonzalez, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore, Jack Wheeler</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">492</hi-link></td>
+                            <td>03/06/2026</td>
+                            <td>Needs Tutoring</td>
+                            <td>Joshua Hudson</td>
+                            <td>Unassigned</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">489</hi-link></td>
+                            <td>02/18/2026</td>
+                            <td>Student Question Follow-Up</td>
+                            <td>AI Assistant for Students</td>
+                            <td>Joseph Gonzalez, Jack Whitten, Beth Allen, Jack Wheeler, Jack Whitmore</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">485</hi-link></td>
+                            <td>12/15/2025</td>
+                            <td>Concern for D or F</td>
+                            <td>Jack Whitten</td>
+                            <td>Jack Williams, Joseph Gonzalez, Jack Whitten, Beth Allen, Jack Wheeler, Jack Whitmore</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <p class="clr-gray_80-txt text-sz-s mt-4">Showing items 1-15 of 55</p>
+                  </hi-tile>
+                </section>
+              </hi-case>
+
+              <!-- ======================= PRE-ENROLLMENT HISTORY ======================= -->
+              <hi-case id="jw-pre-enrollment" value="jw-pre-enrollment" hidden>
+                <section x-area="zone">
+                  <p class="mb-4">
+                    The data in the sections below are from the Prospect Profile in Enrollment
+                    Success. If permissions allow, go to the Prospect Profile to modify items or
+                    change the Linked Prospect Profile listed.
+                  </p>
+                  <p class="mb-4">
+                    Linked Prospect Profile: To view the Linked Prospect Profile, you must have
+                    permission to view Prospect Profiles in Enrollment Success. To update or unlink
+                    the profile, you must have permission to edit Prospect Profiles in Enrollment
+                    Success. To update or unlink, select the link to the student's Prospect Profile
+                    and then edit the Prospect Profile.
+                  </p>
+                  <p>No Linked Profile.</p>
+                </section>
+              </hi-case>
+
+              <!-- ======================= FORM SUBMISSIONS ======================= -->
+              <hi-case id="jw-form-submissions" value="jw-form-submissions" hidden>
+                <section x-area="zone">
+                  <h2 class="mb-6">Form Submissions</h2>
+                  <div scroll-x="auto">
+                    <table kind="compact">
+                      <thead>
+                        <tr>
+                          <th class="text-uppercase">Form Name</th>
+                          <th class="text-uppercase">Date Submitted</th>
+                          <th class="text-uppercase">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td colspan="3" class="text-center clr-gray_80-txt">
+                            No form submissions.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              </hi-case>
+
+              <!-- ======================= COURSES ======================= -->
+              <hi-case id="jw-courses" value="jw-courses" hidden>
+                <section x-area="zone">
+                  <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
+                    <h5 slot="title">Courses</h5>
+                    <hi-input-group class="mb-4" style="width: 14rem;">
+                      <hi-label for="courses-term">Term</hi-label>
+                      <hi-dropdown kind="value" id="courses-term">
+                        <hi-select aesthetic="dropdown" selected-index="0">
+                          <hi-option selected>Spring 2026 (Default Term)</hi-option>
+                        </hi-select>
+                      </hi-dropdown>
+                    </hi-input-group>
+                    <div scroll-x="auto">
+                      <table kind="compact">
+                        <thead>
+                          <tr>
+                            <th class="text-uppercase">Course</th>
+                            <th class="text-uppercase">Professor</th>
+                            <th class="text-uppercase">Days/Times</th>
+                            <th class="text-uppercase">Mid</th>
+                            <th class="text-uppercase">Final</th>
+                            <th class="text-uppercase">LMS Current Course Score</th>
+                            <th class="text-uppercase">Absence</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <p class="mb-1"><strong>Ended on 05/15/2026</strong></p>
+                              ANTH-101-1 Intro to Anthropology
+                            </td>
+                            <td><hi-link href="#">Mary Schafer</hi-link></td>
+                            <td>01/05/2026 - 05/15/2026<br />MW 6:00pm - 9:10pm ET<br />Harris Hall - Room 213-A</td>
+                            <td></td>
+                            <td></td>
+                            <td>91.98%</td>
+                            <td>0 (0)</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p class="mb-1"><strong>Ended on 05/22/2026</strong></p>
+                              BIO-101-2 Intro to Biology
+                            </td>
+                            <td><hi-link href="#">Jack Whitten</hi-link></td>
+                            <td>01/05/2026 - 05/22/2026<br />TR 11:00am - 12:30pm ET<br />Not Specified</td>
+                            <td></td>
+                            <td></td>
+                            <td>N/A</td>
+                            <td>3 (3)</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p class="mb-1"><strong>Ended on 05/15/2026</strong></p>
+                              BIO-230-B2 Human Physiology
+                            </td>
+                            <td><hi-link href="#">Joshua Hudson</hi-link></td>
+                            <td>01/05/2026 - 05/15/2026<br />MWF 10:00am - 10:45am ET<br />Benet Hall - Room 202</td>
+                            <td></td>
+                            <td></td>
+                            <td>75.00%</td>
+                            <td>0 (0)</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p class="mb-1"><strong>Ended on 05/15/2026</strong></p>
+                              BIO-250-5 Biochemistry
+                            </td>
+                            <td><hi-link href="#">Joshua Hudson</hi-link></td>
+                            <td>01/05/2026 - 05/15/2026<br />TR 11:00am - 12:15pm ET<br />Edwards Annex - Room 504</td>
+                            <td></td>
+                            <td></td>
+                            <td>71.00%</td>
+                            <td>0 (0)</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p class="mb-1"><strong>Ended on 05/15/2026</strong></p>
+                              PSY-201-C4 Behavioral Change
+                            </td>
+                            <td><hi-link href="#">Floyd Jackson</hi-link></td>
+                            <td>01/05/2026 - 05/15/2026<br />MWF 1:00pm - 1:50pm ET<br />Newman Building - Room 108</td>
+                            <td></td>
+                            <td></td>
+                            <td>87.60%</td>
+                            <td>0 (0)</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </hi-tile>
+
+                  <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
+                    <h5 slot="title">LMS Assignments</h5>
+                    <div l-kind="hort" l-wrap l-width-fixed class="mb-4">
+                      <hi-input-group class="mr-4" style="width: 14rem;">
+                        <hi-label>Term</hi-label>
+                        <hi-dropdown kind="value">
+                          <hi-select aesthetic="dropdown" selected-index="0">
+                            <hi-option selected>Spring 2026 (Default Term)</hi-option>
+                          </hi-select>
+                        </hi-dropdown>
+                      </hi-input-group>
+                      <hi-input-group class="mr-4" style="width: 14rem;">
+                        <hi-label>Course</hi-label>
+                        <hi-dropdown kind="value">
+                          <hi-select aesthetic="dropdown" selected-index="0">
+                            <hi-option selected>All Courses</hi-option>
+                          </hi-select>
+                        </hi-dropdown>
+                      </hi-input-group>
+                      <hi-input-group class="mr-4" style="width: 14rem;">
+                        <hi-label>Type</hi-label>
+                        <hi-dropdown kind="value">
+                          <hi-select aesthetic="dropdown" selected-index="0">
+                            <hi-option selected>Any Type</hi-option>
+                          </hi-select>
+                        </hi-dropdown>
+                      </hi-input-group>
+                      <hi-input-group style="width: 14rem;">
+                        <hi-label>Status</hi-label>
+                        <hi-dropdown kind="value">
+                          <hi-select aesthetic="dropdown" selected-index="0">
+                            <hi-option selected>Any Status</hi-option>
+                          </hi-select>
+                        </hi-dropdown>
+                      </hi-input-group>
+                    </div>
+                    <div scroll-x="auto">
+                      <table kind="compact">
+                        <thead>
+                          <tr>
+                            <th class="text-uppercase">Course</th>
+                            <th class="text-uppercase">Term</th>
+                            <th class="text-uppercase">Assignment</th>
+                            <th class="text-uppercase">Type</th>
+                            <th class="text-uppercase">Status</th>
+                            <th class="text-uppercase">Due Date</th>
+                            <th class="text-uppercase">Percentage</th>
+                            <th class="text-uppercase">Grade Hidden From Student</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>ANTH-101 Intro to Anthropology</td>
+                            <td>Spring 2026</td>
+                            <td>Language, Power, and Identity</td>
+                            <td>Other</td>
+                            <td>Completed On Time</td>
+                            <td>05/01/2026</td>
+                            <td>91%</td>
+                            <td>Yes</td>
+                          </tr>
+                          <tr>
+                            <td>ANTH-101 Intro to Anthropology</td>
+                            <td>Spring 2026</td>
+                            <td>Thinking Like an Anthropologist</td>
+                            <td>Other</td>
+                            <td>Completed On Time</td>
+                            <td>05/27/2026</td>
+                            <td>90%</td>
+                            <td>Yes</td>
+                          </tr>
+                          <tr>
+                            <td>ANTH-101 Intro to Anthropology</td>
+                            <td>Spring 2026</td>
+                            <td>Humans and Their Environments</td>
+                            <td>Other</td>
+                            <td>Completed On Time</td>
+                            <td>05/15/2026</td>
+                            <td>93%</td>
+                            <td>Yes</td>
+                          </tr>
+                          <tr>
+                            <td>BIO-230-B2 Human Physiology</td>
+                            <td>Spring 2026</td>
+                            <td>Neural Signaling and Response</td>
+                            <td>Other</td>
+                            <td>Completed On Time</td>
+                            <td>02/18/2026</td>
+                            <td>72%</td>
+                            <td>Yes</td>
+                          </tr>
+                          <tr>
+                            <td>BIO-230-B2 Human Physiology</td>
+                            <td>Spring 2026</td>
+                            <td>Cells to Systems</td>
+                            <td>Other</td>
+                            <td>Not Completed On Time</td>
+                            <td>02/15/2026</td>
+                            <td>80%</td>
+                            <td>Yes</td>
+                          </tr>
+                          <tr>
+                            <td>BIO-230-B2 Human Physiology</td>
+                            <td>Spring 2026</td>
+                            <td>Breathing for Life</td>
+                            <td>Other</td>
+                            <td>Past Due</td>
+                            <td>03/15/2026</td>
+                            <td>50%</td>
+                            <td>Yes</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <p class="clr-gray_80-txt text-sz-s mt-4">Showing items 1-15 of 40</p>
+                  </hi-tile>
+
+                  <hi-tile allow-toolbar aesthetic="outline">
+                    <h5 slot="title">Term Details</h5>
+
+                    <div class="mb-6">
+                      <h4 class="mb-2">Spring 2026</h4>
+                      <div l-kind="hort" l-width-fixed>
+                        <div style="width: 60%;">
+                          <p>0 (3) ANTH101LEC &mdash; Intro to Anthropology</p>
+                          <p>0 (3) BIO230LEC &mdash; Human Physiology</p>
+                          <p>0 (3) BIO250LEC &mdash; Biochemistry</p>
+                          <p>0 (3) PSY201LEC &mdash; Behavioral Change</p>
+                        </div>
+                        <div style="width: 40%;">
+                          <p class="clr-gray_80-txt text-sz-s">Term at a glance</p>
+                          <p>Credits: 0</p>
+                          <p>Credit Comp %: 0%</p>
+                          <p>Term GPA: 0.0</p>
+                          <p>Cum GPA: 2.64</p>
+                          <p>Academic Standing: Academic Suspension</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-6">
+                      <h4 class="mb-2">Fall 2025</h4>
+                      <div l-kind="hort" l-width-fixed>
+                        <div style="width: 60%;">
+                          <p>C (3) BIO201LEC &mdash; Evolutionary Biology</p>
+                          <p>B (3) CHEM111LEC &mdash; Principles of Chemicals</p>
+                          <p>A (3) FREN250IPRAC &mdash; French Literature Primer</p>
+                          <p>B (3) MATH171LEC &mdash; Precalculus</p>
+                        </div>
+                        <div style="width: 40%;">
+                          <p class="clr-gray_80-txt text-sz-s">Term at a glance</p>
+                          <p>Credits: 12</p>
+                          <p>Credit Comp %: 100%</p>
+                          <p>Term GPA: 3.0</p>
+                          <p>Cum GPA: 2.64</p>
+                          <p>Academic Standing: Withdrawn</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-6">
+                      <h4 class="mb-2">Spring 2025</h4>
+                      <div l-kind="hort" l-width-fixed>
+                        <div style="width: 60%;">
+                          <p>B (3) BIO111LEC &mdash; Cellular Biology</p>
+                          <p>C (0/3) BIO150LEC &mdash; Biodiversity</p>
+                          <p>F (3) CHEM111LEC &mdash; Principles of Chemicals</p>
+                          <p>B (3) ENG111LEC &mdash; Composition and Writing II</p>
+                          <p>A (3) PSY150LEC &mdash; Adolescent Psychology</p>
+                        </div>
+                        <div style="width: 40%;">
+                          <p class="clr-gray_80-txt text-sz-s">Term at a glance</p>
+                          <p>Credits: 12</p>
+                          <p>Credit Comp %: 80%</p>
+                          <p>Term GPA: 2.4</p>
+                          <p>Cum GPA: 2.5</p>
+                          <p>Academic Standing: Good Standing</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-6">
+                      <h4 class="mb-2">Fall 2024</h4>
+                      <div l-kind="hort" l-width-fixed>
+                        <div style="width: 60%;">
+                          <p>D (3) BIO101LEC &mdash; Intro to Biology</p>
+                          <p>B (3) CHEM101LEC &mdash; Intro to Chemistry</p>
+                          <p>A (3) ENG101LEC &mdash; Composition and Writing I</p>
+                          <p>D (3) MATH101LEC &mdash; College Algebra</p>
+                          <p>A (3) PSY111LEC &mdash; Abnormal Psychology</p>
+                        </div>
+                        <div style="width: 40%;">
+                          <p class="clr-gray_80-txt text-sz-s">Term at a glance</p>
+                          <p>Credits: 15</p>
+                          <p>Credit Comp %: 100%</p>
+                          <p>Term GPA: 2.6</p>
+                          <p>Cum GPA: 2.6</p>
+                          <p>Academic Standing: Good Standing</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <h4 class="mb-2">Pre-Enrollment and Progression</h4>
+                    <div scroll-x="auto">
+                      <table kind="compact">
+                        <thead>
+                          <tr>
+                            <th class="text-uppercase">Test</th>
+                            <th class="text-uppercase">Score</th>
+                            <th class="text-uppercase">Date</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>ACT - Composite (COMP)</td>
+                            <td>27</td>
+                            <td>2013-10-07</td>
+                          </tr>
+                          <tr>
+                            <td>Advanced Placement Test - French Language (FRA)</td>
+                            <td>4</td>
+                            <td>2014-10-07</td>
+                          </tr>
+                          <tr>
+                            <td>SAT - Math (MATH)</td>
+                            <td>520</td>
+                            <td>2014-10-07</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </hi-tile>
+                </section>
+              </hi-case>
+
+              <!-- ======================= MAJOR EXPLORER ======================= -->
+              <hi-case id="jw-major-explorer" value="jw-major-explorer" hidden>
+                <section x-area="zone">
+                  <h2 class="mb-6">Major Explorer</h2>
+                  <p class="clr-gray_80-txt">
+                    Looks at different majors based on predictive indicators for this student.
+                  </p>
+                </section>
+              </hi-case>
+
+              <!-- ======================= JOURNEYS ======================= -->
+              <hi-case id="jw-journeys" value="jw-journeys">
+                <hi-switch id="journeys-view" value="journeys-list">
+                  <hi-case id="journeys-list" value="journeys-list">
+                    <section x-area="zone">
+                      <h2 class="mb-6">Preparing For The Workforce!</h2>
+                      <p class="clr-gray_80-txt text-sz-s">Topic</p>
+                      <p class="mb-4">Workforce Dev</p>
+                      <p class="clr-gray_80-txt text-sz-s">Description</p>
+                      <p class="mb-6">
+                        Helpful milestones to ensure you're tracking against your desired employment goals
+                      </p>
+
+                      <p class="clr-gray_80-txt text-sz-s">Completion Progress</p>
+                      <p class="mb-2">2 of 6 completed</p>
+                      <hi-progress-bar value="33" max="100" class="mb-6"></hi-progress-bar>
+
+                      <h3 class="mb-4">Journey Steps</h3>
+                      <div scroll-x="auto">
+                        <table kind="compact">
+                          <thead>
+                            <tr>
+                              <th><hi-checkbox aria-label="Select all steps"></hi-checkbox></th>
+                              <th class="text-uppercase">Step Title</th>
+                              <th class="text-uppercase">Due Date</th>
+                              <th class="text-uppercase">Status</th>
+                              <th class="text-uppercase">Completed By</th>
+                              <th class="text-uppercase">Completed On</th>
+                              <th class="text-uppercase">Updated By</th>
+                              <th class="text-uppercase">Updated On</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td><hi-checkbox></hi-checkbox></td>
+                              <td><hi-link href="#">Schedule Appointment&hellip;</hi-link></td>
+                              <td>&ndash;</td>
+                              <td>Completed</td>
+                              <td>Jack Whitmore</td>
+                              <td>07/07/2026</td>
+                              <td>Jack Whitmore</td>
+                              <td>07/07/2026</td>
+                            </tr>
+                            <tr>
+                              <td><hi-checkbox></hi-checkbox></td>
+                              <td><hi-link href="#">Attend Career Fair</hi-link></td>
+                              <td>&ndash;</td>
+                              <td>Completed</td>
+                              <td>Jack Whitmore</td>
+                              <td>01/23/2025</td>
+                              <td>Jack Whitmore</td>
+                              <td>01/23/2025</td>
+                            </tr>
+                            <tr>
+                              <td><hi-checkbox></hi-checkbox></td>
+                              <td><hi-link href="#" id="journey-detail-link">Sign Up for an Account o&hellip;</hi-link></td>
+                              <td>&ndash;</td>
+                              <td>Incomplete</td>
+                              <td>&ndash;</td>
+                              <td>&ndash;</td>
+                              <td>jwhitten@woodley.edu.jw&hellip;</td>
+                              <td>04/02/2026</td>
+                            </tr>
+                            <tr>
+                              <td><hi-checkbox></hi-checkbox></td>
+                              <td><hi-link href="#">Attend a Resume Works&hellip;</hi-link></td>
+                              <td>&ndash;</td>
+                              <td>Incomplete</td>
+                              <td>&ndash;</td>
+                              <td>&ndash;</td>
+                              <td>&ndash;</td>
+                              <td>&ndash;</td>
+                            </tr>
+                            <tr>
+                              <td><hi-checkbox></hi-checkbox></td>
+                              <td><hi-link href="#">Explore Career Quizzes o&hellip;</hi-link></td>
+                              <td>&ndash;</td>
+                              <td>Incomplete</td>
+                              <td>&ndash;</td>
+                              <td>&ndash;</td>
+                              <td>&ndash;</td>
+                              <td>&ndash;</td>
+                            </tr>
+                            <tr>
+                              <td><hi-checkbox></hi-checkbox></td>
+                              <td><hi-link href="#">Testing</hi-link></td>
+                              <td>&ndash;</td>
+                              <td>Incomplete</td>
+                              <td>&ndash;</td>
+                              <td>&ndash;</td>
+                              <td>&ndash;</td>
+                              <td>&ndash;</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <p class="clr-gray_80-txt text-sz-s mt-4">1-6 of 6</p>
+                    </section>
+                  </hi-case>
+
+                  <hi-case id="journeys-detail" value="journeys-detail" hidden>
+                    <section x-area="zone">
+                      <p class="mb-4"><hi-link href="#" id="journey-back-link">&larr; Back to James's Journeys</hi-link></p>
+                      <hi-tile allow-toolbar aesthetic="outline">
+                        <h5 slot="title">Sign Up For An Account On Forage</h5>
+                        <p class="clr-gray_80-txt text-sz-s">Due Date</p>
+                        <p class="mb-4">&ndash;</p>
+                        <p class="mb-4"><hi-link href="#">Sign up For Forage Here!</hi-link></p>
+
+                        <h4 class="mb-4">Completion Details</h4>
+                        <hi-input-group class="mb-4">
+                          <hi-label for="completion-reason">Completion Reason</hi-label>
+                          <hi-dropdown kind="value" id="completion-reason">
+                            <hi-select aesthetic="dropdown" selected-index="-1"></hi-select>
+                          </hi-dropdown>
+                        </hi-input-group>
+                        <hi-input-group class="mb-4">
+                          <hi-label for="staff-comment">Staff Comment</hi-label>
+                          <hi-textarea id="staff-comment">Hi James make sure you are trying out Forage since you are starting summer internship search</hi-textarea>
+                        </hi-input-group>
+                        <hi-input-group class="mb-4">
+                          <hi-label for="student-comment">Student Comment</hi-label>
+                          <hi-textarea id="student-comment"></hi-textarea>
+                        </hi-input-group>
+                        <hi-button aesthetic="primary">Save</hi-button>
+                        <hi-button aesthetic="secondary">Cancel</hi-button>
+                      </hi-tile>
+                    </section>
+                  </hi-case>
+                </hi-switch>
+              </hi-case>
+
+              <!-- ======================= CHECKLIST ======================= -->
+              <hi-case id="jw-checklist" value="jw-checklist" hidden>
+                <section x-area="zone">
+                  <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
+                    <h5 slot="title">Checklist</h5>
+                    <div scroll-x="auto">
+                      <table kind="compact">
+                        <thead>
+                          <tr>
+                            <th class="text-uppercase">Item Name</th>
+                            <th class="text-uppercase">Category</th>
+                            <th class="text-uppercase">Status</th>
+                            <th class="text-uppercase">Start Date</th>
+                            <th class="text-uppercase">Due Date</th>
+                            <th class="text-uppercase">Assigned By</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><hi-link href="#">Buy books and supplies for Fall&hellip;</hi-link></td>
+                            <td>To-Do</td>
+                            <td>Incomplete</td>
+                            <td>&ndash;</td>
+                            <td>07/19/2026</td>
+                            <td>School</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">Driving? Get your parking pass.</hi-link></td>
+                            <td>To-Do</td>
+                            <td>Incomplete</td>
+                            <td>&ndash;</td>
+                            <td>07/19/2026</td>
+                            <td>School</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">First week of Fall 2026 classes</hi-link></td>
+                            <td>Event</td>
+                            <td>Incomplete</td>
+                            <td>&ndash;</td>
+                            <td>08/18/2026</td>
+                            <td>School</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">Pick Fall 2026 classes and sche&hellip;</hi-link></td>
+                            <td>To-Do</td>
+                            <td>Incomplete</td>
+                            <td>08/19/2026</td>
+                            <td>12/18/2026</td>
+                            <td>School</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">Sign Up for an Account on Forage</hi-link></td>
+                            <td>Preparing For The Workforce!</td>
+                            <td>Incomplete</td>
+                            <td>&ndash;</td>
+                            <td>&ndash;</td>
+                            <td>School</td>
+                          </tr>
+                          <tr>
+                            <td><hi-link href="#">Attend a Resume Workshop</hi-link></td>
+                            <td>Preparing For The Workforce!</td>
+                            <td>Incomplete</td>
+                            <td>&ndash;</td>
+                            <td>&ndash;</td>
+                            <td>School</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <p class="clr-gray_80-txt text-sz-s mt-4">1-18 of 18</p>
+                  </hi-tile>
+
+                  <hi-tile allow-toolbar aesthetic="outline">
+                    <h5 slot="title">Onboarding Questions</h5>
+                    <div scroll-x="auto">
+                      <table kind="compact">
+                        <thead>
+                          <tr>
+                            <th class="text-uppercase">Question</th>
+                            <th class="text-uppercase">Student Response</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Are you a new student at Woodley University?</td>
+                            <td>Yes</td>
+                          </tr>
+                          <tr>
+                            <td>I am a&hellip;</td>
+                            <td>Sophomore</td>
+                          </tr>
+                          <tr>
+                            <td>Please select all that apply.</td>
+                            <td>
+                              I'm interested in studying abroad, I plan to live on campus,
+                              I'm interested in becoming involved n service/vol&hellip;
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </hi-tile>
+                </section>
+              </hi-case>
+
+              <!-- ======================= ACADEMIC PLAN ======================= -->
+              <hi-case id="jw-academic-plan" value="jw-academic-plan" hidden>
+                <section x-area="zone">
+                  <h2 class="mb-6">Academic Plan</h2>
+                  <p class="clr-gray_80-txt">
+                    Shows James's current term-by-term course plan, allows staff to create draft
+                    plans for him, and shows his own view of his plan (including the templates he's
+                    using), listed in his view on the right panel.
+                  </p>
+                </section>
+              </hi-case>
+
+              <!-- ======================= CALENDAR ======================= -->
+              <hi-case id="jw-calendar" value="jw-calendar" hidden>
+                <section x-area="zone">
+                  <h2 class="mb-6">Calendar</h2>
+                  <p class="mb-4">
+                    The calendar view is a graphical representation of the calendar. If you need a
+                    fully accessible interface, please use the
+                    <hi-link href="#">list of calendar items here</hi-link>.
+                  </p>
+                  <p class="clr-gray_80-txt text-sz-s mb-2">
+                    Checking/unchecking the legend boxes will show/hide corresponding events on the calendar.
+                  </p>
+                  <div l-kind="hort" l-wrap l-width-fixed class="mb-4">
+                    <hi-checkbox checked class="mr-4">Admissions Counseling</hi-checkbox>
+                    <hi-checkbox checked class="mr-4">Advising</hi-checkbox>
+                    <hi-checkbox checked class="mr-4">Career Services</hi-checkbox>
+                    <hi-checkbox checked class="mr-4">Financial Aid</hi-checkbox>
+                    <hi-checkbox checked class="mr-4">First Year Experience</hi-checkbox>
+                    <hi-checkbox checked class="mr-4">Residence Life</hi-checkbox>
+                    <hi-checkbox checked class="mr-4">Student Support Services</hi-checkbox>
+                    <hi-checkbox checked class="mr-4">Transfer Office</hi-checkbox>
+                    <hi-checkbox checked class="mr-4">Tutoring</hi-checkbox>
+                    <hi-checkbox checked class="mr-4">Course</hi-checkbox>
+                    <hi-checkbox checked class="mr-4">Assignment</hi-checkbox>
+                    <hi-checkbox checked class="mr-4">General</hi-checkbox>
+                    <hi-checkbox checked class="mr-4">Busy</hi-checkbox>
+                    <hi-checkbox checked class="mr-4">Cancelled</hi-checkbox>
+                    <hi-checkbox checked class="mr-4">Blocked</hi-checkbox>
+                    <hi-checkbox checked class="mr-4">School Wide Event</hi-checkbox>
+                    <hi-checkbox checked class="mr-4">All Events</hi-checkbox>
+                    <hi-checkbox checked>My Events</hi-checkbox>
+                  </div>
+                  <p class="clr-gray_80-txt text-sz-s mb-4">* All times listed are in Eastern Time (US &amp; Canada).</p>
+                  <hi-link href="#">Print Calendar (PDF)</hi-link>
+                </section>
+              </hi-case>
+
+              <!-- ======================= STUDY HALL ======================= -->
+              <hi-case id="jw-study-hall" value="jw-study-hall" hidden>
+                <section x-area="zone">
+                  <h2 class="mb-6">Study Hall</h2>
+                  <p class="clr-gray_80-txt">
+                    James's study hall hours, if he is leveraging study hall.
+                  </p>
+                </section>
+              </hi-case>
+
+              <!-- ======================= APPOINTMENTS ======================= -->
+              <hi-case id="jw-appointments" value="jw-appointments" hidden>
+                <section x-area="zone">
+                  <h2 class="mb-6">Upcoming Appointments</h2>
+                  <hi-input-group class="mb-4" style="width: 14rem;">
+                    <hi-label for="jw-appt-care-unit">Care Unit</hi-label>
+                    <hi-dropdown kind="value" id="jw-appt-care-unit">
+                      <hi-select aesthetic="dropdown" selected-index="0">
+                        <hi-option selected>All Care Units</hi-option>
+                      </hi-select>
+                    </hi-dropdown>
+                  </hi-input-group>
+                  <hi-checkbox class="mb-4">Show Cancelled</hi-checkbox>
+                  <div scroll-x="auto">
+                    <table kind="compact">
+                      <thead>
+                        <tr>
+                          <th class="text-uppercase">Date</th>
+                          <th class="text-uppercase">Care Unit</th>
+                          <th class="text-uppercase">Service/Course</th>
+                          <th class="text-uppercase">Comment</th>
+                          <th class="text-uppercase">Meeting Type</th>
+                          <th class="text-uppercase">Organizer</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td colspan="6" class="text-center clr-gray_80-txt">
+                            James Wyatt does not have any upcoming appointments.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              </hi-case>
+
+              <!-- ======================= CONVERSATIONS ======================= -->
+              <hi-case id="jw-conversations" value="jw-conversations" hidden>
+                <section x-area="zone">
+                  <h2 class="mb-6">Email And Text Message Communications</h2>
+                  <hi-button aesthetic="primary" class="mb-6">+ Send Message</hi-button>
+                  <div scroll-x="auto">
+                    <table kind="compact">
+                      <thead>
+                        <tr>
+                          <th><hi-checkbox aria-label="Select all conversations"></hi-checkbox></th>
+                          <th class="text-uppercase">Status</th>
+                          <th class="text-uppercase">Date Sent</th>
+                          <th class="text-uppercase">Sender</th>
+                          <th class="text-uppercase">Recipient</th>
+                          <th class="text-uppercase">Topic</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><hi-checkbox></hi-checkbox></td>
+                          <td>Unread</td>
+                          <td>07/02/2026, 11:15 AM ET</td>
+                          <td>Whitten, Jack</td>
+                          <td>Wyatt, James</td>
+                          <td><hi-link href="#">[Appointment Reminder] General Advising @ 07/03/2026 11:15am - 12:00pm ET</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox></hi-checkbox></td>
+                          <td>Unread</td>
+                          <td>07/01/2026, 11:54 AM ET</td>
+                          <td>Whitten, Jack</td>
+                          <td>Wyatt, James</td>
+                          <td><hi-link href="#">[Appointment Notification] General Advising @ Jul 03 2026 11:15am - 12:00pm ET</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox></hi-checkbox></td>
+                          <td>Unread</td>
+                          <td>06/26/2026, 11:50 AM ET</td>
+                          <td>Reply, No</td>
+                          <td>Wyatt, James</td>
+                          <td><hi-link href="#">Please provide feedback on your recent appointment:&hellip;</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox></hi-checkbox></td>
+                          <td>Unread</td>
+                          <td>06/26/2026, 11:50 AM ET</td>
+                          <td>Reply, No</td>
+                          <td>Wyatt, James</td>
+                          <td><hi-link href="#">James, Give feedback about your recent appointment</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox></hi-checkbox></td>
+                          <td>Unread</td>
+                          <td>06/25/2026, 11:00 AM ET</td>
+                          <td>Whitten, Jack</td>
+                          <td>Wyatt, James</td>
+                          <td><hi-link href="#">[Appointment Reminder] Academic Planning @ 06/26/2026 11:00am - 11:45am ET</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox></hi-checkbox></td>
+                          <td>Unread</td>
+                          <td>06/22/2026, 11:01 AM ET</td>
+                          <td>Whitten, Jack</td>
+                          <td>Wyatt, James</td>
+                          <td><hi-link href="#">Please Meet With Me ASAP</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox></hi-checkbox></td>
+                          <td>Unread</td>
+                          <td>06/19/2026, 2:15 PM ET</td>
+                          <td>Reply, No</td>
+                          <td>Wyatt, James</td>
+                          <td><hi-link href="#">Please provide feedback on your recent appointment:&hellip;</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox></hi-checkbox></td>
+                          <td>Unread</td>
+                          <td>06/19/2026, 2:15 PM ET</td>
+                          <td>Reply, No</td>
+                          <td>Wyatt, James</td>
+                          <td><hi-link href="#">James, Give feedback about your recent appointment</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox></hi-checkbox></td>
+                          <td>Unread</td>
+                          <td>06/19/2026, 12:50 PM ET</td>
+                          <td>Reply, No</td>
+                          <td>Wyatt, James</td>
+                          <td><hi-link href="#">Please provide feedback on your recent appointment:&hellip;</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox></hi-checkbox></td>
+                          <td>Unread</td>
+                          <td>06/19/2026, 12:50 PM ET</td>
+                          <td>Reply, No</td>
+                          <td>Wyatt, James</td>
+                          <td><hi-link href="#">James, Give feedback about your recent appointment</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox></hi-checkbox></td>
+                          <td>Unread</td>
+                          <td>06/19/2026, 11:50 AM ET</td>
+                          <td>Reply, No</td>
+                          <td>Wyatt, James</td>
+                          <td><hi-link href="#">Please provide feedback on your recent appointment:&hellip;</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox></hi-checkbox></td>
+                          <td>Unread</td>
+                          <td>06/19/2026, 11:50 AM ET</td>
+                          <td>Reply, No</td>
+                          <td>Wyatt, James</td>
+                          <td><hi-link href="#">James, Give feedback about your recent appointment</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox></hi-checkbox></td>
+                          <td>Unread</td>
+                          <td>06/19/2026, 8:50 AM ET</td>
+                          <td>Whitten, Jack</td>
+                          <td>Wyatt, James</td>
+                          <td><hi-link href="#">[Appointment Reminder] Academic Planning @ 06/19/2026 12:00pm - 12:45pm ET</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox></hi-checkbox></td>
+                          <td>Unread</td>
+                          <td>06/19/2026, 8:49 AM ET</td>
+                          <td>Wyatt, James</td>
+                          <td>Whitten, Jack</td>
+                          <td><hi-link href="#">James Wyatt was added to the first available waiting list for Academic Planning</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox></hi-checkbox></td>
+                          <td>Unread</td>
+                          <td>06/19/2026, 8:49 AM ET</td>
+                          <td>Wyatt, James</td>
+                          <td>Wheeler, Jack</td>
+                          <td><hi-link href="#">James Wyatt was added to the first available waiting list for Academic Planning</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox></hi-checkbox></td>
+                          <td>Unread</td>
+                          <td>06/19/2026, 8:49 AM ET</td>
+                          <td>Wyatt, James</td>
+                          <td>Whitten, Jack</td>
+                          <td><hi-link href="#">James Wyatt was added to the first available waiting list for Academic Planning</hi-link></td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox></hi-checkbox></td>
+                          <td>Unread</td>
+                          <td>06/19/2026, 8:48 AM ET</td>
+                          <td>Whitten, Jack</td>
+                          <td>Wyatt, James</td>
+                          <td><hi-link href="#">[Appointment Notification] Academic Planning @ Jun 19 2026 12:00pm - 12:45pm ET</hi-link></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              </hi-case>
+
+              <!-- ======================= STAFF TASKS ======================= -->
+              <hi-case id="jw-staff-tasks" value="jw-staff-tasks" hidden>
+                <section x-area="zone">
+                  <h2 class="mb-6">Staff Tasks Related To James</h2>
+                  <hi-button aesthetic="primary" class="mb-6">+ Add Task</hi-button>
+                  <div scroll-x="auto">
+                    <table kind="compact">
+                  <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-4">
+                    <hi-search aria-label="Search in Results" placeholder="Search in Results" hidden-result-message hidden-status-message style="width:20rem;"></hi-search>
+                    <hi-button aesthetic="icon" size="small" layout="icon"><hi-icon kind="filter" size="small"></hi-icon></hi-button>
+                  </div>
+                        <thead>
+                          <tr>
+                            <th><hi-checkbox aria-label="Select all tasks"></hi-checkbox></th>
+                            <th></th>
+                            <th class="text-uppercase">Title</th>
+                            <th class="text-uppercase">Assigned To</th>
+                            <th class="text-uppercase">Related Person Email</th>
+                            <th class="text-uppercase">Due Date</th>
+                            <th class="text-uppercase">Status</th>
+                            <th class="text-uppercase">Priority</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><hi-checkbox></hi-checkbox></td>
+                            <td class="clr-gray_80-txt">&#9776;</td>
+                            <td><hi-link href="#">Send James Grant Application</hi-link></td>
+                            <td>Whitten, Jack</td>
+                            <td>woodley84@eab.com</td>
+                            <td>04/16/2026</td>
+                            <td>Open</td>
+                            <td>High</td>
+                          </tr>
+                          <tr>
+                            <td><hi-checkbox></hi-checkbox></td>
+                            <td class="clr-gray_80-txt">&#9776;</td>
+                            <td><hi-link href="#">Remind James about internship op&hellip;</hi-link></td>
+                            <td>Whitten, Jack</td>
+                            <td>woodley84@eab.com</td>
+                            <td>05/22/2026</td>
+                            <td>Open</td>
+                            <td>Medium</td>
+                          </tr>
+                        </tbody>
+                    </table>
+                  </div>
+                  <p class="clr-gray_80-txt text-sz-s mt-4">1-2 of 2</p>
+                </section>
+              </hi-case>
+            </hi-switch>
+          </hi-case>
+        </hi-switch>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- RIGHT SIDEBAR: client-side switch, matches main-view -->
+      <!-- ============================================================ -->
+      <section x-area="region" x-region="right" class="pl-8 pr-8 pb-8">
+        <hi-switch id="sidebar-view" value="staff-home">
+          <hi-case id="sidebar-staff-home" value="staff-home">
+            <section x-area="stack">
+              <hi-tile allow-toolbar aesthetic="outline">
+                <h5 slot="title">Profile Picture</h5>
+                <hi-image
+                  src="assets/jack-whitten-profile.png"
+                  alt="Jack Whitmore"
+                  class="profile-header-photo"
+                  width="100%"
+                ></hi-image>
+              </hi-tile>
+
+              <hi-tile allow-toolbar aesthetic="outline">
+                <h5 slot="title">Actions</h5>
+                <p class="mb-4">I want to...</p>
+                <p class="mb-2"><hi-link href="#">Issue an Alert</hi-link></p>
+                <p class="mb-2"><hi-link href="#">Create a New Student</hi-link></p>
+                <p><hi-link href="#">Upload Profile Picture</hi-link></p>
+              </hi-tile>
+
+              <hi-tile allow-toolbar aesthetic="outline">
+                <h5 slot="title">Quick Links</h5>
+                <p class="mb-4">Take me to...</p>
+                <p class="mb-2"><hi-link href="#">Schedule an Appointment</hi-link></p>
+                <p class="mb-2"><hi-link href="#">Create an Event</hi-link></p>
+                <p class="mb-2"><hi-link href="#">Record Class Attendance</hi-link></p>
+                <p class="mb-2"><hi-link href="#">School Information</hi-link></p>
+                <p class="mb-2"><hi-link href="#">Download Center for Reports</hi-link></p>
+                <p class="mb-4">Campaigns&hellip;</p>
+                <p class="mb-2"><hi-link href="#">Appointment Campaigns</hi-link></p>
+                <p><hi-link href="#">Travel Letters</hi-link></p>
+              </hi-tile>
+            </section>
+          </hi-case>
+
+          <hi-case id="sidebar-james-wyatt" value="james-wyatt" hidden>
+            <section x-area="stack">
+              <hi-tile allow-toolbar aesthetic="outline">
+                <h5 slot="title">Student Image</h5>
+                <hi-image
+                  src="assets/james-wyatt-profile.png"
+                  alt="James Wyatt"
+                  class="profile-header-photo"
+                  width="100%"
+                ></hi-image>
+              </hi-tile>
+
+              <hi-tile allow-toolbar aesthetic="outline">
+                <h5 slot="title">Options</h5>
+                <p class="mb-4">I want to...</p>
+                <p class="mb-2"><hi-link href="#">Message Student</hi-link></p>
+                <p class="mb-2"><hi-link href="#">Add a Note on this Student</hi-link></p>
+                <p class="mb-2"><hi-link href="#">Add a Journey to this Student</hi-link></p>
+                <p class="mb-2"><hi-link href="#">Add a To-Do to this Student</hi-link></p>
+                <p class="mb-2"><hi-link href="#">Report on Appointment</hi-link></p>
+                <p class="mb-2"><hi-link href="#">Create Request for Appointment</hi-link></p>
+                <p class="mb-2"><hi-link href="#">Schedule an Appointment</hi-link></p>
+                <p class="mb-2"><hi-link href="#">Add to Student List</hi-link></p>
+                <p class="mb-2"><hi-link href="#">Issue an Alert</hi-link></p>
+                <p class="mb-2"><hi-link href="#">Edit User Settings</hi-link></p>
+                <p class="mb-2"><hi-link href="#">Upload Profile Picture</hi-link></p>
+                <p><hi-link href="#">Impersonate User</hi-link></p>
+              </hi-tile>
+
+              <hi-tile allow-toolbar aesthetic="outline">
+                <h5 slot="title">Current Alerts</h5>
+                <p class="mb-2"><hi-link href="#">14 Open Cases</hi-link></p>
+                <p><hi-link href="#">12 Alerts</hi-link></p>
+              </hi-tile>
+
+              <hi-tile allow-toolbar aesthetic="outline">
+                <h5 slot="title">Active Appt. Campaigns</h5>
+                <p class="clr-gray_80-txt text-sz-s mb-2">Sorted by most recent</p>
+                <p><hi-link href="#">Dalhousie Study Coach Appointments</hi-link> 06/29/2026 - 07/31/2026</p>
+              </hi-tile>
+
+              <hi-tile allow-toolbar aesthetic="outline">
+                <h5 slot="title">Links</h5>
+                <p class="mb-2"><hi-link href="#">Student Profile</hi-link></p>
+                <p class="mb-2"><hi-link href="#">Degree Audit</hi-link></p>
+                <p><hi-link href="#">See How Mercy College Fulfills its Access Mission</hi-link></p>
+              </hi-tile>
+
+              <hi-tile allow-toolbar aesthetic="outline">
+                <h5 slot="title">Student Info</h5>
+                <p class="mb-2">Student ID: 90634817</p>
+                <p class="mb-2">Age: 21</p>
+                <p class="mb-2">DOB: 10/04/2004</p>
+                <p class="mb-2">Address:<br />50486 John Point Suite 293<br />OXFORD MILLS, IA 52323</p>
+                <p class="mb-2">Email: <hi-link href="mailto:woodley84@eab.com">woodley84@eab.com</hi-link></p>
+                <p class="mb-2">Home: <hi-link href="tel:5554216753">5554216753</hi-link></p>
+                <p>Cell: <hi-link href="tel:5556902134">5556902134</hi-link></p>
+              </hi-tile>
+
+              <hi-tile allow-toolbar aesthetic="outline">
+                <h5 slot="title">Your Success Team</h5>
+                <div l-kind="hort" l-width-fixed l-align="center" class="mb-3">
+                  <hi-image src="https://fastly.picsum.photos/id/338/80/80.jpg" alt="Beth Allen" width="32" height="32" class="mr-3" style="border-radius: 50%;"></hi-image>
+                  <div>
+                    <p>Allen, Beth</p>
+                    <p class="clr-gray_80-txt text-sz-s">Advisor</p>
+                  </div>
+                </div>
+                <div l-kind="hort" l-width-fixed l-align="center" class="mb-3">
+                  <hi-image src="https://fastly.picsum.photos/id/1027/80/80.jpg" alt="Annette Brock" width="32" height="32" class="mr-3" style="border-radius: 50%;"></hi-image>
+                  <div>
+                    <p>Brock, Annette</p>
+                    <p class="clr-gray_80-txt text-sz-s">Advisor</p>
+                  </div>
+                </div>
+                <div l-kind="hort" l-width-fixed l-align="center" class="mb-3">
+                  <hi-image src="https://fastly.picsum.photos/id/1005/80/80.jpg" alt="Joseph Gonzalez" width="32" height="32" class="mr-3" style="border-radius: 50%;"></hi-image>
+                  <div>
+                    <p>Gonzalez, Joseph</p>
+                    <p class="clr-gray_80-txt text-sz-s">Advisor</p>
+                  </div>
+                </div>
+                <div l-kind="hort" l-width-fixed l-align="center" class="mb-3">
+                  <hi-image src="https://fastly.picsum.photos/id/1012/80/80.jpg" alt="Lee White" width="32" height="32" class="mr-3" style="border-radius: 50%;"></hi-image>
+                  <div>
+                    <p>White, Lee</p>
+                    <p class="clr-gray_80-txt text-sz-s">Advisor</p>
+                  </div>
+                </div>
+                <div l-kind="hort" l-width-fixed l-align="center" class="mb-3">
+                  <hi-image src="assets/jack-whitten-profile.png" alt="Jack Whitmore" width="32" height="32" class="mr-3" style="border-radius: 50%;"></hi-image>
+                  <div>
+                    <p>Whitmore, Jack</p>
+                    <p class="clr-gray_80-txt text-sz-s">Advisor</p>
+                  </div>
+                </div>
+                <div l-kind="hort" l-width-fixed l-align="center">
+                  <hi-image src="assets/jack-whitten-profile.png" alt="Jack Whitten" width="32" height="32" class="mr-3" style="border-radius: 50%;"></hi-image>
+                  <div>
+                    <p>Whitten, Jack</p>
+                    <p class="clr-gray_80-txt text-sz-s">Advisor</p>
+                  </div>
+                </div>
+              </hi-tile>
+            </section>
+          </hi-case>
+        </hi-switch>
+      </section>
+    </main>
+
+    <yi-view-footer>
+      <p slot="description">© 2026 EAB. All Rights Reserved. Release Version: 26.13.3</p>
+      <div slot="navigation">
+        <hi-link href="#">Privacy Policy</hi-link>
+        <hi-link href="#">Legal Disclaimer</hi-link>
+        <hi-link href="#">Terms of Use</hi-link>
+        <hi-link href="#">Download Acrobat Reader</hi-link>
+      </div>
+    </yi-view-footer>
+
+    <script type="module">
+      const mainView = document.getElementById("main-view");
+      const sidebarView = document.getElementById("sidebar-view");
+      const journeysView = document.getElementById("journeys-view");
+
+      function showCase(switchEl, targetValue) {
+        if (!switchEl) return;
+        switchEl.querySelectorAll("hi-case").forEach((c) => {
+          if (c.getAttribute("value") === targetValue) {
+            c.removeAttribute("hidden");
+          } else {
+            // Only hide direct children of this switch, not nested switches
+            if (c.parentElement === switchEl) c.setAttribute("hidden", "");
+          }
+        });
+        switchEl.setAttribute("value", targetValue);
+      }
+
+      function goToJamesWyatt() {
+        showCase(mainView, "james-wyatt");
+        showCase(sidebarView, "james-wyatt");
+      }
+
+      function goToStaffHome() {
+        showCase(mainView, "staff-home");
+        showCase(sidebarView, "staff-home");
+      }
+
+      document.querySelectorAll(".goto-wyatt-link").forEach((el) => {
+        el.addEventListener("click", (e) => {
+          e.preventDefault();
+          goToJamesWyatt();
+        });
+      });
+
+      const logoHomeLink = document.getElementById("logo-home-link");
+      if (logoHomeLink) {
+        logoHomeLink.addEventListener("click", (e) => {
+          e.preventDefault();
+          goToStaffHome();
+        });
+      }
+
+      const journeyDetailLink = document.getElementById("journey-detail-link");
+      const journeyBackLink = document.getElementById("journey-back-link");
+      if (journeyDetailLink) {
+        journeyDetailLink.addEventListener("click", (e) => {
+          e.preventDefault();
+          showCase(journeysView, "journeys-detail");
+        });
+      }
+      if (journeyBackLink) {
+        journeyBackLink.addEventListener("click", (e) => {
+          e.preventDefault();
+          showCase(journeysView, "journeys-list");
+        });
+      }
+    </script>
+    <noscript>
+      <h1>Application Failure</h1>
+      <p>The application cannot offer an experience because it relies on Javascript.</p>
+      <p>Please enable Javascript to use this demo.</p>
+    </noscript>
+  </body>
+</html>

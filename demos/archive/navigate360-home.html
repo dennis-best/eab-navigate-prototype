@@ -1,0 +1,1517 @@
+<!doctype html>
+<html lang="en" hip-font-size-dynamic>
+  <head>
+    <title>Staff Home | Navigate360</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="EAB Global Inc." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="Navigate360 Staff Home prototype" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, user-scalable=no, width=device-width, viewport-fit=cover"
+    />
+
+    <script
+      src="https://cdn.dev.eab.com/hif/latest/index.js"
+      auto-start
+      release="prod"
+      system-load-core
+      system-load-baseline
+      system-load-ds
+      system-load-os
+      library-stop-dragula
+      library-stop-moment
+    ></script>
+    <script>
+      $ip.flags.load([
+        ["/eip/hi-form/default-to-rest", true],
+        ["/pip/pi-ip/insert-css-after-script", true],
+        ["/eip/hi-http/enable-xss-purification-response", false],
+      ]);
+    </script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com/modules/heatmap.js"></script>
+    <style>
+      .top-nav__center-controls {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75em;
+        flex-wrap: nowrap;
+      }
+
+      .top-nav__groups {
+        flex: 0 0 auto;
+        --hi-dropdown--max-width: calc(4.5 * var(--hi-px-32));
+        --hi-dropdown--min-width: calc(3.25 * var(--hi-px-32));
+      }
+
+      .top-nav__quick-search {
+        flex: 1 1 auto;
+        min-width: 0;
+        --hi-search--min-width: calc(6 * var(--hi-px-32));
+      }
+
+      .dashboard-toolbar,
+      .dashboard-kpi-row,
+      .dashboard-chart-row {
+        gap: 1rem;
+      }
+
+      .dashboard-kpi-tile,
+      .dashboard-chart-tile {
+        width: 22rem;
+        flex: 1 1 22rem;
+        margin-right: 0 !important;
+        margin-bottom: 0 !important;
+      }
+
+      .dashboard-chart-tile--full {
+        width: 100%;
+        flex: 1 1 100%;
+      }
+
+      .dashboard-kpi-value {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin: 0.25em 0;
+      }
+
+      .dashboard-chart {
+        width: 100%;
+        min-height: 240px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow: visible;
+      }
+
+      .dashboard-chart svg {
+        display: block;
+        max-width: 100%;
+      }
+
+      .dashboard-chart--wide {
+        min-height: 300px;
+      }
+    </style>
+  </head>
+  <body x-layout-system="blueprint" x-hosting="owner">
+    <main id="app" x-area="screen" x-hosting="screen" x-layout-screen="main_right" region-width="1/4">
+      <hi-navigation-primary x-region="navigation-primary">
+        WOODLEY COLLEGE
+      </hi-navigation-primary>
+
+      <hi-navigation-secondary
+        x-region="navigation-secondary"
+        accessibility-tools
+        aria-label="Main Menu"
+        account-actions='[
+          { "href": "#/help-center", "title": "Help Center", "icon": "info" },
+          { "href": "#/user-profile", "title": "User Profile", "icon": "user" },
+          { "href": "#/logout", "title": "Logout", "icon": "logout" }
+        ]'
+        account-avatar='{
+          "initials": "SA",
+          "accountAvatarURI": "https://fastly.picsum.photos/id/64/400/400.jpg"
+        }'
+      >
+        <div slot="logo" class="logo_container">
+          <hi-image
+            src="https://bucks-qa-grey-mt.gradesfirst.com/images/eab_navigate360_logo.svg"
+            alt="EAB Navigate360 Logo"
+            width="152"
+            height="27"
+          ></hi-image>
+          <span class="application_title title_divider">|</span>
+          <span class="application_title title_text">Student Success</span>
+        </div>
+        <div class="top-nav__left-controls" slot="left-controls">
+          <hi-button aesthetic="icon" size="large" layout="icon">
+            <hi-icon kind="advising" size="large"></hi-icon>
+          </hi-button>
+          <hi-button aesthetic="icon" size="large" layout="icon">
+            <hi-icon kind="envelope" size="large"></hi-icon>
+          </hi-button>
+          <hi-button aesthetic="icon" size="large" layout="icon">
+            <hi-icon kind="minimize" size="large"></hi-icon>
+          </hi-button>
+        </div>
+        <div class="top-nav__center-controls" slot="center-controls">
+          <hi-dropdown
+            id="top-nav__groups"
+            class="top-nav__groups"
+            kind="value"
+            hug-width
+            cap-height=""
+            alignment="left"
+          >
+            <hi-select id="top-nav__groups-select" aesthetic="dropdown" selected-index="0">
+              <hi-option selected value="school-users">School Users</hi-option>
+            </hi-select>
+          </hi-dropdown>
+          <hi-search
+            id="top-nav__quick-search"
+            class="top-nav__quick-search"
+            placeholder="Search for student, staff, or professor"
+            hidden-result-message
+            hidden-status-message
+            input='[
+              {"title":"Adam, Michael","value":"87650214"},
+              {"title":"Aguila, Peggy","value":"14538206"}
+            ]'
+          ></hi-search>
+        </div>
+        <div slot="right-controls" class="right-controls-navigation">
+          <hi-button aesthetic="icon" size="large" layout="icon">
+            <hi-icon kind="question_circle" size="large"></hi-icon>
+          </hi-button>
+          <hi-button aesthetic="icon" size="large" layout="icon">
+            <hi-icon kind="advising" size="large"></hi-icon>
+          </hi-button>
+          <hi-button aesthetic="icon" size="large" layout="icon">
+            <hi-icon kind="app_switcher" size="large"></hi-icon>
+          </hi-button>
+        </div>
+      </hi-navigation-secondary>
+
+      <hi-navigation-tertiary
+        id="staff-home-tertiary-nav"
+        x-region="navigation-tertiary"
+        active-mode="manual"
+        navigation-actions='[
+          { "uri": "#/home", "title": "Home", "icon": "home", "icon_theme": "blue", "active": true },
+          { "uri": "#/dashboard", "title": "Dashboard", "icon": "dashboard", "icon_theme": "blue" },
+          { "uri": "#/messages", "title": "Messages", "icon": "envelope", "icon_theme": "blue" },
+          { "uri": "#/calendar", "title": "Calendar", "icon": "calendar", "icon_theme": "blue" },
+          { "uri": "#/documents", "title": "Documents", "icon": "description", "icon_theme": "purple" },
+          { "uri": "#/alerts", "title": "Alerts", "icon": "warning", "icon_theme": "magenta" },
+          { "uri": "#/announcements", "title": "Announcements", "icon": "campaign", "icon_theme": "teal" },
+          { "uri": "#/pinned", "title": "Pinned", "icon": "pin", "icon_theme": "blue" },
+          { "uri": "#/search", "title": "Search", "icon": "search", "icon_theme": "blue" },
+          { "uri": "#/lists", "title": "Lists", "icon": "list", "icon_theme": "green" },
+          { "uri": "#/reports", "title": "Reports", "icon": "bar_chart", "icon_theme": "purple" },
+          { "uri": "#/settings", "title": "Settings", "icon": "gear", "icon_theme": "blue" }
+        ]'
+      ></hi-navigation-tertiary>
+
+      <section x-area="region" x-region="main" class="pl-8 pr-8 pb-8">
+        <div id="view-home">
+          <yi-view-header>
+            <hi-title slot="title" heading="Staff Home" level="1"></hi-title>
+            <hi-icon slot="status" kind="school" size="large" theme="blue"></hi-icon>
+          </yi-view-header>
+
+          <hi-tab-group id="staff-home-tabs" class="mb-8">
+            <hi-tab for="students" selected>Students</hi-tab>
+            <hi-tab for="appointments">Appointments</hi-tab>
+            <hi-tab for="availability">My Availability</hi-tab>
+            <hi-tab for="queues">Appointment Queues</hi-tab>
+            <hi-tab for="requests">Appointment Requests</hi-tab>
+          </hi-tab-group>
+
+          <hi-switch id="staff-home-panels" value="students">
+            <!-- Students -->
+            <hi-case id="students" value="students">
+              <section x-area="zone">
+                <h2 class="mb-6">Assigned Students</h2>
+
+                <hi-form class="mb-6">
+                  <div l-kind="hort" l-width-fixed l-align="end">
+                    <hi-input-group>
+                      <hi-label for="filter-list-type">List Type</hi-label>
+                      <hi-dropdown kind="value" id="filter-list-type">
+                        <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
+                          <hi-option selected>Assigned Students</hi-option>
+                          <hi-option>Upcoming Graduates</hi-option>
+                          <hi-option>Navigate for Students Users</hi-option>
+                          <hi-option>Academic Probation</hi-option>
+                          <hi-option>Need Advisor</hi-option>
+                        </hi-select>
+                      </hi-dropdown>
+                    </hi-input-group>
+                    <hi-input-group class="ml-4">
+                      <hi-label for="filter-term">Term</hi-label>
+                      <hi-dropdown kind="value" id="filter-term">
+                        <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
+                          <hi-option selected>Spring 2026 (Default Term)</hi-option>
+                          <hi-option>All Terms</hi-option>
+                          <hi-option>Spring 2031</hi-option>
+                          <hi-option>Fall 2030</hi-option>
+                          <hi-option>Spring 2030</hi-option>
+                        </hi-select>
+                      </hi-dropdown>
+                    </hi-input-group>
+                    <hi-input-group class="ml-4">
+                      <hi-label for="filter-relationship">Relationship Type</hi-label>
+                      <hi-dropdown kind="value" id="filter-relationship">
+                        <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
+                          <hi-option selected>All Relationship Types</hi-option>
+                          <hi-option>Advisor</hi-option>
+                        </hi-select>
+                      </hi-dropdown>
+                    </hi-input-group>
+                  </div>
+                </hi-form>
+
+                <div class="mb-6" scroll-x="auto">
+                  <hi-button aesthetic="link" id="students-actions">Actions</hi-button>
+                  <hi-menu id="students-actions-menu" for="students-actions">
+                    <hi-pick value="alert"><span>Issue an Alert</span></hi-pick>
+                    <hi-pick value="create"><span>Create a New Student</span></hi-pick>
+                  </hi-menu>
+                  <hi-binding source="students-actions" sink="students-actions-menu" field="activate"></hi-binding>
+
+                  <table kind="compact" class="mt-6">
+                    <thead>
+                      <tr>
+                        <th><hi-checkbox aria-label="Select all students"></hi-checkbox></th>
+                        <th class="text-uppercase">Name <hi-icon kind="sort" size="small"></hi-icon></th>
+                        <th class="text-uppercase">ID <hi-icon kind="sort" size="small"></hi-icon></th>
+                        <th class="text-uppercase">Student List <hi-icon kind="sort" size="small"></hi-icon></th>
+                        <th class="text-uppercase">Cumulative GPA <hi-icon kind="sort" size="small"></hi-icon></th>
+                        <th class="text-uppercase">Predicted Concern <hi-icon kind="sort" size="small"></hi-icon></th>
+                        <th class="text-uppercase">Category</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><hi-checkbox aria-label="Select Adam, Michael"></hi-checkbox></td>
+                        <td><hi-link href="#">Adam, Michael</hi-link></td>
+                        <td>87650214</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          Completed probation requirement, Financial Aid, First generation student,
+                          Full-Time, Pre-enrollment risk, Study group member
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><hi-checkbox aria-label="Select Aguila, Peggy"></hi-checkbox></td>
+                        <td><hi-link href="#">Aguila, Peggy</hi-link></td>
+                        <td>14538206</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          Completed probation requirement, Financial Aid, First generation student,
+                          Full-Time, Pre-enrollment risk, Study group member
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mt-6">
+                  <hi-pagination page-index="0" page-size="80" max="401" range-size="5"></hi-pagination>
+                  <p class="clr-gray_80-txt">401 total results</p>
+                </div>
+              </section>
+            </hi-case>
+
+            <!-- Appointments -->
+            <hi-case id="appointments" value="appointments">
+              <section x-area="zone">
+                <h2 class="mb-6">Upcoming Appointments</h2>
+
+                <hi-form class="mb-6">
+                  <hi-input-group>
+                    <hi-label for="upcoming-care-unit">Care Unit</hi-label>
+                    <hi-dropdown kind="value" id="upcoming-care-unit">
+                      <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
+                        <hi-option selected>All Care Units</hi-option>
+                        <hi-option>Advising</hi-option>
+                        <hi-option>Career Services</hi-option>
+                        <hi-option>Financial Aid</hi-option>
+                        <hi-option>First Year Experience</hi-option>
+                        <hi-option>Residence Life</hi-option>
+                      </hi-select>
+                    </hi-dropdown>
+                  </hi-input-group>
+                </hi-form>
+
+                <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
+                  <div>
+                    <hi-button aesthetic="link" id="upcoming-actions">Actions</hi-button>
+                    <hi-menu id="upcoming-actions-menu" for="upcoming-actions">
+                      <hi-pick value="cancel"><span>Cancel Appointment</span></hi-pick>
+                    </hi-menu>
+                    <hi-binding source="upcoming-actions" sink="upcoming-actions-menu" field="activate"></hi-binding>
+                  </div>
+                  <hi-checkbox id="upcoming-show-cancelled">Show Cancelled</hi-checkbox>
+                </div>
+
+                <div scroll-x="auto" class="mb-6">
+                  <table kind="compact">
+                    <thead>
+                      <tr>
+                        <th><hi-checkbox aria-label="Select all upcoming appointments"></hi-checkbox></th>
+                        <th class="text-uppercase">Date/Time <hi-icon kind="sort" size="small"></hi-icon></th>
+                        <th class="text-uppercase">Attendee <hi-icon kind="sort" size="small"></hi-icon></th>
+                        <th class="text-uppercase">Service</th>
+                        <th class="text-uppercase">Comment</th>
+                        <th class="text-uppercase">Meeting Type</th>
+                        <th class="text-uppercase">Report Filed?</th>
+                        <th class="text-uppercase">Details</th>
+                        <th class="text-uppercase">Pre Appt Questions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="9" class="text-center clr-gray_80-txt">
+                          This user has no upcoming appointments.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <h2 class="mb-6 mt-8">Reporting</h2>
+
+                <hi-tab-group id="reporting-tabs" class="mb-8">
+                  <hi-tab for="recent-appointments" selected size="small">Recent Appointments</hi-tab>
+                  <hi-tab for="recent-reports" size="small">Recent Reports You Created</hi-tab>
+                </hi-tab-group>
+
+                <hi-switch id="reporting-panels" value="recent-appointments">
+                  <hi-case id="recent-appointments" value="recent-appointments">
+                    <hi-form class="mb-6">
+                      <hi-input-group>
+                        <hi-label for="reporting-care-unit">Care Unit</hi-label>
+                        <hi-dropdown kind="value" id="reporting-care-unit">
+                          <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
+                            <hi-option selected>All Care Units</hi-option>
+                            <hi-option>Advising</hi-option>
+                            <hi-option>Career Services</hi-option>
+                            <hi-option>Financial Aid</hi-option>
+                          </hi-select>
+                        </hi-dropdown>
+                      </hi-input-group>
+                    </hi-form>
+
+                    <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
+                      <div>
+                        <hi-button aesthetic="link" id="reporting-actions">Actions</hi-button>
+                        <hi-menu id="reporting-actions-menu" for="reporting-actions">
+                          <hi-pick value="export"><span>Export</span></hi-pick>
+                        </hi-menu>
+                        <hi-binding source="reporting-actions" sink="reporting-actions-menu" field="activate"></hi-binding>
+                      </div>
+                      <hi-checkbox id="reporting-show-cancelled">Show Cancelled</hi-checkbox>
+                    </div>
+
+                    <div scroll-x="auto">
+                      <table kind="compact">
+                        <thead>
+                          <tr>
+                            <th><hi-checkbox aria-label="Select all recent appointments"></hi-checkbox></th>
+                            <th></th>
+                            <th class="text-uppercase">Date <hi-icon kind="sort" size="small"></hi-icon></th>
+                            <th class="text-uppercase">Service</th>
+                            <th class="text-uppercase">Course</th>
+                            <th class="text-uppercase">Comment</th>
+                            <th class="text-uppercase">Attendee <hi-icon kind="sort" size="small"></hi-icon></th>
+                            <th class="text-uppercase">Report Filed? <hi-icon kind="sort" size="small"></hi-icon></th>
+                            <th class="text-uppercase">Details</th>
+                            <th class="text-uppercase">Pre Appt Questions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><hi-checkbox aria-label="Select appointment row 1"></hi-checkbox></td>
+                            <td>1/1</td>
+                            <td>06/19/2026 11:15am - 12:00pm ET (45m)</td>
+                            <td>Academic Planning</td>
+                            <td>N/A</td>
+                            <td></td>
+                            <td><hi-link href="#">Aguila, Peggy</hi-link></td>
+                            <td>Not Yet.</td>
+                            <td><hi-link href="#">Details</hi-link></td>
+                            <td></td>
+                          </tr>
+                          <tr>
+                            <td><hi-checkbox aria-label="Select appointment row 2"></hi-checkbox></td>
+                            <td>1/1</td>
+                            <td>06/18/2026 10:00am - 10:30am ET (30m)</td>
+                            <td>Course-based Tutoring</td>
+                            <td>8.01 Physics I</td>
+                            <td></td>
+                            <td><hi-link href="#">Aguila, Peggy</hi-link></td>
+                            <td>Not Yet.</td>
+                            <td><hi-link href="#">Details</hi-link></td>
+                            <td></td>
+                          </tr>
+                          <tr>
+                            <td><hi-checkbox aria-label="Select appointment row 3"></hi-checkbox></td>
+                            <td>1/1</td>
+                            <td>06/17/2026 2:00pm - 2:45pm ET (45m)</td>
+                            <td>Academic Planning</td>
+                            <td>N/A</td>
+                            <td></td>
+                            <td><hi-link href="#">Aguila, Peggy</hi-link></td>
+                            <td><hi-button theme="success" size="small">Report Details</hi-button></td>
+                            <td><hi-link href="#">Details</hi-link></td>
+                            <td></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </hi-case>
+
+                  <hi-case id="recent-reports" value="recent-reports">
+                    <div scroll-x="auto" class="mt-6">
+                      <table kind="compact">
+                        <thead>
+                          <tr>
+                            <th class="text-uppercase">Date</th>
+                            <th class="text-uppercase">Report Name</th>
+                            <th class="text-uppercase">Attendee</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td colspan="3" class="text-center clr-gray_80-txt">
+                              You have not created any reports recently.
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </hi-case>
+                </hi-switch>
+                <hi-binding source="reporting-tabs" sink="reporting-panels"></hi-binding>
+              </section>
+            </hi-case>
+
+            <!-- My Availability -->
+            <hi-case id="availability" value="availability">
+              <section x-area="zone">
+                <h2 class="mb-6">Available Times</h2>
+
+                <div class="mb-6">
+                  <hi-button aesthetic="link" id="availability-actions">Actions</hi-button>
+                  <hi-menu id="availability-actions-menu" for="availability-actions">
+                    <hi-pick value="add"><span>Add Available Time</span></hi-pick>
+                    <hi-pick value="delete"><span>Delete Selected</span></hi-pick>
+                  </hi-menu>
+                  <hi-binding source="availability-actions" sink="availability-actions-menu" field="activate"></hi-binding>
+                </div>
+
+                <div scroll-x="auto" class="mb-6">
+                  <table kind="compact">
+                    <thead>
+                      <tr>
+                        <th><hi-checkbox aria-label="Select all available times"></hi-checkbox></th>
+                        <th class="text-uppercase">Days of Week</th>
+                        <th class="text-uppercase">Times</th>
+                        <th class="text-uppercase">Dates</th>
+                        <th class="text-uppercase">Location</th>
+                        <th class="text-uppercase">Purpose</th>
+                        <th class="text-uppercase">Care Unit</th>
+                        <th class="text-uppercase">Personal Link</th>
+                        <th class="text-uppercase">Meeting Type</th>
+                        <th class="text-uppercase">Edit</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><hi-checkbox aria-label="Select availability row 1"></hi-checkbox></td>
+                        <td>Mon, Tue, Wed, Thu, Fri</td>
+                        <td>9:00am - 4:30pm ET</td>
+                        <td>01/01/2026 - 05/15/2026</td>
+                        <td>Hornet Tutoring Center</td>
+                        <td>Advising</td>
+                        <td>Advising</td>
+                        <td>Yes</td>
+                        <td>In Person</td>
+                        <td><hi-link href="#">Edit</hi-link></td>
+                      </tr>
+                      <tr>
+                        <td><hi-checkbox aria-label="Select availability row 2"></hi-checkbox></td>
+                        <td>Mon, Wed, Fri</td>
+                        <td>10:00am - 2:00pm ET</td>
+                        <td>01/01/2026 - 05/15/2026</td>
+                        <td>Bright Success Center</td>
+                        <td>Drop-In</td>
+                        <td>Advising</td>
+                        <td>Yes</td>
+                        <td>In Person</td>
+                        <td><hi-link href="#">Edit</hi-link></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <h2 class="mb-6 mt-8">Personal Availability Link</h2>
+                <div class="mb-6">
+                  <div l-kind="hort" l-width-fixed l-align="center" class="mb-4">
+                    <span class="mr-4">Link for Students:</span>
+                    <hi-link href="https://woodley84.campus-demo1.eab.com/pal/g2nassp7l3">
+                      https://woodley84.campus-demo1.eab.com/pal/g2nassp7l3
+                    </hi-link>
+                    <hi-button aesthetic="secondary" class="ml-4">Copy</hi-button>
+                  </div>
+                  <div l-kind="hort" l-width-fixed l-align="center">
+                    <span class="mr-4">Link for Prospects:</span>
+                    <hi-link href="https://woodley84.campus-demo1.eab.com/prospect_pal/g2nassp7l3">
+                      https://woodley84.campus-demo1.eab.com/prospect_pal/g2nassp7l3
+                    </hi-link>
+                    <hi-button aesthetic="secondary" class="ml-4">Copy</hi-button>
+                  </div>
+                </div>
+
+                <h2 class="mb-6 mt-8">Scheduling Target Hours</h2>
+                <hi-form>
+                  <hi-input-group class="mb-6">
+                    <hi-label for="target-hours">Target Hours Per Week</hi-label>
+                    <hi-input id="target-hours" type="number" value="0" required></hi-input>
+                  </hi-input-group>
+                  <hi-checkbox id="block-scheduling" class="mb-6">
+                    Block scheduling for the week when target is hit
+                  </hi-checkbox>
+                  <hi-button aesthetic="primary">Update Target Hours</hi-button>
+                </hi-form>
+              </section>
+            </hi-case>
+
+            <!-- Appointment Queues -->
+            <hi-case id="queues" value="queues">
+              <section x-area="zone">
+                <div l-kind="hort" l-width-fixed l-align="center" class="mb-6">
+                  <span class="mr-4"><strong>Notification Methods:</strong></span>
+                  <hi-checkbox id="notify-ding" checked>Ding</hi-checkbox>
+                  <hi-radio-group name="notify-method" class="ml-4">
+                    <hi-radio id="notify-email" value="email"></hi-radio>
+                    <hi-label for="notify-email" class="mr-4">E-mail</hi-label>
+                    <hi-radio id="notify-text" value="text"></hi-radio>
+                    <hi-label for="notify-text">Text Message</hi-label>
+                  </hi-radio-group>
+                </div>
+
+                <h2 class="mb-6">Students Checked In For Appointments</h2>
+                <div class="mb-6">
+                  <hi-button aesthetic="link" id="queue-checked-in-actions">Actions</hi-button>
+                  <hi-menu id="queue-checked-in-actions-menu" for="queue-checked-in-actions">
+                    <hi-pick value="start"><span>Start Appointment</span></hi-pick>
+                    <hi-pick value="message"><span>Send Message</span></hi-pick>
+                    <hi-pick value="checkout"><span>Check Out</span></hi-pick>
+                    <hi-pick value="remove"><span>Remove</span></hi-pick>
+                  </hi-menu>
+                  <hi-binding source="queue-checked-in-actions" sink="queue-checked-in-actions-menu" field="activate"></hi-binding>
+                </div>
+                <div scroll-x="auto" class="mb-6">
+                  <table kind="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-uppercase">Select</th>
+                        <th class="text-uppercase">Name</th>
+                        <th class="text-uppercase">Service</th>
+                        <th class="text-uppercase">Appointment Time</th>
+                        <th class="text-uppercase">Comment</th>
+                        <th class="text-uppercase">Meeting Type</th>
+                        <th class="text-uppercase">URL/Phone Number</th>
+                        <th class="text-uppercase">Checked In At</th>
+                        <th class="text-uppercase">Wait Duration</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="9" class="text-center clr-gray_80-txt">
+                          There are not any student appointments checked in
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <h2 class="mb-6 mt-8">Students Checked In For Drop-Ins With Me</h2>
+                <div class="mb-6">
+                  <hi-button aesthetic="link" id="queue-drop-ins-actions">Actions</hi-button>
+                  <hi-menu id="queue-drop-ins-actions-menu" for="queue-drop-ins-actions">
+                    <hi-pick value="start"><span>Start Appointment</span></hi-pick>
+                    <hi-pick value="not-attended"><span>Not Attended To</span></hi-pick>
+                    <hi-pick value="message"><span>Send Message</span></hi-pick>
+                    <hi-pick value="checkout"><span>Check Out</span></hi-pick>
+                    <hi-pick value="remove"><span>Remove</span></hi-pick>
+                  </hi-menu>
+                  <hi-binding source="queue-drop-ins-actions" sink="queue-drop-ins-actions-menu" field="activate"></hi-binding>
+                </div>
+                <div scroll-x="auto" class="mb-6">
+                  <table kind="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-uppercase">Select</th>
+                        <th class="text-uppercase">Name</th>
+                        <th class="text-uppercase">Service</th>
+                        <th class="text-uppercase">Comment</th>
+                        <th class="text-uppercase">First Available</th>
+                        <th class="text-uppercase">Prioritized At</th>
+                        <th class="text-uppercase">Checked In At</th>
+                        <th class="text-uppercase">Wait Duration</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="8" class="text-center clr-gray_80-txt">
+                          You do not have any students currently waiting
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <h2 class="mb-6 mt-8">In-Progress Visits</h2>
+                <div class="mb-6">
+                  <hi-button aesthetic="link" id="queue-in-progress-actions">Actions</hi-button>
+                  <hi-menu id="queue-in-progress-actions-menu" for="queue-in-progress-actions">
+                    <hi-pick value="start"><span>Start Appointment</span></hi-pick>
+                    <hi-pick value="not-attended"><span>Not Attended To</span></hi-pick>
+                    <hi-pick value="move"><span>Move to First Available</span></hi-pick>
+                    <hi-pick value="message"><span>Send Message</span></hi-pick>
+                    <hi-pick value="checkout"><span>Checkout</span></hi-pick>
+                    <hi-pick value="remove"><span>Remove</span></hi-pick>
+                  </hi-menu>
+                  <hi-binding source="queue-in-progress-actions" sink="queue-in-progress-actions-menu" field="activate"></hi-binding>
+                </div>
+                <div scroll-x="auto" class="mb-6">
+                  <table kind="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-uppercase">Select</th>
+                        <th class="text-uppercase">Attendee Name: Student ID</th>
+                        <th class="text-uppercase">Start Time</th>
+                        <th class="text-uppercase">Appt Time</th>
+                        <th class="text-uppercase">Check In Time</th>
+                        <th class="text-uppercase">Service</th>
+                        <th class="text-uppercase">Course</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="7" class="text-center clr-gray_80-txt">
+                          You do not have any students currently waiting
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <h2 class="mb-6 mt-8">Students In Other Staff Queues</h2>
+                <div class="mb-6">
+                  <hi-button aesthetic="link" id="queue-other-staff-actions">Actions</hi-button>
+                  <hi-menu id="queue-other-staff-actions-menu" for="queue-other-staff-actions">
+                    <hi-pick value="start"><span>Start Appointment</span></hi-pick>
+                    <hi-pick value="not-attended"><span>Not Attended To</span></hi-pick>
+                    <hi-pick value="message"><span>Send Message</span></hi-pick>
+                    <hi-pick value="remove"><span>Remove</span></hi-pick>
+                  </hi-menu>
+                  <hi-binding source="queue-other-staff-actions" sink="queue-other-staff-actions-menu" field="activate"></hi-binding>
+                </div>
+                <div scroll-x="auto" class="mb-6">
+                  <table kind="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-uppercase">Select</th>
+                        <th class="text-uppercase">Name</th>
+                        <th class="text-uppercase">Staff</th>
+                        <th class="text-uppercase">Service</th>
+                        <th class="text-uppercase">Comment</th>
+                        <th class="text-uppercase">Prioritized At</th>
+                        <th class="text-uppercase">Checked In At</th>
+                        <th class="text-uppercase">Wait Duration</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="8" class="text-center clr-gray_80-txt">
+                          There are currently no students waiting on other staff
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <h2 class="mb-6 mt-8">Students Checked In For Track Time ?</h2>
+                <div class="mb-6">
+                  <hi-button aesthetic="link" id="queue-track-time-actions">Actions</hi-button>
+                  <hi-menu id="queue-track-time-actions-menu" for="queue-track-time-actions">
+                    <hi-pick value="message"><span>Send Message</span></hi-pick>
+                    <hi-pick value="checkout"><span>Check Out</span></hi-pick>
+                  </hi-menu>
+                  <hi-binding source="queue-track-time-actions" sink="queue-track-time-actions-menu" field="activate"></hi-binding>
+                </div>
+                <div scroll-x="auto">
+                  <table kind="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-uppercase">Select</th>
+                        <th class="text-uppercase">Name</th>
+                        <th class="text-uppercase">Service</th>
+                        <th class="text-uppercase">Course</th>
+                        <th class="text-uppercase">Checked In At</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="5" class="text-center clr-gray_80-txt">
+                          There are currently no students checked in without specific staff
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            </hi-case>
+
+            <!-- Appointment Requests -->
+            <hi-case id="requests" value="requests">
+              <section x-area="zone">
+                <h2 class="mb-6">Appointment Requests</h2>
+
+                <hi-form class="mb-6">
+                  <div l-kind="hort" l-width-fixed l-align="end">
+                    <hi-input-group>
+                      <hi-label for="requests-care-unit">Care Unit</hi-label>
+                      <hi-dropdown kind="value" id="requests-care-unit">
+                        <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
+                          <hi-option selected>All Care Units</hi-option>
+                          <hi-option>Admissions Counseling</hi-option>
+                          <hi-option>Advising</hi-option>
+                          <hi-option>Career Services</hi-option>
+                          <hi-option>Financial Aid</hi-option>
+                          <hi-option>First Year Experience</hi-option>
+                          <hi-option>Residence Life</hi-option>
+                          <hi-option>Student Support Services</hi-option>
+                          <hi-option>Transfer Office</hi-option>
+                          <hi-option>Tutoring</hi-option>
+                        </hi-select>
+                      </hi-dropdown>
+                    </hi-input-group>
+                    <hi-input-group class="ml-4">
+                      <hi-label for="requests-location">Sort by location</hi-label>
+                      <hi-dropdown kind="value" id="requests-location">
+                        <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
+                          <hi-option selected>All Locations</hi-option>
+                          <hi-option>Admissions Office</hi-option>
+                          <hi-option>Virtual (Zoom)</hi-option>
+                          <hi-option>Building 204</hi-option>
+                          <hi-option>Hornet Tutoring Center</hi-option>
+                          <hi-option>Bright Success Center</hi-option>
+                          <hi-option>Career Services Center</hi-option>
+                          <hi-option>Financial Aid Center</hi-option>
+                          <hi-option>Kolligian Library 122</hi-option>
+                        </hi-select>
+                      </hi-dropdown>
+                    </hi-input-group>
+                  </div>
+                </hi-form>
+
+                <div class="mb-6">
+                  <hi-button aesthetic="link" id="requests-actions">Actions</hi-button>
+                  <hi-menu id="requests-actions-menu" for="requests-actions">
+                    <hi-pick value="approve"><span>Approve Selected</span></hi-pick>
+                    <hi-pick value="decline"><span>Decline Selected</span></hi-pick>
+                  </hi-menu>
+                  <hi-binding source="requests-actions" sink="requests-actions-menu" field="activate"></hi-binding>
+                </div>
+
+                <div scroll-x="auto">
+                  <table kind="compact">
+                    <thead>
+                      <tr>
+                        <th><hi-checkbox aria-label="Select all appointment requests"></hi-checkbox></th>
+                        <th class="text-uppercase">Date/Time <hi-icon kind="sort" size="small"></hi-icon></th>
+                        <th class="text-uppercase">Student <hi-icon kind="sort" size="small"></hi-icon></th>
+                        <th class="text-uppercase">Service</th>
+                        <th class="text-uppercase">Course</th>
+                        <th class="text-uppercase">Location <hi-icon kind="sort" size="small"></hi-icon></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><hi-checkbox aria-label="Select Wyatt, James"></hi-checkbox></td>
+                        <td>02/09/2026 12:43pm ET</td>
+                        <td><hi-link href="#">Wyatt, James</hi-link></td>
+                        <td>Applying for Financial Aid</td>
+                        <td>N/A</td>
+                        <td>Bright Success Center</td>
+                      </tr>
+                      <tr>
+                        <td><hi-checkbox aria-label="Select Bradley, Ava"></hi-checkbox></td>
+                        <td>02/09/2026 12:40pm ET</td>
+                        <td><hi-link href="#">Bradley, Ava</hi-link></td>
+                        <td>Academic Planning</td>
+                        <td>N/A</td>
+                        <td>Career Services Center</td>
+                      </tr>
+                      <tr>
+                        <td><hi-checkbox aria-label="Select Weiss, Marie"></hi-checkbox></td>
+                        <td>11/01/2024 12:51pm ET</td>
+                        <td><hi-link href="#">Weiss, Marie</hi-link></td>
+                        <td>Career Readiness</td>
+                        <td>N/A</td>
+                        <td>Financial Aid Center</td>
+                      </tr>
+                      <tr>
+                        <td><hi-checkbox aria-label="Select Acevedo, Helen"></hi-checkbox></td>
+                        <td>11/01/2024 12:48pm ET</td>
+                        <td><hi-link href="#">Acevedo, Helen</hi-link></td>
+                        <td>General Advising</td>
+                        <td>N/A</td>
+                        <td>Hornet Tutoring Center</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            </hi-case>
+          </hi-switch>
+          <hi-binding source="staff-home-tabs" sink="staff-home-panels"></hi-binding>
+        </div>
+
+        <div id="view-dashboard" hidden>
+          <yi-view-header>
+            <hi-title slot="title" heading="Partner Prospect Portfolio" level="1"></hi-title>
+            <hi-icon slot="status" kind="dashboard" size="large" theme="blue"></hi-icon>
+          </yi-view-header>
+
+          <p class="clr-gray_80-txt mb-6">
+            A view of the partner prospect portfolio, including engagement stages, institution
+            sizes, and geography.
+          </p>
+
+          <div l-kind="hort" l-width-fixed l-align="center" class="mb-8 dashboard-toolbar">
+            <hi-button aesthetic="primary">
+              <hi-icon kind="add" size="small"></hi-icon>
+              Add tile
+            </hi-button>
+            <hi-button aesthetic="secondary">
+              <hi-icon kind="grid_view" size="small"></hi-icon>
+              Edit layout
+            </hi-button>
+            <hi-button aesthetic="secondary">
+              <hi-icon kind="save" size="small"></hi-icon>
+              Save layout
+            </hi-button>
+          </div>
+
+          <div l-kind="hort" l-wrap class="mb-6 dashboard-kpi-row">
+            <hi-tile allow-toolbar aesthetic="outline" class="mr-6 mb-6 dashboard-kpi-tile">
+              <h5 slot="title">Total opportunity value</h5>
+              <p class="clr-gray_80-txt mb-4">Open partner prospects</p>
+              <p class="dashboard-kpi-value">$1,191.6M</p>
+              <p class="clr-gray_80-txt mb-4">1,224 partner prospects</p>
+              <hi-link href="#">View total opportunity value &gt;</hi-link>
+            </hi-tile>
+
+            <hi-tile allow-toolbar aesthetic="outline" class="mr-6 mb-6 dashboard-kpi-tile">
+              <h5 slot="title">Education sector</h5>
+              <p class="clr-gray_80-txt mb-4">Opportunity value</p>
+              <p class="dashboard-kpi-value">$114.0M</p>
+              <hi-badge aesthetic="dashboard" theme="error" mode="content" label="negative trend: 20%">
+                <hi-icon glyph="arrow_downward" inherit-color></hi-icon>
+                20%
+              </hi-badge>
+              <span class="clr-gray_80-txt ml-4">vs. previous segment</span>
+              <br />
+              <hi-link href="#">View education sector &gt;</hi-link>
+            </hi-tile>
+
+            <hi-tile allow-toolbar aesthetic="outline" class="mr-6 mb-6 dashboard-kpi-tile">
+              <h5 slot="title">In proposal</h5>
+              <p class="clr-gray_80-txt mb-4">Opportunity value</p>
+              <p class="dashboard-kpi-value">$194.3M</p>
+              <hi-badge aesthetic="dashboard" theme="success" mode="content" label="positive trend: 10%">
+                <hi-icon glyph="arrow_upward" inherit-color></hi-icon>
+                10%
+              </hi-badge>
+              <span class="clr-gray_80-txt ml-4">vs. previous stage</span>
+              <br />
+              <hi-link href="#">View needs proposal &gt;</hi-link>
+            </hi-tile>
+
+            <hi-tile allow-toolbar aesthetic="outline" class="mb-6 dashboard-kpi-tile">
+              <h5 slot="title">Large institutions</h5>
+              <p class="clr-gray_80-txt mb-4">Opportunity value</p>
+              <p class="dashboard-kpi-value">$976.9M</p>
+              <hi-badge aesthetic="dashboard" theme="success" mode="content" label="positive trend: 204%">
+                <hi-icon glyph="arrow_upward" inherit-color></hi-icon>
+                204%
+              </hi-badge>
+              <span class="clr-gray_80-txt ml-4">vs. previous</span>
+              <br />
+              <hi-link href="#">View large institutions &gt;</hi-link>
+            </hi-tile>
+          </div>
+
+          <div l-kind="hort" l-wrap class="mb-6 dashboard-chart-row">
+            <hi-tile allow-toolbar aesthetic="outline" class="mr-6 mb-6 dashboard-chart-tile">
+              <h5 slot="title">Opportunity by sector</h5>
+              <div id="chart-opportunity-by-sector" class="dashboard-chart"></div>
+              <hi-link href="#">View opportunity by sector &gt;</hi-link>
+            </hi-tile>
+
+            <hi-tile allow-toolbar aesthetic="outline" class="mb-6 dashboard-chart-tile">
+              <h5 slot="title">Prospects by engagement stage</h5>
+              <div id="chart-prospects-by-stage" class="dashboard-chart"></div>
+              <hi-link href="#">View prospects by engagement stage &gt;</hi-link>
+            </hi-tile>
+          </div>
+
+          <div l-kind="hort" l-wrap class="mb-6 dashboard-chart-row">
+            <hi-tile allow-toolbar aesthetic="outline" class="mr-6 mb-6 dashboard-chart-tile">
+              <h5 slot="title">Engagement stage composition (doughnut)</h5>
+              <div id="chart-stage-composition" class="dashboard-chart"></div>
+              <hi-link href="#">View engagement stage composition &gt;</hi-link>
+            </hi-tile>
+
+            <hi-tile allow-toolbar aesthetic="outline" class="mb-6 dashboard-chart-tile">
+              <h5 slot="title">Regional opportunity (scatter)</h5>
+              <div id="chart-regional-scatter" class="dashboard-chart"></div>
+              <hi-link href="#">View regional opportunity &gt;</hi-link>
+            </hi-tile>
+          </div>
+
+          <div class="mb-6 dashboard-chart-row">
+            <hi-tile allow-toolbar aesthetic="outline" class="mb-6 dashboard-chart-tile dashboard-chart-tile--full">
+              <h5 slot="title">Engagement stage by institution size</h5>
+              <div id="chart-stage-by-size" class="dashboard-chart dashboard-chart--wide"></div>
+              <hi-link href="#">View engagement stage by institution size &gt;</hi-link>
+            </hi-tile>
+          </div>
+
+          <div l-kind="hort" l-wrap class="mb-6 dashboard-chart-row">
+            <hi-tile allow-toolbar aesthetic="outline" class="mr-6 mb-6 dashboard-chart-tile">
+              <h5 slot="title">Opportunity by region</h5>
+              <div id="chart-opportunity-by-region" class="dashboard-chart"></div>
+              <hi-link href="#">View opportunity by region &gt;</hi-link>
+            </hi-tile>
+
+            <hi-tile allow-toolbar aesthetic="outline" class="mb-6 dashboard-chart-tile">
+              <h5 slot="title">Regional opportunity trend</h5>
+              <div id="chart-regional-trend" class="dashboard-chart"></div>
+              <hi-link href="#">View regional opportunity trend &gt;</hi-link>
+            </hi-tile>
+          </div>
+
+          <div class="mb-6 dashboard-chart-row">
+            <hi-tile allow-toolbar aesthetic="outline" class="mb-6 dashboard-chart-tile dashboard-chart-tile--full">
+              <h5 slot="title">Region and sector concentration</h5>
+              <div id="chart-region-sector-heatmap" class="dashboard-chart dashboard-chart--wide"></div>
+              <hi-link href="#">View region and sector concentration &gt;</hi-link>
+            </hi-tile>
+          </div>
+
+          <div class="text-center">
+            <hi-link href="#">Policy Disclosure &gt;</hi-link>
+          </div>
+        </div>
+      </section>
+
+      <section x-area="region" x-region="right" id="staff-home-right-rail" class="pl-8 pr-8 pb-8">
+        <section x-area="stack">
+          <hi-tile allow-toolbar aesthetic="outline">
+            <h5 slot="title">Profile Picture</h5>
+            <hi-image
+              src="https://fastly.picsum.photos/id/64/400/400.jpg"
+              alt="Staff profile photo"
+              width="160"
+              height="160"
+            ></hi-image>
+          </hi-tile>
+
+          <hi-tile allow-toolbar aesthetic="outline">
+            <h5 slot="title">Actions</h5>
+            <p class="clr-gray_80-txt mb-4">I want to...</p>
+            <hi-list>
+              <hi-item><hi-link href="#">Issue an Alert</hi-link></hi-item>
+              <hi-item><hi-link href="#">Create a New Student</hi-link></hi-item>
+              <hi-item><hi-link href="#">Upload Profile Picture</hi-link></hi-item>
+            </hi-list>
+          </hi-tile>
+
+          <hi-tile allow-toolbar aesthetic="outline">
+            <h5 slot="title">Quick Links</h5>
+            <p class="clr-gray_80-txt mb-4">Take me to...</p>
+            <hi-list>
+              <hi-item><hi-link href="#">Schedule an Appointment</hi-link></hi-item>
+              <hi-item><hi-link href="#">Create an Event</hi-link></hi-item>
+              <hi-item><hi-link href="#">Record Class Attendance</hi-link></hi-item>
+              <hi-item><hi-link href="#">School Information</hi-link></hi-item>
+              <hi-item><hi-link href="#">Download Center for Reports</hi-link></hi-item>
+              <hi-item><hi-link href="#">Appointment Campaigns</hi-link></hi-item>
+              <hi-item><hi-link href="#">Travel Letters</hi-link></hi-item>
+            </hi-list>
+          </hi-tile>
+
+          <hi-tile allow-toolbar aesthetic="outline">
+            <h5 slot="title">To-Dos</h5>
+            <p><strong>Test</strong></p>
+            <p class="clr-gray_80-txt">Sarah Acuff</p>
+            <p class="clr-gray_80-txt">03/26/2024</p>
+            <hi-link href="#">View More</hi-link>
+          </hi-tile>
+
+          <hi-tile allow-toolbar aesthetic="outline">
+            <h5 slot="title">Upcoming Appointments</h5>
+            <p>You have no upcoming appointments.</p>
+          </hi-tile>
+        </section>
+      </section>
+    </main>
+
+    <yi-view-footer>
+      <p slot="description">
+        © 2026 EAB. All Rights Reserved. Release Version: 26.13.3
+      </p>
+      <div slot="navigation">
+        <hi-link href="#">Privacy Policy</hi-link>
+        <hi-link href="#">Legal Disclaimer</hi-link>
+        <hi-link href="#">Terms of Use</hi-link>
+        <hi-link href="#">Download Acrobat Reader</hi-link>
+      </div>
+    </yi-view-footer>
+    <script type="module">
+      const homeView = document.getElementById("view-home");
+      const dashboardView = document.getElementById("view-dashboard");
+      const rightRail = document.getElementById("staff-home-right-rail");
+      const tertiaryNav = document.getElementById("staff-home-tertiary-nav");
+
+      let chartsRendered = false;
+
+      const tealPalette = ["#004D52", "#00707A", "#00838F", "#26A69A", "#4DB6AC", "#80CBC4", "#B2DFDB"];
+
+      const chartData = {
+        opportunityBySector: {
+          categories: ["Hospitality", "Retail", "Manufacturing", "Healthcare", "Finance", "Technology", "Education"],
+          values: [38.2, 61.5, 74.8, 121.4, 96.3, 142.7, 114.0],
+        },
+        prospectsByStage: {
+          labels: ["Nurture", "Proposal", "Qualified", "Customer", "New", "Lost"],
+          values: [312.4, 194.3, 227.6, 168.9, 158.2, 130.1],
+        },
+        stageComposition: {
+          labels: ["Nurture", "Proposal", "Qualified", "Customer", "New", "Lost"],
+          values: [312.4, 194.3, 227.6, 168.9, 158.2, 130.1],
+        },
+        regionalScatter: {
+          categories: ["International", "Southeast", "Midwest", "Southwest", "West", "Northeast"],
+          points: [[0, 88.4], [1, 241.1], [2, 96.7], [3, 74.9], [4, 205.3], [5, 249.6]],
+        },
+        stageBySize: {
+          categories: ["Nurture", "Proposal", "Qualified", "Customer", "New", "Lost"],
+          series: [
+            { name: "Education", data: [40, 92, 70, 132, 60, 55], color: "#80CBC4" },
+            { name: "SMB", data: [55, 130, 90, 140, 65, 45], color: "#00838F" },
+            { name: "Enterprise", data: [90, 227, 100, 25, 65, 10], color: "#004D52" },
+          ],
+        },
+        opportunityByRegion: {
+          categories: ["International", "Southeast", "Midwest", "Southwest", "West", "Northeast"],
+          values: [88.4, 241.1, 96.7, 74.9, 205.3, 249.6],
+        },
+        regionalTrend: {
+          categories: ["International", "Southeast", "Midwest", "Southwest", "West", "Northeast"],
+          values: [88.4, 241.1, 96.7, 74.9, 205.3, 249.6],
+        },
+        regionSectorHeatmap: {
+          xCategories: ["International", "Southeast", "Midwest", "Southwest", "West", "Northeast"],
+          yCategories: ["Education", "Technology", "Finance", "Healthcare", "Manufacturing", "Retail", "Hospitality"],
+          min: 0,
+          max: 30,
+          minColor: "#E0F2F1",
+          maxColor: "#004D52",
+          cells: [
+            [0,0,21.1],[1,0,18.3],[2,0,24.7],[3,0,12.4],[4,0,9.6],[5,0,15.2],[6,0,12.9],
+            [0,1,14.8],[1,1,27.5],[2,1,9.1],[3,1,19.4],[4,1,22.8],[5,1,8.7],[6,1,6.3],
+            [0,2,10.2],[1,2,16.6],[2,2,29.4],[3,2,11.7],[4,2,13.5],[5,2,7.9],[6,2,5.8],
+            [0,3,17.9],[1,3,12.1],[2,3,15.8],[3,3,23.6],[4,3,10.4],[5,3,9.2],[6,3,4.6],
+            [0,4,8.5],[1,4,19.7],[2,4,11.3],[3,4,14.9],[4,4,26.2],[5,4,11.8],[6,4,7.1],
+            [0,5,13.4],[1,5,9.8],[2,5,18.2],[3,5,10.6],[4,5,12.7],[5,5,20.5],[6,5,6.9],
+            [0,6,6.7],[1,6,11.2],[2,6,8.4],[3,6,7.3],[4,6,9.9],[5,6,6.1],[6,6,15.6],
+          ],
+        },
+      };
+
+      function renderHighchartsCharts() {
+        const d = chartData;
+
+        Highcharts.chart("chart-opportunity-by-sector", {
+          chart: { type: "bar" },
+          title: { text: null },
+          xAxis: { categories: d.opportunityBySector.categories },
+          yAxis: { title: { text: null } },
+          legend: { enabled: false },
+          credits: { enabled: false },
+          series: [{ name: "Opportunity value", data: d.opportunityBySector.values, color: "#00707A" }],
+        });
+
+        Highcharts.chart("chart-prospects-by-stage", {
+          chart: { type: "pie" },
+          title: { text: null },
+          credits: { enabled: false },
+          series: [{
+            name: "Opportunity value",
+            colorByPoint: true,
+            colors: tealPalette,
+            data: d.prospectsByStage.labels.map((name, i) => ({ name, y: d.prospectsByStage.values[i] })),
+          }],
+        });
+
+        Highcharts.chart("chart-stage-composition", {
+          chart: { type: "pie" },
+          title: { text: null },
+          credits: { enabled: false },
+          plotOptions: { pie: { innerSize: "60%" } },
+          series: [{
+            name: "Opportunity value",
+            colorByPoint: true,
+            colors: tealPalette,
+            data: d.stageComposition.labels.map((name, i) => ({ name, y: d.stageComposition.values[i] })),
+          }],
+        });
+
+        Highcharts.chart("chart-regional-scatter", {
+          chart: { type: "scatter" },
+          title: { text: null },
+          credits: { enabled: false },
+          xAxis: { categories: d.regionalScatter.categories },
+          yAxis: { title: { text: "Opportunity value (Sum)" } },
+          legend: { enabled: false },
+          series: [{ name: "Opportunity value", color: "#00707A", data: d.regionalScatter.points }],
+        });
+
+        Highcharts.chart("chart-stage-by-size", {
+          chart: { type: "column" },
+          title: { text: null },
+          credits: { enabled: false },
+          xAxis: { categories: d.stageBySize.categories },
+          yAxis: { min: 0, title: { text: null } },
+          plotOptions: { column: { stacking: "normal" } },
+          series: d.stageBySize.series,
+        });
+
+        Highcharts.chart("chart-opportunity-by-region", {
+          chart: { type: "column" },
+          title: { text: null },
+          credits: { enabled: false },
+          xAxis: { categories: d.opportunityByRegion.categories },
+          yAxis: { title: { text: null } },
+          legend: { enabled: false },
+          series: [{ name: "Opportunity value", data: d.opportunityByRegion.values, color: "#00707A" }],
+        });
+
+        Highcharts.chart("chart-regional-trend", {
+          chart: { type: "line" },
+          title: { text: null },
+          credits: { enabled: false },
+          xAxis: { categories: d.regionalTrend.categories },
+          yAxis: { title: { text: null } },
+          legend: { enabled: false },
+          series: [{ name: "Opportunity value", data: d.regionalTrend.values, color: "#00707A" }],
+        });
+
+        Highcharts.chart("chart-region-sector-heatmap", {
+          chart: { type: "heatmap" },
+          title: { text: null },
+          credits: { enabled: false },
+          xAxis: { categories: d.regionSectorHeatmap.xCategories },
+          yAxis: { categories: d.regionSectorHeatmap.yCategories, title: { text: null } },
+          colorAxis: { min: d.regionSectorHeatmap.min, max: d.regionSectorHeatmap.max, minColor: d.regionSectorHeatmap.minColor, maxColor: d.regionSectorHeatmap.maxColor },
+          legend: { align: "right", layout: "vertical", verticalAlign: "middle" },
+          series: [{ name: "Opportunity value", borderWidth: 1, data: d.regionSectorHeatmap.cells }],
+        });
+      }
+
+      // ---- Static SVG fallback renderer (used when the Highcharts CDN is unreachable) ----
+      const SVG_NS = "http://www.w3.org/2000/svg";
+
+      function svgEl(tag, attrs) {
+        const el = document.createElementNS(SVG_NS, tag);
+        for (const key in attrs) el.setAttribute(key, attrs[key]);
+        return el;
+      }
+
+      function chartSize(container) {
+        const rect = container.getBoundingClientRect();
+        return { width: Math.max(rect.width, 280), height: Math.max(rect.height, 220) };
+      }
+
+      function hexToRgb(hex) {
+        const v = parseInt(hex.replace("#", ""), 16);
+        return { r: (v >> 16) & 255, g: (v >> 8) & 255, b: v & 255 };
+      }
+
+      function lerpColor(minColor, maxColor, t) {
+        const c1 = hexToRgb(minColor);
+        const c2 = hexToRgb(maxColor);
+        const r = Math.round(c1.r + (c2.r - c1.r) * t);
+        const g = Math.round(c1.g + (c2.g - c1.g) * t);
+        const b = Math.round(c1.b + (c2.b - c1.b) * t);
+        return `rgb(${r},${g},${b})`;
+      }
+
+      function renderColumnChart(container, categories, values, color) {
+        const { width, height } = chartSize(container);
+        const margin = { top: 16, right: 10, bottom: 30, left: 10 };
+        const chartW = width - margin.left - margin.right;
+        const chartH = height - margin.top - margin.bottom;
+        const max = Math.max(...values) * 1.15;
+        const gap = chartW / values.length;
+        const barW = gap * 0.6;
+        const svg = svgEl("svg", { width, height, viewBox: `0 0 ${width} ${height}` });
+        values.forEach((v, i) => {
+          const barH = (v / max) * chartH;
+          const x = margin.left + i * gap + (gap - barW) / 2;
+          const y = margin.top + (chartH - barH);
+          svg.appendChild(svgEl("rect", { x, y, width: barW, height: barH, fill: color, rx: 2 }));
+          const valLabel = svgEl("text", { x: x + barW / 2, y: y - 4, "text-anchor": "middle", "font-size": "10", fill: "#333" });
+          valLabel.textContent = v;
+          svg.appendChild(valLabel);
+          const catLabel = svgEl("text", { x: x + barW / 2, y: height - 8, "text-anchor": "middle", "font-size": "9", fill: "#5f6368" });
+          catLabel.textContent = categories[i];
+          svg.appendChild(catLabel);
+        });
+        container.innerHTML = "";
+        container.appendChild(svg);
+      }
+
+      function renderStackedColumnChart(container, categories, series) {
+        const { width, height } = chartSize(container);
+        const margin = { top: 10, right: 10, bottom: 30, left: 10 };
+        const chartW = width - margin.left - margin.right;
+        const chartH = height - margin.top - margin.bottom;
+        const totals = categories.map((_, i) => series.reduce((sum, s) => sum + s.data[i], 0));
+        const max = Math.max(...totals) * 1.1;
+        const gap = chartW / categories.length;
+        const barW = gap * 0.6;
+        const svg = svgEl("svg", { width, height, viewBox: `0 0 ${width} ${height}` });
+        categories.forEach((cat, i) => {
+          let yOffset = margin.top + chartH;
+          series.forEach((s) => {
+            const segH = (s.data[i] / max) * chartH;
+            const x = margin.left + i * gap + (gap - barW) / 2;
+            yOffset -= segH;
+            svg.appendChild(svgEl("rect", { x, y: yOffset, width: barW, height: segH, fill: s.color }));
+          });
+          const catLabel = svgEl("text", { x: margin.left + i * gap + gap / 2, y: height - 8, "text-anchor": "middle", "font-size": "9", fill: "#5f6368" });
+          catLabel.textContent = cat;
+          svg.appendChild(catLabel);
+        });
+        container.innerHTML = "";
+        container.appendChild(svg);
+
+        const legend = document.createElement("div");
+        legend.style.cssText = "display:flex;flex-wrap:wrap;gap:10px;margin-top:6px;font-size:11px;";
+        series.forEach((s) => {
+          const item = document.createElement("span");
+          item.style.cssText = "display:inline-flex;align-items:center;gap:4px;";
+          item.innerHTML = `<span style="width:10px;height:10px;background:${s.color};display:inline-block;border-radius:2px;"></span>${s.name}`;
+          legend.appendChild(item);
+        });
+        container.appendChild(legend);
+      }
+
+      function renderBarChart(container, categories, values, color) {
+        const { width, height } = chartSize(container);
+        const margin = { top: 10, right: 40, bottom: 10, left: 90 };
+        const chartW = width - margin.left - margin.right;
+        const chartH = height - margin.top - margin.bottom;
+        const max = Math.max(...values) * 1.15;
+        const gap = chartH / values.length;
+        const barH = gap * 0.6;
+        const svg = svgEl("svg", { width, height, viewBox: `0 0 ${width} ${height}` });
+        values.forEach((v, i) => {
+          const barW = (v / max) * chartW;
+          const y = margin.top + i * gap + (gap - barH) / 2;
+          svg.appendChild(svgEl("rect", { x: margin.left, y, width: barW, height: barH, fill: color, rx: 2 }));
+          const catLabel = svgEl("text", { x: margin.left - 6, y: y + barH / 2 + 3, "text-anchor": "end", "font-size": "10", fill: "#5f6368" });
+          catLabel.textContent = categories[i];
+          svg.appendChild(catLabel);
+          const valLabel = svgEl("text", { x: margin.left + barW + 4, y: y + barH / 2 + 3, "font-size": "10", fill: "#333" });
+          valLabel.textContent = v;
+          svg.appendChild(valLabel);
+        });
+        container.innerHTML = "";
+        container.appendChild(svg);
+      }
+
+      function renderLineChart(container, categories, values, color) {
+        const { width, height } = chartSize(container);
+        const margin = { top: 16, right: 10, bottom: 30, left: 10 };
+        const chartW = width - margin.left - margin.right;
+        const chartH = height - margin.top - margin.bottom;
+        const max = Math.max(...values) * 1.15;
+        const stepX = chartW / (values.length - 1 || 1);
+        const points = values.map((v, i) => [margin.left + i * stepX, margin.top + chartH - (v / max) * chartH]);
+        const svg = svgEl("svg", { width, height, viewBox: `0 0 ${width} ${height}` });
+        svg.appendChild(svgEl("polyline", { points: points.map((p) => p.join(",")).join(" "), fill: "none", stroke: color, "stroke-width": 2 }));
+        points.forEach(([x, y], i) => {
+          svg.appendChild(svgEl("circle", { cx: x, cy: y, r: 3, fill: color }));
+          const catLabel = svgEl("text", { x, y: height - 8, "text-anchor": "middle", "font-size": "9", fill: "#5f6368" });
+          catLabel.textContent = categories[i];
+          svg.appendChild(catLabel);
+        });
+        container.innerHTML = "";
+        container.appendChild(svg);
+      }
+
+      function renderScatterChart(container, categories, points, color) {
+        const { width, height } = chartSize(container);
+        const margin = { top: 16, right: 10, bottom: 30, left: 10 };
+        const chartW = width - margin.left - margin.right;
+        const chartH = height - margin.top - margin.bottom;
+        const max = Math.max(...points.map((p) => p[1])) * 1.15;
+        const stepX = chartW / (categories.length - 1 || 1);
+        const svg = svgEl("svg", { width, height, viewBox: `0 0 ${width} ${height}` });
+        points.forEach(([xi, v]) => {
+          const x = margin.left + xi * stepX;
+          const y = margin.top + chartH - (v / max) * chartH;
+          svg.appendChild(svgEl("circle", { cx: x, cy: y, r: 5, fill: color }));
+        });
+        categories.forEach((cat, i) => {
+          const catLabel = svgEl("text", { x: margin.left + i * stepX, y: height - 8, "text-anchor": "middle", "font-size": "9", fill: "#5f6368" });
+          catLabel.textContent = cat;
+          svg.appendChild(catLabel);
+        });
+        container.innerHTML = "";
+        container.appendChild(svg);
+      }
+
+      function renderPieChart(container, labels, values, colors, donut) {
+        const { width, height } = chartSize(container);
+        const size = Math.min(width, height - 40);
+        const cx = width / 2;
+        const cy = size / 2 + 10;
+        const r = size / 2;
+        const total = values.reduce((sum, v) => sum + v, 0);
+        let angle = -Math.PI / 2;
+        const svg = svgEl("svg", { width, height, viewBox: `0 0 ${width} ${height}` });
+        values.forEach((v, i) => {
+          const slice = (v / total) * Math.PI * 2;
+          const x1 = cx + r * Math.cos(angle);
+          const y1 = cy + r * Math.sin(angle);
+          angle += slice;
+          const x2 = cx + r * Math.cos(angle);
+          const y2 = cy + r * Math.sin(angle);
+          const largeArc = slice > Math.PI ? 1 : 0;
+          svg.appendChild(svgEl("path", {
+            d: `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z`,
+            fill: colors[i % colors.length],
+          }));
+        });
+        if (donut) {
+          svg.appendChild(svgEl("circle", { cx, cy, r: r * 0.55, fill: "#fff" }));
+        }
+        container.innerHTML = "";
+        container.appendChild(svg);
+
+        const legend = document.createElement("div");
+        legend.style.cssText = "display:flex;flex-wrap:wrap;gap:10px;margin-top:6px;font-size:11px;justify-content:center;";
+        labels.forEach((name, i) => {
+          const item = document.createElement("span");
+          item.style.cssText = "display:inline-flex;align-items:center;gap:4px;";
+          item.innerHTML = `<span style="width:10px;height:10px;background:${colors[i % colors.length]};display:inline-block;border-radius:2px;"></span>${name}`;
+          legend.appendChild(item);
+        });
+        container.appendChild(legend);
+      }
+
+      function renderHeatmapChart(container, xCategories, yCategories, cells, min, max, minColor, maxColor) {
+        const { width, height } = chartSize(container);
+        const margin = { top: 10, right: 10, bottom: 40, left: 90 };
+        const chartW = width - margin.left - margin.right;
+        const chartH = height - margin.top - margin.bottom;
+        const cellW = chartW / xCategories.length;
+        const cellH = chartH / yCategories.length;
+        const svg = svgEl("svg", { width, height, viewBox: `0 0 ${width} ${height}` });
+        cells.forEach(([xi, yi, v]) => {
+          const t = Math.min(1, Math.max(0, (v - min) / (max - min)));
+          const x = margin.left + xi * cellW;
+          const y = margin.top + yi * cellH;
+          svg.appendChild(svgEl("rect", { x, y, width: cellW - 2, height: cellH - 2, fill: lerpColor(minColor, maxColor, t) }));
+          const label = svgEl("text", { x: x + (cellW - 2) / 2, y: y + (cellH - 2) / 2 + 4, "text-anchor": "middle", "font-size": "8", fill: t > 0.5 ? "#fff" : "#333" });
+          label.textContent = v;
+          svg.appendChild(label);
+        });
+        yCategories.forEach((cat, i) => {
+          const label = svgEl("text", { x: margin.left - 6, y: margin.top + i * cellH + cellH / 2 + 3, "text-anchor": "end", "font-size": "9", fill: "#5f6368" });
+          label.textContent = cat;
+          svg.appendChild(label);
+        });
+        xCategories.forEach((cat, i) => {
+          const label = svgEl("text", { x: margin.left + i * cellW + cellW / 2, y: height - 8, "text-anchor": "middle", "font-size": "8", fill: "#5f6368" });
+          label.textContent = cat;
+          svg.appendChild(label);
+        });
+        container.innerHTML = "";
+        container.appendChild(svg);
+      }
+
+      function renderFallbackCharts() {
+        const d = chartData;
+        renderBarChart(document.getElementById("chart-opportunity-by-sector"), d.opportunityBySector.categories, d.opportunityBySector.values, "#00707A");
+        renderPieChart(document.getElementById("chart-prospects-by-stage"), d.prospectsByStage.labels, d.prospectsByStage.values, tealPalette, false);
+        renderPieChart(document.getElementById("chart-stage-composition"), d.stageComposition.labels, d.stageComposition.values, tealPalette, true);
+        renderScatterChart(document.getElementById("chart-regional-scatter"), d.regionalScatter.categories, d.regionalScatter.points, "#00707A");
+        renderStackedColumnChart(document.getElementById("chart-stage-by-size"), d.stageBySize.categories, d.stageBySize.series);
+        renderColumnChart(document.getElementById("chart-opportunity-by-region"), d.opportunityByRegion.categories, d.opportunityByRegion.values, "#00707A");
+        renderLineChart(document.getElementById("chart-regional-trend"), d.regionalTrend.categories, d.regionalTrend.values, "#00707A");
+        renderHeatmapChart(
+          document.getElementById("chart-region-sector-heatmap"),
+          d.regionSectorHeatmap.xCategories,
+          d.regionSectorHeatmap.yCategories,
+          d.regionSectorHeatmap.cells,
+          d.regionSectorHeatmap.min,
+          d.regionSectorHeatmap.max,
+          d.regionSectorHeatmap.minColor,
+          d.regionSectorHeatmap.maxColor
+        );
+      }
+
+      function renderCharts() {
+        if (chartsRendered) return;
+        chartsRendered = true;
+        if (typeof Highcharts !== "undefined") {
+          renderHighchartsCharts();
+        } else {
+          renderFallbackCharts();
+        }
+      }
+
+      function showView(hash) {
+        const isDashboard = hash === "#/dashboard";
+
+        homeView.hidden = isDashboard;
+        dashboardView.hidden = !isDashboard;
+        rightRail.hidden = isDashboard;
+
+        if (tertiaryNav) {
+          const activeUri = isDashboard ? "#/dashboard" : "#/home";
+          const actions = JSON.parse(tertiaryNav.getAttribute("navigation-actions"));
+          actions.forEach((action) => {
+            action.active = action.uri === activeUri;
+          });
+          tertiaryNav.setAttribute("navigation-actions", JSON.stringify(actions));
+        }
+
+        if (isDashboard) {
+          requestAnimationFrame(renderCharts);
+        }
+      }
+
+      window.addEventListener("hashchange", () => showView(window.location.hash));
+      showView(window.location.hash || "#/home");
+    </script>
+    <noscript>
+      <h1>Application Failure</h1>
+      <p>
+        The application cannot offer an experience because it relies on
+        Javascript.
+      </p>
+      <p>Please enable Javascript to use this demo.</p>
+    </noscript>
+  </body>
+</html>

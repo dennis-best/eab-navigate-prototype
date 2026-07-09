@@ -1,0 +1,985 @@
+<!doctype html>
+<html lang="en" hip-font-size-dynamic>
+  <head>
+    <title>Staff Product Walkthrough | Navigate360</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="EAB Global Inc." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="Navigate360 staff and student walkthrough prototype" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, user-scalable=no, width=device-width, viewport-fit=cover"
+    />
+
+    <script
+      src="https://cdn.dev.eab.com/hif/latest/index.js"
+      auto-start
+      release="prod"
+      system-load-core
+      system-load-baseline
+      system-load-ds
+      system-load-os
+      library-stop-dragula
+      library-stop-moment
+    ></script>
+    <script>
+      $ip.flags.load([
+        ["/eip/hi-form/default-to-rest", true],
+        ["/pip/pi-ip/insert-css-after-script", true],
+        ["/eip/hi-http/enable-xss-purification-response", false],
+      ]);
+    </script>
+    <style>
+      .top-nav__center-controls {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75em;
+        flex-wrap: nowrap;
+      }
+
+      .top-nav__groups {
+        flex: 0 0 auto;
+        --hi-dropdown--max-width: calc(4.5 * var(--hi-px-32));
+        --hi-dropdown--min-width: calc(3.25 * var(--hi-px-32));
+      }
+
+      .top-nav__quick-search {
+        flex: 1 1 auto;
+        min-width: 0;
+        --hi-search--min-width: calc(6 * var(--hi-px-32));
+      }
+    </style>
+  </head>
+  <body x-layout-system="blueprint" x-hosting="owner">
+    <main id="app" x-area="screen" x-hosting="screen" x-layout-screen="main_right" region-width="1/4">
+      <hi-navigation-primary x-region="navigation-primary">
+        WOODLEY COLLEGE
+      </hi-navigation-primary>
+
+      <hi-navigation-secondary
+        x-region="navigation-secondary"
+        accessibility-tools
+        aria-label="Main Menu"
+        account-actions='[
+          { "href": "#/help-center", "title": "Help Center", "icon": "info" },
+          { "href": "#/user-profile", "title": "User Profile", "icon": "user" },
+          { "href": "#/logout", "title": "Logout", "icon": "logout" }
+        ]'
+        account-avatar='{
+          "initials": "KC",
+          "accountAvatarURI": "https://fastly.picsum.photos/id/64/400/400.jpg"
+        }'
+      >
+        <div slot="logo" class="logo_container">
+          <hi-image
+            src="https://bucks-qa-grey-mt.gradesfirst.com/images/eab_navigate360_logo.svg"
+            alt="EAB Navigate360 Logo"
+            width="152"
+            height="27"
+          ></hi-image>
+          <span class="application_title title_divider">|</span>
+          <span class="application_title title_text">Student Success</span>
+        </div>
+        <div class="top-nav__left-controls" slot="left-controls">
+          <hi-button aesthetic="icon" size="large" layout="icon">
+            <hi-icon kind="advising" size="large"></hi-icon>
+          </hi-button>
+          <hi-button aesthetic="icon" size="large" layout="icon">
+            <hi-icon kind="envelope" size="large"></hi-icon>
+          </hi-button>
+          <hi-button aesthetic="icon" size="large" layout="icon">
+            <hi-icon kind="minimize" size="large"></hi-icon>
+          </hi-button>
+        </div>
+        <div class="top-nav__center-controls" slot="center-controls">
+          <hi-dropdown
+            id="top-nav__user-type"
+            class="top-nav__groups"
+            kind="value"
+            hug-width
+            cap-height=""
+            alignment="left"
+          >
+            <hi-select id="top-nav__user-type-select" aesthetic="dropdown" selected-index="0">
+              <hi-option selected value="advisor">Advisor</hi-option>
+              <hi-option value="professor">Professor</hi-option>
+              <hi-option value="student">Student</hi-option>
+            </hi-select>
+          </hi-dropdown>
+          <hi-search
+            id="top-nav__quick-search"
+            class="top-nav__quick-search"
+            placeholder="Search for student, staff, or professor"
+            hidden-result-message
+            hidden-status-message
+            input='[
+              {"title":"Adam, Michael","value":"87650214"},
+              {"title":"Aguila, Peggy","value":"14538206"}
+            ]'
+          ></hi-search>
+        </div>
+        <div slot="right-controls" class="right-controls-navigation">
+          <hi-button aesthetic="icon" size="large" layout="icon">
+            <hi-icon kind="question_circle" size="large"></hi-icon>
+          </hi-button>
+          <hi-button aesthetic="icon" size="large" layout="icon">
+            <hi-icon kind="advising" size="large"></hi-icon>
+          </hi-button>
+          <hi-button aesthetic="icon" size="large" layout="icon">
+            <hi-icon kind="app_switcher" size="large"></hi-icon>
+          </hi-button>
+        </div>
+      </hi-navigation-secondary>
+
+      <hi-navigation-tertiary
+        x-region="navigation-tertiary"
+        navigation-actions='[
+          { "uri": "#/home", "title": "Home", "icon": "home", "icon_theme": "blue", "active": true },
+          { "uri": "#/dashboard", "title": "Dashboard", "icon": "dashboard", "icon_theme": "blue" },
+          { "uri": "#/conversations", "title": "Conversations", "icon": "envelope", "icon_theme": "blue" },
+          { "uri": "#/calendar", "title": "Calendar", "icon": "calendar", "icon_theme": "blue" },
+          { "uri": "#/cases", "title": "Cases", "icon": "description", "icon_theme": "purple" },
+          { "uri": "#/campaigns", "title": "Campaigns", "icon": "campaign", "icon_theme": "teal" },
+          { "uri": "#/planner", "title": "Planner", "icon": "list", "icon_theme": "green" },
+          { "uri": "#/profile", "title": "Student Profile", "icon": "user", "icon_theme": "blue" },
+          { "uri": "#/settings", "title": "Settings", "icon": "gear", "icon_theme": "blue" }
+        ]'
+      ></hi-navigation-tertiary>
+
+      <section x-area="region" x-region="main" class="pl-8 pr-8 pb-8">
+        <yi-view-header>
+          <hi-title slot="title" heading="Staff Home" level="1"></hi-title>
+          <hi-icon slot="status" kind="school" size="large" theme="blue"></hi-icon>
+        </yi-view-header>
+
+        <hi-tab-group id="walkthrough-tabs" class="mb-8">
+          <hi-tab for="staff-home" selected>Staff Home</hi-tab>
+          <hi-tab for="dashboard">Dashboard</hi-tab>
+          <hi-tab for="conversations">Conversations</hi-tab>
+          <hi-tab for="cases">Cases</hi-tab>
+          <hi-tab for="campaigns">Campaigns</hi-tab>
+          <hi-tab for="planner">Planner</hi-tab>
+          <hi-tab for="student-profile">Student Profile</hi-tab>
+        </hi-tab-group>
+
+        <hi-switch id="walkthrough-panels" value="staff-home">
+          <!-- ============================================================ -->
+          <!-- STAFF HOME -->
+          <!-- ============================================================ -->
+          <hi-case id="staff-home" value="staff-home">
+            <section x-area="zone">
+              <p class="clr-gray_80-txt mb-6">
+                Staff Home is centered around the students an advisor is assigned to. There are
+                different homepages depending on user type (advisor, professor, student with a
+                staff role), controlled by the Navigate user type shown in the toolbar above.
+              </p>
+
+              <hi-tab-group id="staff-home-subtabs" class="mb-8">
+                <hi-tab for="students" selected size="small">My Assigned Students</hi-tab>
+                <hi-tab for="appointments" size="small">Appointments</hi-tab>
+                <hi-tab for="availability" size="small">My Availability</hi-tab>
+                <hi-tab for="queues" size="small">Appointment Queues</hi-tab>
+                <hi-tab for="requests" size="small">Appointment Requests</hi-tab>
+              </hi-tab-group>
+
+              <hi-switch id="staff-home-subpanels" value="students">
+                <!-- Students -->
+                <hi-case id="students" value="students">
+                  <h2 class="mb-6">Assigned Students</h2>
+
+                  <hi-form class="mb-6">
+                    <div l-kind="hort" l-width-fixed l-align="end">
+                      <hi-input-group>
+                        <hi-label for="filter-list-type">List Type</hi-label>
+                        <hi-dropdown kind="value" id="filter-list-type">
+                          <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
+                            <hi-option selected>Assigned Students</hi-option>
+                            <hi-option>Upcoming Graduates</hi-option>
+                            <hi-option>Navigate for Students Users</hi-option>
+                            <hi-option>Academic Probation</hi-option>
+                          </hi-select>
+                        </hi-dropdown>
+                      </hi-input-group>
+                      <hi-input-group class="ml-4">
+                        <hi-label for="filter-term">Term</hi-label>
+                        <hi-dropdown kind="value" id="filter-term">
+                          <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
+                            <hi-option selected>Spring 2026 (Default Term)</hi-option>
+                            <hi-option>All Terms</hi-option>
+                          </hi-select>
+                        </hi-dropdown>
+                      </hi-input-group>
+                    </div>
+                  </hi-form>
+
+                  <div scroll-x="auto">
+                    <table kind="compact" class="mt-6">
+                      <thead>
+                        <tr>
+                          <th>
+                            <hi-dropdown aesthetic="minimal" placeholder="Actions">
+                              <hi-list>
+                                <hi-item>Issue an Alert</hi-item>
+                                <hi-item>Create a New Student</hi-item>
+                              </hi-list>
+                            </hi-dropdown>
+                          </th>
+                          <th><hi-checkbox aria-label="Select all students"></hi-checkbox></th>
+                          <th class="text-uppercase">Name <hi-icon kind="sort" size="small"></hi-icon></th>
+                          <th class="text-uppercase">ID</th>
+                          <th class="text-uppercase">Cumulative GPA</th>
+                          <th class="text-uppercase">Category</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td></td>
+                          <td><hi-checkbox aria-label="Select Adam, Michael"></hi-checkbox></td>
+                          <td><hi-link href="#">Adam, Michael</hi-link></td>
+                          <td>87650214</td>
+                          <td></td>
+                          <td>First generation student, Full-Time</td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td><hi-checkbox aria-label="Select Aguila, Peggy"></hi-checkbox></td>
+                          <td><hi-link href="#">Aguila, Peggy</hi-link></td>
+                          <td>14538206</td>
+                          <td></td>
+                          <td>Financial Aid, Pre-enrollment risk</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mt-6">
+                    <hi-pagination page-index="0" page-size="80" max="401" range-size="5"></hi-pagination>
+                    <p class="clr-gray_80-txt">401 total results</p>
+                  </div>
+                </hi-case>
+
+                <!-- Appointments -->
+                <hi-case id="appointments" value="appointments">
+                  <h2 class="mb-6">Upcoming Appointments</h2>
+                  <div scroll-x="auto" class="mb-6">
+                    <table kind="compact">
+                      <thead>
+                        <tr>
+                          <th>
+                            <hi-dropdown aesthetic="minimal" placeholder="Actions">
+                              <hi-list>
+                                <hi-item>Cancel Appointment</hi-item>
+                              </hi-list>
+                            </hi-dropdown>
+                          </th>
+                          <th><hi-checkbox aria-label="Select all upcoming appointments"></hi-checkbox></th>
+                          <th class="text-uppercase">Date/Time</th>
+                          <th class="text-uppercase">Attendee</th>
+                          <th class="text-uppercase">Service</th>
+                          <th class="text-uppercase">Meeting Type</th>
+                          <th class="text-uppercase">Report Filed?</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td colspan="7" class="text-center clr-gray_80-txt">
+                            This user has no upcoming appointments.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <h2 class="mb-6 mt-8">Reporting</h2>
+                  <p class="clr-gray_80-txt mb-6">
+                    Tables of who I'm meeting with coming up, plus reports and summaries of recent
+                    past appointments.
+                  </p>
+                  <div scroll-x="auto">
+                    <table kind="compact">
+                      <thead>
+                        <tr>
+                          <th class="text-uppercase">Date</th>
+                          <th class="text-uppercase">Attendee</th>
+                          <th class="text-uppercase">Service</th>
+                          <th class="text-uppercase">Report Filed?</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>06/19/2026 11:15am ET</td>
+                          <td><hi-link href="#">Aguila, Peggy</hi-link></td>
+                          <td>Academic Planning</td>
+                          <td>Not Yet.</td>
+                        </tr>
+                        <tr>
+                          <td>06/17/2026 2:00pm ET</td>
+                          <td><hi-link href="#">Aguila, Peggy</hi-link></td>
+                          <td>Academic Planning</td>
+                          <td><hi-button theme="success" size="small">Report Details</hi-button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </hi-case>
+
+                <!-- Availability -->
+                <hi-case id="availability" value="availability">
+                  <h2 class="mb-6">Available Times</h2>
+                  <p class="clr-gray_80-txt mb-6">
+                    Set up time available for appointment scheduling, on different recurring
+                    patterns, locations, and purposes. This feeds appointment scheduling
+                    throughout the application.
+                  </p>
+                  <div scroll-x="auto" class="mb-6">
+                    <table kind="compact">
+                      <thead>
+                        <tr>
+                          <th><hi-checkbox aria-label="Select all available times"></hi-checkbox></th>
+                          <th class="text-uppercase">Days of Week</th>
+                          <th class="text-uppercase">Times</th>
+                          <th class="text-uppercase">Location</th>
+                          <th class="text-uppercase">Purpose</th>
+                          <th class="text-uppercase">Edit</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select availability row 1"></hi-checkbox></td>
+                          <td>Mon, Tue, Wed, Thu, Fri</td>
+                          <td>9:00am - 4:30pm ET</td>
+                          <td>Hornet Tutoring Center</td>
+                          <td>Advising</td>
+                          <td><hi-link href="#">Edit</hi-link></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <h2 class="mb-6 mt-8">Personal Availability Link</h2>
+                  <div l-kind="hort" l-width-fixed l-align="center">
+                    <span class="mr-4">Link for Students:</span>
+                    <hi-link href="https://woodley84.campus-demo1.eab.com/pal/g2nassp7l3">
+                      https://woodley84.campus-demo1.eab.com/pal/g2nassp7l3
+                    </hi-link>
+                    <hi-button aesthetic="secondary" class="ml-4">Copy</hi-button>
+                  </div>
+                </hi-case>
+
+                <!-- Queues -->
+                <hi-case id="queues" value="queues">
+                  <div l-kind="hort" l-width-fixed l-align="center" class="mb-6">
+                    <span class="mr-4"><strong>Notification Methods:</strong></span>
+                    <hi-checkbox id="notify-ding" checked>Ding</hi-checkbox>
+                  </div>
+
+                  <h2 class="mb-6">Students Checked In For Appointments</h2>
+                  <div scroll-x="auto">
+                    <table kind="compact">
+                      <thead>
+                        <tr>
+                          <th>
+                            <hi-dropdown aesthetic="minimal" placeholder="Actions">
+                              <hi-list>
+                                <hi-item>Start Appointment</hi-item>
+                                <hi-item>Send Message</hi-item>
+                                <hi-item>Check Out</hi-item>
+                                <hi-item>Remove</hi-item>
+                              </hi-list>
+                            </hi-dropdown>
+                          </th>
+                          <th class="text-uppercase">Name</th>
+                          <th class="text-uppercase">Service</th>
+                          <th class="text-uppercase">Appointment Time</th>
+                          <th class="text-uppercase">Checked In At</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td colspan="5" class="text-center clr-gray_80-txt">
+                            There are not any student appointments checked in
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </hi-case>
+
+                <!-- Requests -->
+                <hi-case id="requests" value="requests">
+                  <h2 class="mb-6">Appointment Requests</h2>
+                  <p class="clr-gray_80-txt mb-6">
+                    Requests from students who did not see an available time they liked in
+                    appointment scheduling.
+                  </p>
+                  <div scroll-x="auto">
+                    <table kind="compact">
+                      <thead>
+                        <tr>
+                          <th>
+                            <hi-dropdown aesthetic="minimal" placeholder="Actions">
+                              <hi-list>
+                                <hi-item>Approve Selected</hi-item>
+                                <hi-item>Decline Selected</hi-item>
+                              </hi-list>
+                            </hi-dropdown>
+                          </th>
+                          <th><hi-checkbox aria-label="Select all appointment requests"></hi-checkbox></th>
+                          <th class="text-uppercase">Date/Time</th>
+                          <th class="text-uppercase">Student</th>
+                          <th class="text-uppercase">Service</th>
+                          <th class="text-uppercase">Location</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td></td>
+                          <td><hi-checkbox aria-label="Select Wyatt, James"></hi-checkbox></td>
+                          <td>02/09/2026 12:43pm ET</td>
+                          <td><hi-link href="#">Wyatt, James</hi-link></td>
+                          <td>Applying for Financial Aid</td>
+                          <td>Bright Success Center</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </hi-case>
+              </hi-switch>
+              <hi-binding source="staff-home-subtabs" sink="staff-home-subpanels"></hi-binding>
+            </section>
+          </hi-case>
+
+          <!-- ============================================================ -->
+          <!-- DASHBOARD -->
+          <!-- ============================================================ -->
+          <hi-case id="dashboard" value="dashboard">
+            <section x-area="zone">
+              <p class="clr-gray_80-txt mb-6">
+                The dashboard is a configurable area preloaded with a few tiles; more can be
+                added. Each tile pulls in a saved report and can be shown as a grid, chart, or
+                visual. A few, like Student Success, are pre-configured by EAB and cannot be
+                deleted &mdash; only turned off.
+              </p>
+
+              <div l-kind="hort" l-wrap class="mb-6">
+                <hi-tile allow-toolbar aesthetic="outline" class="mr-6 mb-6" style="width: 20rem;">
+                  <h5 slot="title">Student Success Overview</h5>
+                  <p class="clr-gray_80-txt mb-4">Pre-configured grid report</p>
+                  <table kind="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-uppercase">Metric</th>
+                        <th class="text-uppercase">Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>Assigned Students</td><td>401</td></tr>
+                      <tr><td>At-Risk Students</td><td>38</td></tr>
+                      <tr><td>Appointments This Week</td><td>52</td></tr>
+                    </tbody>
+                  </table>
+                </hi-tile>
+
+                <hi-tile allow-toolbar aesthetic="outline" class="mr-6 mb-6" style="width: 20rem;">
+                  <h5 slot="title">Appointments by Care Unit</h5>
+                  <p class="clr-gray_80-txt mb-4">Donut chart report</p>
+                  <hi-icon kind="pie_chart" size="large" theme="blue"></hi-icon>
+                </hi-tile>
+
+                <hi-tile allow-toolbar aesthetic="outline" class="mr-6 mb-6" style="width: 20rem;">
+                  <h5 slot="title">Alerts Trend</h5>
+                  <p class="clr-gray_80-txt mb-4">Line chart report</p>
+                  <hi-icon kind="bar_chart" size="large" theme="magenta"></hi-icon>
+                </hi-tile>
+              </div>
+
+              <hi-button aesthetic="secondary">
+                <hi-icon kind="add" size="small"></hi-icon>
+                Add Tile
+              </hi-button>
+            </section>
+          </hi-case>
+
+          <!-- ============================================================ -->
+          <!-- CONVERSATIONS -->
+          <!-- ============================================================ -->
+          <hi-case id="conversations" value="conversations">
+            <section x-area="zone">
+              <p class="clr-gray_80-txt mb-6">
+                Typical email-style correspondence, including automated messages and personal
+                notes. Everything here can be filtered.
+              </p>
+
+              <hi-form class="mb-6">
+                <div l-kind="hort" l-width-fixed l-align="end">
+                  <hi-input-group>
+                    <hi-label for="conversations-filter-type">Type</hi-label>
+                    <hi-dropdown kind="value" id="conversations-filter-type">
+                      <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
+                        <hi-option selected>All Types</hi-option>
+                        <hi-option>Automated</hi-option>
+                        <hi-option>Personal</hi-option>
+                      </hi-select>
+                    </hi-dropdown>
+                  </hi-input-group>
+                </div>
+              </hi-form>
+
+              <div scroll-x="auto">
+                <table kind="compact">
+                  <thead>
+                    <tr>
+                      <th>
+                        <hi-dropdown aesthetic="minimal" placeholder="Actions">
+                          <hi-list>
+                            <hi-item>Mark as Read</hi-item>
+                            <hi-item>Archive</hi-item>
+                          </hi-list>
+                        </hi-dropdown>
+                      </th>
+                      <th><hi-checkbox aria-label="Select all conversations"></hi-checkbox></th>
+                      <th class="text-uppercase">From</th>
+                      <th class="text-uppercase">Subject</th>
+                      <th class="text-uppercase">Type</th>
+                      <th class="text-uppercase">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td></td>
+                      <td><hi-checkbox aria-label="Select conversation row 1"></hi-checkbox></td>
+                      <td>Aguila, Peggy</td>
+                      <td><hi-link href="#">Question about my appointment</hi-link></td>
+                      <td>Personal</td>
+                      <td>06/19/2026</td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td><hi-checkbox aria-label="Select conversation row 2"></hi-checkbox></td>
+                      <td>Navigate360 System</td>
+                      <td><hi-link href="#">Appointment reminder sent</hi-link></td>
+                      <td>Automated</td>
+                      <td>06/18/2026</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </hi-case>
+
+          <!-- ============================================================ -->
+          <!-- CASES -->
+          <!-- ============================================================ -->
+          <hi-case id="cases" value="cases">
+            <section x-area="zone">
+              <p class="clr-gray_80-txt mb-6">
+                Cases are longer-term work items related to a student &mdash; similar to
+                referrals in other systems. A faculty alert can trigger a case to be opened. This
+                is your list of cases; selecting one opens a record-detail view with a summary
+                and collapsible tiles.
+              </p>
+
+              <div scroll-x="auto" class="mb-8">
+                <table kind="compact">
+                  <thead>
+                    <tr>
+                      <th>
+                        <hi-dropdown aesthetic="minimal" placeholder="Actions">
+                          <hi-list>
+                            <hi-item>Close Selected</hi-item>
+                            <hi-item>Reassign</hi-item>
+                          </hi-list>
+                        </hi-dropdown>
+                      </th>
+                      <th><hi-checkbox aria-label="Select all cases"></hi-checkbox></th>
+                      <th class="text-uppercase">Student</th>
+                      <th class="text-uppercase">Type</th>
+                      <th class="text-uppercase">Status</th>
+                      <th class="text-uppercase">Opened</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td></td>
+                      <td><hi-checkbox aria-label="Select case row 1"></hi-checkbox></td>
+                      <td><hi-link href="#">Adam, Michael</hi-link></td>
+                      <td>Academic Concern</td>
+                      <td>Open</td>
+                      <td>06/01/2026</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h2 class="mb-6">Case Detail: Adam, Michael</h2>
+              <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
+                <p><strong>Academic Concern</strong> &middot; Opened 06/01/2026 &middot; Status: Open</p>
+                <hi-button aesthetic="secondary">
+                  <hi-icon kind="more_vert" size="small"></hi-icon>
+                  Menu &amp; Options
+                </hi-button>
+              </div>
+
+              <hi-accordion selected-index="0">
+                <hi-bar><strong>Summary</strong></hi-bar>
+                <hi-note>
+                  Faculty member raised an alert regarding missed assignments. Case opened to
+                  coordinate outreach and follow-up.
+                </hi-note>
+                <hi-bar><strong>Connected Cases</strong></hi-bar>
+                <hi-note>
+                  <p class="clr-gray_80-txt">No connected cases.</p>
+                </hi-note>
+                <hi-bar><strong>Documents</strong></hi-bar>
+                <hi-note>
+                  <hi-button aesthetic="secondary" size="small">Upload Document</hi-button>
+                </hi-note>
+              </hi-accordion>
+            </section>
+          </hi-case>
+
+          <!-- ============================================================ -->
+          <!-- CAMPAIGNS -->
+          <!-- ============================================================ -->
+          <hi-case id="campaigns" value="campaigns">
+            <section x-area="zone">
+              <p class="clr-gray_80-txt mb-6">
+                Campaigns set up a series of nudges, reminders, and messaging to get students,
+                staff, or contacts to complete a goal, with tracking to see who scheduled,
+                attended, and whether staff created a summary.
+              </p>
+
+              <div scroll-x="auto" class="mb-8">
+                <table kind="compact">
+                  <thead>
+                    <tr>
+                      <th>
+                        <hi-dropdown aesthetic="minimal" placeholder="Actions">
+                          <hi-list>
+                            <hi-item>Duplicate</hi-item>
+                            <hi-item>Archive</hi-item>
+                          </hi-list>
+                        </hi-dropdown>
+                      </th>
+                      <th class="text-uppercase">Campaign Name</th>
+                      <th class="text-uppercase">Type</th>
+                      <th class="text-uppercase">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td></td>
+                      <td><hi-link href="#">Fall Advising Outreach</hi-link></td>
+                      <td>Appointment Campaign</td>
+                      <td>Published</td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td><hi-link href="#">Financial Aid Reminders</hi-link></td>
+                      <td>Nudge Campaign</td>
+                      <td>Draft</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h2 class="mb-6">Build a Campaign: Fall Advising Outreach</h2>
+
+              <hi-step-group id="campaign-steps" class="mb-8">
+                <hi-step for="campaign-define" selected>Define Campaign</hi-step>
+                <hi-step for="campaign-recipients">Verify Recipients</hi-step>
+                <hi-step for="campaign-nudges">Compose Nudges</hi-step>
+                <hi-step for="campaign-summary">Summary</hi-step>
+              </hi-step-group>
+
+              <hi-switch id="campaign-panels" value="campaign-define">
+                <hi-case id="campaign-define" value="campaign-define">
+                  <hi-form class="mb-6">
+                    <hi-input-group class="mb-6">
+                      <hi-label for="campaign-name">Campaign Name</hi-label>
+                      <hi-input id="campaign-name" value="Fall Advising Outreach"></hi-input>
+                    </hi-input-group>
+                    <hi-input-group>
+                      <hi-label for="campaign-type">Campaign Type</hi-label>
+                      <hi-dropdown kind="value" id="campaign-type">
+                        <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
+                          <hi-option selected>Appointment Campaign</hi-option>
+                          <hi-option>Nudge Campaign</hi-option>
+                        </hi-select>
+                      </hi-dropdown>
+                    </hi-input-group>
+                  </hi-form>
+                </hi-case>
+                <hi-case id="campaign-recipients" value="campaign-recipients">
+                  <p class="clr-gray_80-txt mb-6">
+                    Pick who is included. This step can be skipped if the campaign is connected
+                    to an automation instead.
+                  </p>
+                  <table kind="compact">
+                    <thead>
+                      <tr>
+                        <th><hi-checkbox aria-label="Select all recipients"></hi-checkbox></th>
+                        <th class="text-uppercase">Name</th>
+                        <th class="text-uppercase">Care Unit</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><hi-checkbox aria-label="Select Adam, Michael"></hi-checkbox></td>
+                        <td>Adam, Michael</td>
+                        <td>Advising</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </hi-case>
+                <hi-case id="campaign-nudges" value="campaign-nudges">
+                  <p class="clr-gray_80-txt mb-6">
+                    An initiating message is sent when the campaign is published; reminders can
+                    be set to a specific date or relative to when a student joins.
+                  </p>
+                  <table kind="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-uppercase">Nudge</th>
+                        <th class="text-uppercase">Format</th>
+                        <th class="text-uppercase">Timing</th>
+                        <th class="text-uppercase">Edit</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Initial Invitation</td>
+                        <td>Email</td>
+                        <td>On Publish</td>
+                        <td><hi-button aesthetic="icon" size="small" layout="icon"><hi-icon kind="edit" size="small"></hi-icon></hi-button></td>
+                      </tr>
+                      <tr>
+                        <td>Reminder</td>
+                        <td>Text Message</td>
+                        <td>8 days after joining</td>
+                        <td><hi-button aesthetic="icon" size="small" layout="icon"><hi-icon kind="edit" size="small"></hi-icon></hi-button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </hi-case>
+                <hi-case id="campaign-summary" value="campaign-summary">
+                  <p><strong>Nudges Sent:</strong> 214</p>
+                  <p><strong>Scheduled:</strong> 88</p>
+                  <p><strong>Attended:</strong> 61</p>
+                  <p><strong>Summaries Created:</strong> 47</p>
+                  <hi-link href="#" class="mt-6">Show More</hi-link>
+
+                  <h3 class="mb-4 mt-8">Print Job History</h3>
+                  <table kind="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-uppercase">Date</th>
+                        <th class="text-uppercase">Type</th>
+                        <th class="text-uppercase">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="3" class="text-center clr-gray_80-txt">
+                          No print jobs recorded for this campaign.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </hi-case>
+              </hi-switch>
+              <hi-binding source="campaign-steps" sink="campaign-panels"></hi-binding>
+
+              <div l-kind="hort" l-width-fixed l-justify="between" class="mt-8">
+                <hi-button aesthetic="secondary">Back</hi-button>
+                <hi-button aesthetic="primary">Save and Continue</hi-button>
+              </div>
+            </section>
+          </hi-case>
+
+          <!-- ============================================================ -->
+          <!-- PLANNER -->
+          <!-- ============================================================ -->
+          <hi-case id="planner" value="planner">
+            <section x-area="zone">
+              <p class="clr-gray_80-txt mb-6">
+                Institutions configure templates; students get the template matching their major,
+                then add courses to terms. Terms appear as tiles so progress can be tracked.
+              </p>
+
+              <hi-form class="mb-6">
+                <hi-input-group>
+                  <hi-label for="planner-template">Academic Plan Template</hi-label>
+                  <hi-dropdown kind="value" id="planner-template">
+                    <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
+                      <hi-option selected>Computer Science, B.S.</hi-option>
+                      <hi-option>Undeclared</hi-option>
+                    </hi-select>
+                  </hi-dropdown>
+                </hi-input-group>
+              </hi-form>
+
+              <div l-kind="hort" l-wrap>
+                <hi-tile allow-toolbar aesthetic="outline" class="mr-6 mb-6" style="width: 16rem;">
+                  <h5 slot="title">Fall 2026</h5>
+                  <p class="clr-gray_80-txt">No courses added yet.</p>
+                  <hi-button aesthetic="secondary" size="small" class="mt-6">Schedule</hi-button>
+                </hi-tile>
+                <hi-tile allow-toolbar aesthetic="outline" class="mr-6 mb-6" style="width: 16rem;">
+                  <h5 slot="title">Spring 2027</h5>
+                  <p class="clr-gray_80-txt">No courses added yet.</p>
+                </hi-tile>
+              </div>
+            </section>
+          </hi-case>
+
+          <!-- ============================================================ -->
+          <!-- STUDENT PROFILE -->
+          <!-- ============================================================ -->
+          <hi-case id="student-profile" value="student-profile">
+            <section x-area="zone">
+              <p class="clr-gray_80-txt mb-6">
+                A record-detail pattern: a summary at the top, tabs for content areas, and
+                collapsible tiles with information.
+              </p>
+
+              <div l-kind="hort" l-width-fixed l-align="center" class="mb-8">
+                <hi-image
+                  src="https://fastly.picsum.photos/id/64/400/400.jpg"
+                  alt="Student profile photo"
+                  width="80"
+                  height="80"
+                  class="mr-6"
+                ></hi-image>
+                <div>
+                  <hi-title heading="Aguila, Peggy" level="2"></hi-title>
+                  <p class="clr-gray_80-txt">Student ID: 14538206 &middot; Computer Science, B.S.</p>
+                </div>
+              </div>
+
+              <hi-tab-group id="student-profile-tabs" class="mb-8">
+                <hi-tab for="profile-overview" selected size="small">Overview</hi-tab>
+                <hi-tab for="profile-courses" size="small">Courses</hi-tab>
+                <hi-tab for="profile-alerts" size="small">Alerts &amp; Cases</hi-tab>
+                <hi-tab for="profile-notes" size="small">Notes</hi-tab>
+              </hi-tab-group>
+
+              <hi-switch id="student-profile-panels" value="profile-overview">
+                <hi-case id="profile-overview" value="profile-overview">
+                  <hi-accordion selected-index="0">
+                    <hi-bar><strong>Academic Standing</strong></hi-bar>
+                    <hi-note>
+                      <p>Cumulative GPA: 3.42</p>
+                      <p>Standing: Good Standing</p>
+                    </hi-note>
+                    <hi-bar><strong>Success Markers</strong></hi-bar>
+                    <hi-note>
+                      <p class="clr-gray_80-txt">
+                        Completed probation requirement, Financial Aid, First generation student
+                      </p>
+                    </hi-note>
+                  </hi-accordion>
+                </hi-case>
+                <hi-case id="profile-courses" value="profile-courses">
+                  <table kind="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-uppercase">Course</th>
+                        <th class="text-uppercase">Term</th>
+                        <th class="text-uppercase">Grade</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>8.01 Physics I</td>
+                        <td>Spring 2026</td>
+                        <td>In Progress</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </hi-case>
+                <hi-case id="profile-alerts" value="profile-alerts">
+                  <p class="clr-gray_80-txt">No active alerts or cases for this student.</p>
+                </hi-case>
+                <hi-case id="profile-notes" value="profile-notes">
+                  <p class="clr-gray_80-txt">No notes have been added yet.</p>
+                </hi-case>
+              </hi-switch>
+              <hi-binding source="student-profile-tabs" sink="student-profile-panels"></hi-binding>
+            </section>
+          </hi-case>
+        </hi-switch>
+        <hi-binding source="walkthrough-tabs" sink="walkthrough-panels"></hi-binding>
+      </section>
+
+      <section x-area="region" x-region="right" class="pl-8 pr-8 pb-8">
+        <section x-area="stack">
+          <hi-tile allow-toolbar aesthetic="outline">
+            <h5 slot="title">Profile Picture</h5>
+            <hi-image
+              src="https://fastly.picsum.photos/id/64/400/400.jpg"
+              alt="Staff profile photo"
+              width="160"
+              height="160"
+            ></hi-image>
+          </hi-tile>
+
+          <hi-tile allow-toolbar aesthetic="outline">
+            <h5 slot="title">Actions</h5>
+            <p class="clr-gray_80-txt mb-4">I want to...</p>
+            <hi-list>
+              <hi-item><hi-link href="#">Issue an Alert</hi-link></hi-item>
+              <hi-item><hi-link href="#">Create a New Student</hi-link></hi-item>
+              <hi-item><hi-link href="#">Upload Profile Picture</hi-link></hi-item>
+            </hi-list>
+          </hi-tile>
+
+          <hi-tile allow-toolbar aesthetic="outline">
+            <h5 slot="title">Quick Links</h5>
+            <p class="clr-gray_80-txt mb-4">Take me to...</p>
+            <hi-list>
+              <hi-item><hi-link href="#">Schedule an Appointment</hi-link></hi-item>
+              <hi-item><hi-link href="#">Create an Event</hi-link></hi-item>
+              <hi-item><hi-link href="#">Appointment Campaigns</hi-link></hi-item>
+            </hi-list>
+          </hi-tile>
+
+          <hi-tile allow-toolbar aesthetic="outline">
+            <h5 slot="title">To-Dos</h5>
+            <p><strong>Test</strong></p>
+            <p class="clr-gray_80-txt">Sarah Acuff</p>
+            <p class="clr-gray_80-txt">03/26/2024</p>
+            <hi-link href="#">View More</hi-link>
+          </hi-tile>
+
+          <hi-tile allow-toolbar aesthetic="outline">
+            <h5 slot="title">Upcoming Appointments</h5>
+            <p>You have no upcoming appointments.</p>
+          </hi-tile>
+        </section>
+      </section>
+    </main>
+
+    <yi-view-footer>
+      <p slot="description">
+        © 2026 EAB. All Rights Reserved. Release Version: 26.13.3
+      </p>
+      <div slot="navigation">
+        <hi-link href="#">Privacy Policy</hi-link>
+        <hi-link href="#">Legal Disclaimer</hi-link>
+        <hi-link href="#">Terms of Use</hi-link>
+        <hi-link href="#">Download Acrobat Reader</hi-link>
+      </div>
+    </yi-view-footer>
+    <script type="module"></script>
+    <noscript>
+      <h1>Application Failure</h1>
+      <p>
+        The application cannot offer an experience because it relies on
+        Javascript.
+      </p>
+      <p>Please enable Javascript to use this demo.</p>
+    </noscript>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+# HIP Designer (auto-generated - only HIP files)
+.cursor/rules/hip.mdc
+.cursor/hip/
+.cursor/commands/hip-designer-*.md
+.github/instructions/hip-*.instructions.md
+
+# OS / editor cruft
+.DS_Store
+.tmp/
+
+# Dependencies
+node_modules/
+
+# Large reference screenshots not needed for the live site
+Walkthrough Screenshots/
+
+# Scratch/temp analysis frames
+.cursor/tmp-login-frames/

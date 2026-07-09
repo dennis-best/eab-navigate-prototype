@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" hip-font-size-dynamic>
+  <head>
+    <title>Login | Navigate360</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="EAB Global Inc." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="Navigate360 login prototype — enter any credentials to continue" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, width=device-width, viewport-fit=cover"
+    />
+
+    <script
+      src="https://cdn.dev.eab.com/hif/latest/index.js"
+      auto-start
+      release="prod"
+      system-load-core
+      system-load-baseline
+      system-load-ds
+      system-load-os
+      library-stop-dragula
+      library-stop-moment
+    ></script>
+    <script>
+      $ip.flags.load([
+        ["/eip/hi-form/default-to-rest", true],
+        ["/pip/pi-ip/insert-css-after-script", true],
+        ["/eip/hi-http/enable-xss-purification-response", false],
+      ]);
+    </script>
+  </head>
+  <body x-layout-system="blueprint" x-hosting="owner">
+    <main id="app" x-area="screen" x-hosting="screen" x-layout-screen="flush">
+      <section x-region="main">
+        <header class="text-center clr-white-bkg" style="padding: 0.75rem 0;">
+          <div l-kind="hort" l-width-fixed l-align="center" l-justify="center">
+            <hi-image
+              src="https://bucks-qa-grey-mt.gradesfirst.com/images/eab_navigate360_logo.svg"
+              alt="EAB Navigate360 Logo"
+              width="220"
+              height="40"
+            ></hi-image>
+          </div>
+        </header>
+
+        <section class="clr-gray_20-bkg" style="padding: 0.5rem 0;">
+          <div l-kind="hort" l-width-fixed l-justify="center">
+            <hi-form aesthetic="invisible" style="width: 12rem;">
+              <hi-input-group style="margin-bottom: 0.5rem;">
+                <hi-label for="username">User Name:</hi-label>
+                <hi-input
+                  id="username"
+                  name="username"
+                  type="text"
+                  autocomplete="off"
+                ></hi-input>
+              </hi-input-group>
+
+              <hi-input-group style="margin-bottom: 0.5rem;">
+                <hi-label for="password">Password:</hi-label>
+                <hi-input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autocomplete="off"
+                ></hi-input>
+              </hi-input-group>
+
+              <hi-button aesthetic="primary" href="navigate-app.html">
+                <span>Log in</span>
+              </hi-button>
+
+              <p style="margin-top: 0.4rem;">
+                <hi-link href="#">Forgot your password?</hi-link>
+              </p>
+            </hi-form>
+          </div>
+        </section>
+
+        <footer
+          l-kind="hort"
+          l-width-full
+          l-align="start"
+          l-justify="between"
+          class="mts pam pal par clr-gray_80-txt text-sz-s"
+        >
+          <p>© 2026 EAB. All Rights Reserved. Browser: Safari 26.5 on Mac.</p>
+          <p>
+            For login assistance, please contact
+            <hi-link href="mailto:ecarmichael@eab.com">ecarmichael@eab.com</hi-link>
+          </p>
+        </footer>
+      </section>
+    </main>
+    <script type="module"></script>
+    <noscript>
+      <h1>Application Failure</h1>
+      <p>
+        The application cannot offer an experience because it relies on
+        Javascript.
+      </p>
+      <p>Please enable Javascript to use this demo.</p>
+    </noscript>
+  </body>
+</html>

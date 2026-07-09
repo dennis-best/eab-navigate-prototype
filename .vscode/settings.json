@@ -1,0 +1,7 @@
+{
+  "livePreview.defaultPreviewPath": "/index.html",
+  "livePreview.portNumber": 3000,
+  "livePreview.hostIP": "127.0.0.1",
+  "livePreview.openPreviewTarget": "External Browser",
+  "livePreview.autoRefreshPreview": "On Changes to Saved Files"
+}

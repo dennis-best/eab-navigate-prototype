@@ -1,0 +1,33 @@
+---
+description: When HI/P plugin docs differ from provided screenshots or live source, ask — never invent
+alwaysApply: true
+---
+
+# HI/P Discrepancy Protocol
+
+When building or revising a prototype, if **any detail in a reference screenshot or live source (e.g. TEMP.HTML) conflicts with what the HI/P plugin documentation says is the correct component, attribute, or icon name**, you MUST:
+
+1. **Stop** — do not silently pick one source or make something up.
+2. **State the discrepancy explicitly** in your response, e.g.:
+   > "The screenshot shows icon X, but the HI/P docs list no icon named X. The closest documented icon is Y. Should I use Y, or do you have the real name?"
+3. **Ask the user** which source to trust before writing any HTML.
+
+## What counts as a discrepancy
+
+- An icon, component tag, attribute, or class visible in a screenshot that has no match in `.cursor/hip/design-elements.md` or `.cursor/hip/design-guides.md`
+- A layout or visual pattern in a screenshot that differs from the documented component behavior
+- A live source file (e.g. `TEMP.HTML`) that uses a property or value not listed in HI/P docs
+
+## What is NOT acceptable
+
+- Inventing an undocumented `kind=`, tag name, attribute, or class to approximate something you saw
+- Silently choosing "the closest thing" without disclosing the gap
+- Proceeding without user confirmation when a discrepancy exists
+
+## Ground truth priority (highest → lowest)
+
+1. Live source HTML provided by the user (e.g. `TEMP.HTML`)
+2. Reference screenshots provided by the user
+3. HI/P plugin documentation (`.cursor/hip/`)
+
+If a higher-priority source conflicts with a lower one, flag it and ask — never silently use the lower-priority source.
