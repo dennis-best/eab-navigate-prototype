@@ -55,13 +55,13 @@
         <div class="poc-video-column" style="width: 49%;">
           <h5 class="mb-4">Navigate360 (Live Recording)</h5>
           <video id="original-video" preload="auto" muted playsinline controls>
-            <source src="../videos/original.mp4" type="video/mp4" />
+            <source src="../videos/original.mp4?v=6c3eb272ff" type="video/mp4" />
           </video>
         </div>
         <div class="poc-video-column" style="width: 49%; margin-left: 2%;">
           <h5 class="mb-4">HI/P Prototype (Playwright Recording)</h5>
           <video id="prototype-video" preload="auto" muted playsinline controls>
-            <source src="../videos/prototype.mp4" type="video/mp4" />
+            <source src="../videos/prototype.mp4?v=4913ea86b9" type="video/mp4" />
           </video>
         </div>
       </div>
@@ -70,6 +70,39 @@
       const originalVideo = document.getElementById("original-video");
       const prototypeVideo = document.getElementById("prototype-video");
       const playBothButton = document.getElementById("play-both-button");
+
+      // Two independent <video> elements decode/buffer at very slightly
+      // different real-time rates, so even perfectly matched source files
+      // drift apart the longer playback continues unless something keeps
+      // correcting for it. originalVideo is the "leader"; prototypeVideo is
+      // snapped back in line whenever it drifts past DRIFT_THRESHOLD_S.
+      const DRIFT_THRESHOLD_S = 0.15;
+      let syncLoopHandle = null;
+
+      function stepSync() {
+        if (originalVideo.paused || originalVideo.ended) {
+          syncLoopHandle = null;
+          return;
+        }
+        const drift = prototypeVideo.currentTime - originalVideo.currentTime;
+        if (Math.abs(drift) > DRIFT_THRESHOLD_S) {
+          prototypeVideo.currentTime = originalVideo.currentTime;
+        }
+        syncLoopHandle = requestAnimationFrame(stepSync);
+      }
+
+      function startSyncLoop() {
+        if (syncLoopHandle === null) {
+          syncLoopHandle = requestAnimationFrame(stepSync);
+        }
+      }
+
+      function stopSyncLoop() {
+        if (syncLoopHandle !== null) {
+          cancelAnimationFrame(syncLoopHandle);
+          syncLoopHandle = null;
+        }
+      }
 
       function playBoth() {
         originalVideo.currentTime = 0;
@@ -81,6 +114,13 @@
       if (playBothButton) {
         playBothButton.addEventListener("click", playBoth);
       }
+
+      originalVideo.addEventListener("play", startSyncLoop);
+      originalVideo.addEventListener("pause", stopSyncLoop);
+      originalVideo.addEventListener("ended", stopSyncLoop);
+      originalVideo.addEventListener("seeked", () => {
+        prototypeVideo.currentTime = originalVideo.currentTime;
+      });
     </script>
     <noscript>
       <h1>Application Failure</h1>
