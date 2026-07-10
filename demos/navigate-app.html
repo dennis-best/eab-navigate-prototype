@@ -1064,46 +1064,49 @@
                   <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
                     <h5 slot="title">GPA Trends By Term</h5>
                     <p class="clr-gray_80-txt text-sz-s mb-4">* Terms with no attempted credits are not shown.</p>
-                    <div scroll-x="auto">
-                      <table kind="compact">
-                        <thead>
-                          <tr>
-                            <th class="text-uppercase">Term</th>
-                            <th class="text-uppercase">Term GPA</th>
-                            <th class="text-uppercase">Cum GPA</th>
-                            <th class="text-uppercase">Credits Attempted</th>
-                            <th class="text-uppercase">Credits Completed</th>
-                            <th class="text-uppercase">Total Credits</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Fall 2024</td>
-                            <td>2.6</td>
-                            <td>2.6</td>
-                            <td>15.00</td>
-                            <td>15.00</td>
-                            <td>15.00</td>
-                          </tr>
-                          <tr>
-                            <td>Spring 2025</td>
-                            <td>2.4</td>
-                            <td>2.5</td>
-                            <td>15.00</td>
-                            <td>12.00</td>
-                            <td>27.00</td>
-                          </tr>
-                          <tr>
-                            <td>Fall 2025</td>
-                            <td>3.0</td>
-                            <td>2.64</td>
-                            <td>12.00</td>
-                            <td>12.00</td>
-                            <td>39.00</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                    <div l-kind="hort" l-width-fixed l-align="center" class="mb-2">
+                      <span class="mr-2" style="display:inline-block; width:0.75rem; height:0.75rem; background-color:#b3aee0;"></span>
+                      <span class="mr-6 text-sz-s">Term GPA</span>
+                      <span class="mr-2" style="display:inline-block; width:0.75rem; height:0.75rem; background-color:#4a3f9e;"></span>
+                      <span class="text-sz-s">Cumulative GPA</span>
                     </div>
+                    <svg viewBox="0 0 560 220" role="img" aria-label="Line chart of Term GPA and Cumulative GPA by term" style="width:100%; max-width:640px; height:auto;">
+                      <g stroke="#e0e0e0" stroke-width="1">
+                        <line x1="40" y1="10" x2="40" y2="180" />
+                        <line x1="40" y1="10" x2="540" y2="10" />
+                        <line x1="40" y1="34.3" x2="540" y2="34.3" />
+                        <line x1="40" y1="58.6" x2="540" y2="58.6" />
+                        <line x1="40" y1="82.9" x2="540" y2="82.9" />
+                        <line x1="40" y1="107.1" x2="540" y2="107.1" />
+                        <line x1="40" y1="131.4" x2="540" y2="131.4" />
+                        <line x1="40" y1="155.7" x2="540" y2="155.7" />
+                        <line x1="40" y1="180" x2="540" y2="180" />
+                      </g>
+                      <g fill="#767676" font-size="10" text-anchor="end">
+                        <text x="34" y="14">3.5</text>
+                        <text x="34" y="38">3.0</text>
+                        <text x="34" y="62">2.5</text>
+                        <text x="34" y="87">2.0</text>
+                        <text x="34" y="111">1.5</text>
+                        <text x="34" y="135">1.0</text>
+                        <text x="34" y="159">0.5</text>
+                        <text x="34" y="184">0</text>
+                      </g>
+                      <g fill="#767676" font-size="10" text-anchor="middle">
+                        <text x="107" y="198">Fall 2024</text>
+                        <text x="240" y="198">Spring 2025</text>
+                        <text x="373" y="198">Fall 2025</text>
+                        <text x="506" y="198">Spring 2026</text>
+                      </g>
+                      <polyline points="107,53.7 240,63.4 373,34.3 506,180" fill="none" stroke="#b3aee0" stroke-width="2" />
+                      <polyline points="107,53.7 240,58.6 373,51.8 506,51.8" fill="none" stroke="#4a3f9e" stroke-width="2" />
+                      <g fill="#4a3f9e">
+                        <circle cx="107" cy="53.7" r="3" />
+                        <circle cx="240" cy="58.6" r="3" />
+                        <circle cx="373" cy="51.8" r="3" />
+                        <circle cx="506" cy="51.8" r="3" />
+                      </g>
+                    </svg>
                   </hi-tile>
                 </section>
               </hi-case>
