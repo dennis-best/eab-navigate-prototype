@@ -199,6 +199,10 @@
                         <hi-dropdown kind="value" id="filter-list-type">
                           <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
                             <hi-option selected>Assigned Students</hi-option>
+                            <hi-option>Upcoming Graduates</hi-option>
+                            <hi-option>Navigate for Students Users</hi-option>
+                            <hi-option>Academic Probation</hi-option>
+                            <hi-option>Need Advisor</hi-option>
                           </hi-select>
                         </hi-dropdown>
                       </hi-input-group>
@@ -215,6 +219,7 @@
                         <hi-dropdown kind="value" id="filter-relationship">
                           <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
                             <hi-option selected>All Relationship Types</hi-option>
+                            <hi-option>Advisor</hi-option>
                           </hi-select>
                         </hi-dropdown>
                       </hi-input-group>
@@ -283,6 +288,13 @@
                       <hi-dropdown kind="value" id="upcoming-care-unit">
                         <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
                           <hi-option selected>All Care Units</hi-option>
+                          <hi-option>Admissions Counseling</hi-option>
+                          <hi-option>Advising</hi-option>
+                          <hi-option>Career Services</hi-option>
+                          <hi-option>Financial Aid</hi-option>
+                          <hi-option>First Year Experience</hi-option>
+                          <hi-option>Residence Life</hi-option>
+                          <hi-option>Student Support Services</hi-option>
                         </hi-select>
                       </hi-dropdown>
                     </hi-input-group>
@@ -706,6 +718,13 @@
                         <hi-dropdown kind="value" id="requests-care-unit">
                           <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
                             <hi-option selected>All Care Units</hi-option>
+                            <hi-option>Admissions Counseling</hi-option>
+                            <hi-option>Advising</hi-option>
+                            <hi-option>Career Services</hi-option>
+                            <hi-option>Financial Aid</hi-option>
+                            <hi-option>First Year Experience</hi-option>
+                            <hi-option>Residence Life</hi-option>
+                            <hi-option>Student Support Services</hi-option>
                           </hi-select>
                         </hi-dropdown>
                       </hi-input-group>
@@ -1155,6 +1174,13 @@
                       <hi-dropdown kind="value" id="cases-view-as">
                         <hi-select aesthetic="dropdown" selected-index="0">
                           <hi-option selected>Cases for James</hi-option>
+                          <hi-option>James's History</hi-option>
+                          <hi-option>Notes about James</hi-option>
+                          <hi-option>Staff Initiated Alerts for James</hi-option>
+                          <hi-option>Student Initiated Alerts for James</hi-option>
+                          <hi-option>Progress Reports for James</hi-option>
+                          <hi-option>Appointment Summaries for James</hi-option>
+                          <hi-option>James's Visits to Support Centers</hi-option>
                         </hi-select>
                       </hi-dropdown>
                     </hi-input-group>
@@ -1288,6 +1314,84 @@
                       </table>
                     </div>
                     <p class="clr-gray_80-txt text-sz-s mt-4">Showing items 1-15 of 55</p>
+                  </hi-tile>
+
+                  <hi-tile allow-toolbar aesthetic="outline" class="mt-6">
+                    <h5 slot="title">James's History</h5>
+                    <hi-input-group class="mb-4" style="width: 14rem;">
+                      <hi-label for="jw-history-view-as">View As</hi-label>
+                      <hi-dropdown kind="value" id="jw-history-view-as">
+                        <hi-select aesthetic="dropdown" selected-index="0">
+                          <hi-option selected>James's History</hi-option>
+                          <hi-option>Notes about James</hi-option>
+                          <hi-option>Staff Initiated Alerts for James</hi-option>
+                          <hi-option>Student Initiated Alerts for James</hi-option>
+                          <hi-option>Progress Reports for James</hi-option>
+                          <hi-option>Appointment Summaries for James</hi-option>
+                          <hi-option>James's Visits to Support Centers</hi-option>
+                        </hi-select>
+                      </hi-dropdown>
+                    </hi-input-group>
+
+                    <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-4">
+                      <hi-button aesthetic="link">Collapse All</hi-button>
+                    </div>
+
+                    <hi-input-group class="mb-6" style="width: 20rem;">
+                      <hi-label for="jw-history-activity-filter">Filter Activity Types</hi-label>
+                      <hi-dropdown kind="value" id="jw-history-activity-filter">
+                        <hi-select aesthetic="dropdown" allow-key-search>
+                          <hi-option>Appointment</hi-option>
+                          <hi-option>Case Closed</hi-option>
+                          <hi-option>Case Opened</hi-option>
+                          <hi-option>Check In</hi-option>
+                          <hi-option>I Need Support Issued</hi-option>
+                        </hi-select>
+                      </hi-dropdown>
+                    </hi-input-group>
+
+                    <h4 class="mb-4">Jul 2026</h4>
+                    <div class="mb-4">
+                      <div l-kind="hort" l-width-fixed l-justify="between" l-align="center">
+                        <h5>Advising Appointment</h5>
+                        <span class="text-sz-s">Jack Whitten</span>
+                      </div>
+                      <p class="text-sz-s clr-gray_80-txt">Fri, Jul 3, 2026 &nbsp; General Advising</p>
+                      <p class="text-sz-s"><b>Time:</b> 7/3/2026, 11:15 AM - 12:00 PM ET</p>
+                      <p class="text-sz-s"><b>Location:</b> Hornet Tutoring Center</p>
+                      <p class="text-sz-s"><b>Comments:</b></p>
+                    </div>
+                    <div class="mb-4">
+                      <div l-kind="hort" l-width-fixed l-justify="between" l-align="center">
+                        <h5>Alert Issued</h5>
+                        <span class="text-sz-s">Jack Whitten</span>
+                      </div>
+                      <p class="text-sz-s clr-gray_80-txt">Wed, Jul 1, 2026 &nbsp; Needs Tutoring</p>
+                      <p class="text-sz-s"><b>Issuing Evaluation:</b></p>
+                    </div>
+                    <div class="mb-6">
+                      <div l-kind="hort" l-width-fixed l-justify="between" l-align="center">
+                        <h5>Case Opened</h5>
+                        <span class="text-sz-s">Jack Whitten</span>
+                      </div>
+                      <p class="text-sz-s clr-gray_80-txt">Wed, Jul 1, 2026 &nbsp; Needs Tutoring</p>
+                      <p class="text-sz-s"><b>Comments:</b></p>
+                      <p class="text-sz-s">set up tutoring appointment</p>
+                      <hi-link href="#">Manage Case</hi-link>
+                    </div>
+
+                    <h4 class="mb-4">Jun 2026</h4>
+                    <div class="mb-4">
+                      <div l-kind="hort" l-width-fixed l-justify="between" l-align="center">
+                        <h5>Advising Appointment</h5>
+                        <span class="text-sz-s">Jack Whitten</span>
+                      </div>
+                      <p class="text-sz-s clr-gray_80-txt">Fri, Jun 26, 2026 &nbsp; Academic Planning</p>
+                      <p class="text-sz-s"><b>Time:</b> 6/26/2026, 11:00 AM - 11:45 AM ET</p>
+                      <p class="text-sz-s"><b>Location:</b> Hornet Tutoring Center</p>
+                      <p class="text-sz-s"><b>Comments:</b></p>
+                      <p class="text-sz-s">James Wyatt: Is there anything I should bring?</p>
+                    </div>
                   </hi-tile>
                 </section>
               </hi-case>
@@ -1926,7 +2030,7 @@
                         <p class="text-sz-s clr-gray_80-txt mb-1">James's Current Plan</p>
                         <p class="mb-4">
                           <hi-link href="#">James's Current Plan</hi-link><br />
-                          <span class="clr-gray_80-txt text-sz-s">by James Wyatt<br />On: 02/25/2027 11:38 PM</span>
+                          <span class="clr-gray_80-txt text-sz-s">by James Wyatt<br />On: February 25, 2021 11:38 PM</span>
                         </p>
                         <p class="mb-2"><hi-link href="#">Template Library</hi-link></p>
                         <p class="mb-2"><hi-link href="#">Sent Advisor Plans</hi-link></p>
@@ -1957,8 +2061,7 @@
                     </div>
                     <div style="width: 24%;" class="ml-4">
                       <hi-tile allow-toolbar aesthetic="outline">
-                        <h5 slot="title">James Wyatt's Draft Plans</h5>
-                        <p class="clr-gray_80-txt text-sz-s">You can view James's draft plans here.</p>
+                        <p class="clr-gray_80-txt text-sz-s">You can view your Draft Plans here.</p>
                       </hi-tile>
                     </div>
                   </div>
@@ -2021,6 +2124,13 @@
                     <hi-dropdown kind="value" id="jw-appt-care-unit">
                       <hi-select aesthetic="dropdown" selected-index="0">
                         <hi-option selected>All Care Units</hi-option>
+                        <hi-option>Admissions Counseling</hi-option>
+                        <hi-option>Advising</hi-option>
+                        <hi-option>Career Services</hi-option>
+                        <hi-option>Financial Aid</hi-option>
+                        <hi-option>First Year Experience</hi-option>
+                        <hi-option>Residence Life</hi-option>
+                        <hi-option>Student Support Services</hi-option>
                       </hi-select>
                     </hi-dropdown>
                   </hi-input-group>
@@ -2046,6 +2156,112 @@
                       </tbody>
                     </table>
                   </div>
+
+                  <h2 class="mt-6 mb-6">Recent Appointments</h2>
+                  <hi-input-group class="mb-4" style="width: 14rem;">
+                    <hi-label for="jw-appt-recent-care-unit">Care Unit</hi-label>
+                    <hi-dropdown kind="value" id="jw-appt-recent-care-unit">
+                      <hi-select aesthetic="dropdown" selected-index="0">
+                        <hi-option selected>All Care Units</hi-option>
+                        <hi-option>Admissions Counseling</hi-option>
+                        <hi-option>Advising</hi-option>
+                        <hi-option>Career Services</hi-option>
+                        <hi-option>Financial Aid</hi-option>
+                        <hi-option>First Year Experience</hi-option>
+                        <hi-option>Residence Life</hi-option>
+                        <hi-option>Student Support Services</hi-option>
+                      </hi-select>
+                    </hi-dropdown>
+                  </hi-input-group>
+                  <div scroll-x="auto">
+                    <table kind="compact">
+                      <thead>
+                        <tr>
+                          <th class="text-uppercase">Date</th>
+                          <th class="text-uppercase">Care Unit</th>
+                          <th class="text-uppercase">Service/Course</th>
+                          <th class="text-uppercase">Comment</th>
+                          <th class="text-uppercase">Organizer</th>
+                          <th class="text-uppercase">Report Filed?</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>07/03/2026</td>
+                          <td>Advising</td>
+                          <td>General Advising</td>
+                          <td></td>
+                          <td><hi-link href="#">Whitten, Jack</hi-link></td>
+                          <td>Not Yet</td>
+                        </tr>
+                        <tr>
+                          <td>06/26/2026</td>
+                          <td>Advising</td>
+                          <td>Academic Planning</td>
+                          <td>James Wyatt: Is there anything I should bring?</td>
+                          <td><hi-link href="#">Whitten, Jack</hi-link></td>
+                          <td>Not Yet</td>
+                        </tr>
+                        <tr>
+                          <td>06/19/2026</td>
+                          <td>Advising</td>
+                          <td>Academic Planning</td>
+                          <td></td>
+                          <td><hi-link href="#">Whitten, Jack</hi-link></td>
+                          <td>Not Yet</td>
+                        </tr>
+                        <tr>
+                          <td>06/19/2026</td>
+                          <td>Advising</td>
+                          <td>Academic Planning</td>
+                          <td>This is why James is here</td>
+                          <td><hi-link href="#">Whitten, Jack</hi-link></td>
+                          <td><hi-button aesthetic="primary" size="small">Details</hi-button></td>
+                        </tr>
+                        <tr>
+                          <td>06/19/2026</td>
+                          <td>Financial Aid</td>
+                          <td>Applying for Financial Aid, Emergency Tuition Grant</td>
+                          <td></td>
+                          <td><hi-link href="#">Gonzalez, Joseph</hi-link></td>
+                          <td><hi-button aesthetic="primary" size="small">Details</hi-button></td>
+                        </tr>
+                        <tr>
+                          <td>05/15/2026</td>
+                          <td>Tutoring</td>
+                          <td>Intro to Biology</td>
+                          <td></td>
+                          <td><hi-link href="#">Whitmore, Jack</hi-link></td>
+                          <td>Not Yet</td>
+                        </tr>
+                        <tr>
+                          <td>05/12/2026</td>
+                          <td>Financial Aid</td>
+                          <td>Applying for Financial Aid</td>
+                          <td></td>
+                          <td><hi-link href="#">Gonzalez, Joseph</hi-link></td>
+                          <td>Not Yet</td>
+                        </tr>
+                        <tr>
+                          <td>05/08/2026</td>
+                          <td>Advising</td>
+                          <td>Applying for Financial Aid</td>
+                          <td></td>
+                          <td><hi-link href="#">Whitten, Jack</hi-link></td>
+                          <td><hi-button aesthetic="primary" size="small">Details</hi-button></td>
+                        </tr>
+                        <tr>
+                          <td>05/07/2026</td>
+                          <td>Advising</td>
+                          <td>Academic Planning</td>
+                          <td></td>
+                          <td><hi-link href="#">Williams, Jack</hi-link></td>
+                          <td>Not Yet</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p class="clr-gray_80-txt text-sz-s mt-4">Showing items 1-10 of 18</p>
                 </section>
               </hi-case>
 
