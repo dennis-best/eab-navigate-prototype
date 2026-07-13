@@ -26,17 +26,30 @@ automatically, contact sheets to triage dozens of moments per image read, and
 targeted full-resolution reads only for the handful of moments that need
 precise text/data extraction.
 
+## This is a mandatory, enforced process, not an optional checklist
+
+This skill was rewritten after repeated partial audits produced a stream of
+"one more thing you missed" corrections (dropdown search boxes, missing
+default filter values, un-rendered checkbox labels, a table that quietly
+capped out at 2 rows despite claiming "401 total results" via pagination).
+Every one of those had a common cause: the audit was scoped to *whatever had
+just been pointed out* instead of being exhaustive and reading real component
+contracts. The rules below close those gaps. Do not skip steps to save time —
+skipping is what caused the repeat misses in the first place.
+
 ## Workflow
 
 ```
 Task Progress:
-- [ ] Step 1: Extract change-points from the source video
+- [ ] Step 1: Extract change-points from the ENTIRE source video (no sampled windows)
 - [ ] Step 2: Build contact sheets (thumbnail + auto diff-crop per tile) from the change-points
-- [ ] Step 3: Triage contact sheets, note interesting timestamps
+- [ ] Step 3: Triage every contact sheet, note every distinct screen/state
 - [ ] Step 4: Pull targeted full-resolution frames for interesting timestamps
-- [ ] Step 5: Cross-reference against the prototype HTML and fix real gaps
-- [ ] Step 6: Re-render the prototype recording
-- [ ] Step 7: Run the SSIM regression gate against the prototype recording and fix anything flagged
+- [ ] Step 5: Read real component contracts before asserting how anything behaves
+- [ ] Step 6: Run the full per-screen, all-element-type checklist against the prototype
+- [ ] Step 7: Fix every real gap in one pass, including data extrapolation and filter consistency
+- [ ] Step 8: Re-render the prototype recording
+- [ ] Step 9: Run the SSIM regression gate against the prototype recording and fix anything flagged
 ```
 
 ### Step 1: Extract change-points
@@ -111,16 +124,103 @@ Crop coordinates are in the source video's native resolution
 (check with `ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 <video>`),
 not the scaled-down coordinates of any earlier screenshot.
 
-### Step 5: Cross-reference and fix
+### Step 5: Read real component contracts — never guess
 
-For every real discrepancy found (missing dropdown options, wrong icon,
-missing chart, placeholder table, etc.), fix it in the prototype HTML using
-only documented markup for the design system in use. If a visible detail has
-no documented equivalent, flag the gap explicitly instead of inventing markup
-— do not guess at undocumented attributes/tags.
+Before asserting how any component behaves (a select, combobox, table,
+chart, checkbox, tabs, tiles, icons — anything), read its actual doc, not
+just a catalog/index file that only lists filenames. For this design system
+the real per-component contracts live at:
 
-Preserve the source video's data exactly, including apparent glitches (e.g.
-real duplicate entries in a dropdown) — do not "clean up" what's on tape.
+```
+/Users/dennisbest/Library/Application Support/Cursor/User/globalStorage/eab-hip.hip-designer/kb-design-cache/kb-design/ds/markdown/@eab-eip/<component>/visual_guide.md
+```
+
+Two failure modes this specifically prevents, both of which happened on this
+project before this rule was enforced:
+- Treating `hi-select[allow-key-search]` as "a visible search box" (it's
+  actually silent keyboard type-ahead — no visible input). The real
+  documented component for a visible search input with grouped/headed
+  options is `hi-combobox`, using `input='[{"title":...,"value":...},
+  {"title":"Heading","heading":true}, ...]'`.
+- Assuming `<hi-checkbox>Some Label</hi-checkbox>` renders a visible label
+  from its slotted text. It does not — `hi-checkbox`'s shadow DOM has no
+  slot for it; the label never appears no matter how long you wait or
+  what you click. The documented pattern is a **separate sibling
+  `<hi-label for="...">`** (wrap both in `hi-input-group
+  layout-mode="input-label"` for horizontal layout). Any
+  `<hi-checkbox>text</hi-checkbox>` in this codebase is a bug, not a style
+  choice.
+
+**Render-test anything ambiguous** instead of trusting doc prose alone:
+render both candidate variants locally with Playwright, screenshot the
+relevant state (e.g. an open dropdown), and compare against the matching
+video frame. Concrete example: docs describe `hi-select[aesthetic="dropdown"]`
+as having "no visual indicator" for the selected option, but a render test
+showed it actually does highlight the selected item by default — settled by
+evidence, not by re-reading the prose more carefully.
+
+**Known hidden-tab rendering bug**: a `hi-select` with `selected-index="0"`
++ `<hi-option selected>` mounted inside an initially-`hidden` `hi-case` (any
+tab that isn't the default active one) silently fails to display its
+closed-state label text — internal `selectedIndex` is correct, but
+`hi-dropdown`'s `values` array stays `[]` and the box renders empty. This is
+NOT fixable by re-triggering clicks/opens after the fact. The robust fix:
+use `mode="value"` with an explicit `value="..."` attribute (and
+`value="..."` on each `<hi-option>`) instead of `selected-index`/`selected`
+— this pattern renders correctly regardless of initial visibility. Any
+`hi-select` that drives a default-visible filter should use this pattern,
+not the ambiguous `selected-index` + `selected` combination.
+
+### Step 6: Full per-screen, all-element-type checklist
+
+Do not scope the audit to "the thing that was just complained about." For
+every screen/state found in Step 3, check every element type that's present,
+against the matching video frame(s):
+
+- **Interactive controls** (dropdowns/selects/comboboxes): search input
+  present? selected-item highlighted? grouped/headed options? exact option
+  text/order, including real duplicates? if it's a filter over a
+  table/list/chart, does the default selection and the data shown agree
+  with each other (see filter-consistency rule below)?
+- **Tables**: exact columns, sort affordances, row data, pagination — and if
+  a count/pager implies more rows than are directly visible, extrapolate
+  plausible additional rows to match that implied scale (see data rule
+  below).
+- **Charts**: chart type, axes, data shown — not a placeholder table where
+  the video shows a chart, or vice versa.
+- **Icons/logos**: real brand marks vs generic icons (see brand-asset rule
+  below).
+- **Text/labels/counts**: exact copy, not paraphrased or approximated.
+- **Images/photos**: matches what's in the video where identity matters.
+- **Layout/structure**: sections present/absent, ordering, panel placement.
+
+**HIP is a toolkit, not a ceiling.** If a documented component matches
+what's on tape, use it (from the real docs, not a guess). If nothing in the
+design system matches, do not skip it, approximate it away, or stop and wait
+for permission — build it with plain HTML/CSS/JS so the prototype actually
+replicates the video. Note afterward (informationally) that a piece was
+custom-built outside the design system; that note doesn't block continuing.
+The only case that still warrants pausing to ask is a real brand/logo asset
+you don't have the actual file for.
+
+**Data rule**: where the video directly shows data, copy it exactly — don't
+paraphrase or "clean it up," including apparent glitches like real duplicate
+entries. Where the UI *implies* more data exists than is directly visible
+(a pager showing "401 total results" while only 2 rows are ever fully
+readable on tape, a scrollbar implying more list items, etc.), extrapolate
+enough additional plausible rows/items to back that implied scale, using the
+visible entries as the template for columns/format/value ranges — don't
+leave it artificially sparse just because that's all that was directly
+readable.
+
+**Filter-consistency rule**: a dropdown/toggle/tab that filters a
+table/list/chart is not a decorative, standalone control — its default
+selected value and the data shown beneath it must agree with each other (the
+right kind/count of rows for that specific selection, not a generic
+dataset), and if the video shows the same filter changed to a different
+value producing different results, the prototype's data should differ
+between those states too, not stay identical regardless of selection. Audit
+the control and the data it filters as one unit, not separately.
 
 **Real brand assets rule**: if a visible element looks like an
 organization/product logo or brand mark — as opposed to a generic UI icon
@@ -134,11 +234,16 @@ like a real logo, please provide the asset" — the user had to point out the
 mistake themselves. The fix was `hi-image src=".../real-logo.png"`, matching
 the pattern already used elsewhere in the same file for actual brand marks.
 
-### Step 6: Re-render
+### Step 7: Fix every real gap in one pass
+
+Fix everything found in Step 6 together, not one complaint at a time — that
+one-at-a-time pattern is exactly what this rewrite exists to stop.
+
+### Step 8: Re-render
 
 Re-run the prototype's recording script to produce a new prototype video.
 
-### Step 7: SSIM regression gate (mandatory before declaring "done")
+### Step 9: SSIM regression gate (mandatory before declaring "done")
 
 ```bash
 node scripts/compare-videos.js videos/original.mp4 videos/prototype.mp4 .tmp/changepoints/original.json .tmp/compare-videos/report.json
@@ -168,6 +273,14 @@ Don't chase the absolute score to zero; instead:
   least once after the final re-render. Fix what it flags (or explicitly
   note it as an acknowledged/acceptable design difference) and re-run until
   clear.
+- **Watch for tab-sequencing/timeline drift, not just content gaps**: a
+  cluster of consecutive low scores across a whole stretch (rather than one
+  isolated frame) can mean the recording script's assumed choreography
+  (which tab is active at second N) no longer matches the source video's
+  actual order — a different failure mode than a missing element, and one
+  content fixes alone won't resolve. Pull full-resolution frames from both
+  videos at a couple of timestamps in that stretch to tell which case it is
+  before fixing anything.
 
 ## Efficiency notes
 

@@ -235,38 +235,45 @@
                     <div l-kind="hort" l-width-fixed l-align="end">
                       <hi-input-group style="width: 14rem;">
                         <hi-label for="filter-list-type">List Type</hi-label>
-                        <hi-dropdown kind="value" id="filter-list-type">
-                          <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
-                            <hi-option selected>Assigned Students</hi-option>
-                            <hi-option>Upcoming Graduates</hi-option>
-                            <hi-option>Navigate for Students Users</hi-option>
-                            <hi-option>Academic Probation</hi-option>
-                            <hi-option>Need Advisor</hi-option>
-                          </hi-select>
-                        </hi-dropdown>
+                        <hi-combobox
+                          id="filter-list-type"
+                          value="assigned-students"
+                          input='[
+                            {"title":"Assigned Students","value":"assigned-students"},
+                            {"title":"Student Lists","heading":true},
+                            {"title":"Upcoming Graduates","value":"upcoming-graduates"},
+                            {"title":"Navigate for Students Users","value":"navigate-for-students-us"},
+                            {"title":"Academic Probation","value":"academic-probation"},
+                            {"title":"Need Advisor","value":"need-advisor"}
+                          ]'
+                        ></hi-combobox>
                       </hi-input-group>
                       <hi-input-group class="ml-4" style="width: 14rem;">
                         <hi-label for="filter-term">Term</hi-label>
-                        <hi-dropdown kind="value" id="filter-term">
-                          <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
-                            <hi-option selected>Spring 2026 (Default Term)</hi-option>
-                            <hi-option>All Terms</hi-option>
-                            <hi-option>Spring 2031</hi-option>
-                            <hi-option>Spring 2031</hi-option>
-                            <hi-option>Fall 2030</hi-option>
-                            <hi-option>Fall 2030</hi-option>
-                            <hi-option>Spring 2030</hi-option>
-                          </hi-select>
-                        </hi-dropdown>
+                        <hi-combobox
+                          id="filter-term"
+                          value="spring-2026-default-term"
+                          input='[
+                            {"title":"Spring 2026 (Default Term)","value":"spring-2026-default-term"},
+                            {"title":"All Terms","value":"all-terms"},
+                            {"title":"Spring 2031","value":"spring-2031"},
+                            {"title":"Spring 2031","value":"spring-2031-2"},
+                            {"title":"Fall 2030","value":"fall-2030"},
+                            {"title":"Fall 2030","value":"fall-2030-2"},
+                            {"title":"Spring 2030","value":"spring-2030"}
+                          ]'
+                        ></hi-combobox>
                       </hi-input-group>
                       <hi-input-group class="ml-4" style="width: 14rem;">
                         <hi-label for="filter-relationship">Relationship Type</hi-label>
-                        <hi-dropdown kind="value" id="filter-relationship">
-                          <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
-                            <hi-option selected>All Relationship Types</hi-option>
-                            <hi-option>Advisor</hi-option>
-                          </hi-select>
-                        </hi-dropdown>
+                        <hi-combobox
+                          id="filter-relationship"
+                          value="all-relationship-types"
+                          input='[
+                            {"title":"All Relationship Types","value":"all-relationship-types"},
+                            {"title":"Advisor","value":"advisor"}
+                          ]'
+                        ></hi-combobox>
                       </hi-input-group>
                     </div>
                   </hi-form>
@@ -311,6 +318,204 @@
                             Full-Time, Pre-enrollment risk, Study group member
                           </td>
                         </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Bennett, Sofia"></hi-checkbox></td>
+                          <td><hi-link href="#">Bennett, Sofia</hi-link></td>
+                          <td>46780179</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            Completed probation requirement, Financial Aid, First generation student, Full-Time, Pre-enrollment risk, Study group member
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Castillo, Noah"></hi-checkbox></td>
+                          <td><hi-link href="#">Castillo, Noah</hi-link></td>
+                          <td>57526752</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            Completed probation requirement, Financial Aid, First generation student, Full-Time, Good Academic Standing
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Delgado, Isabella"></hi-checkbox></td>
+                          <td><hi-link href="#">Delgado, Isabella</hi-link></td>
+                          <td>89332232</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            Financial Aid, Full-Time, Study group member
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Estrada, Ethan"></hi-checkbox></td>
+                          <td><hi-link href="#">Estrada, Ethan</hi-link></td>
+                          <td>98243062</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            First generation student, Part-Time, Pre-enrollment risk
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Farrow, Mia"></hi-checkbox></td>
+                          <td><hi-link href="#">Farrow, Mia</hi-link></td>
+                          <td>69341220</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            Good Academic Standing, Full-Time
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Gutierrez, Lucas"></hi-checkbox></td>
+                          <td><hi-link href="#">Gutierrez, Lucas</hi-link></td>
+                          <td>17231592</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            Financial Aid, First generation student, Full-Time, Study group member
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Hensley, Emma"></hi-checkbox></td>
+                          <td><hi-link href="#">Hensley, Emma</hi-link></td>
+                          <td>26925441</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            Pre-enrollment risk, Part-Time
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Ibarra, Mason"></hi-checkbox></td>
+                          <td><hi-link href="#">Ibarra, Mason</hi-link></td>
+                          <td>59211901</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            Completed probation requirement, Full-Time, Good Academic Standing
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Jacobs, Olivia"></hi-checkbox></td>
+                          <td><hi-link href="#">Jacobs, Olivia</hi-link></td>
+                          <td>11530347</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            Completed probation requirement, Financial Aid, First generation student, Full-Time, Pre-enrollment risk, Study group member
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Kowalski, Logan"></hi-checkbox></td>
+                          <td><hi-link href="#">Kowalski, Logan</hi-link></td>
+                          <td>62351044</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            Completed probation requirement, Financial Aid, First generation student, Full-Time, Good Academic Standing
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Lindqvist, Ella"></hi-checkbox></td>
+                          <td><hi-link href="#">Lindqvist, Ella</hi-link></td>
+                          <td>80553011</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            Financial Aid, Full-Time, Study group member
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Mercado, Caleb"></hi-checkbox></td>
+                          <td><hi-link href="#">Mercado, Caleb</hi-link></td>
+                          <td>94413093</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            First generation student, Part-Time, Pre-enrollment risk
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Nakamura, Zoe"></hi-checkbox></td>
+                          <td><hi-link href="#">Nakamura, Zoe</hi-link></td>
+                          <td>85869960</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            Good Academic Standing, Full-Time
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Ortega, Elijah"></hi-checkbox></td>
+                          <td><hi-link href="#">Ortega, Elijah</hi-link></td>
+                          <td>52636644</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            Financial Aid, First generation student, Full-Time, Study group member
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Patel, Chloe"></hi-checkbox></td>
+                          <td><hi-link href="#">Patel, Chloe</hi-link></td>
+                          <td>70205099</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            Pre-enrollment risk, Part-Time
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Quintana, Aiden"></hi-checkbox></td>
+                          <td><hi-link href="#">Quintana, Aiden</hi-link></td>
+                          <td>37041436</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            Completed probation requirement, Full-Time, Good Academic Standing
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Reyes, Grace"></hi-checkbox></td>
+                          <td><hi-link href="#">Reyes, Grace</hi-link></td>
+                          <td>33463338</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            Completed probation requirement, Financial Aid, First generation student, Full-Time, Pre-enrollment risk, Study group member
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><hi-checkbox aria-label="Select Suarez, Hunter"></hi-checkbox></td>
+                          <td><hi-link href="#">Suarez, Hunter</hi-link></td>
+                          <td>11261486</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            Completed probation requirement, Financial Aid, First generation student, Full-Time, Good Academic Standing
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -330,24 +535,13 @@
                   <hi-form class="mb-6">
                     <hi-input-group style="width: 14rem;">
                       <hi-label for="upcoming-care-unit">Care Unit</hi-label>
-                      <hi-dropdown kind="value" id="upcoming-care-unit">
-                        <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
-                          <hi-option selected>All Care Units</hi-option>
-                          <hi-option>Admissions Counseling</hi-option>
-                          <hi-option>Advising</hi-option>
-                          <hi-option>Career Services</hi-option>
-                          <hi-option>Financial Aid</hi-option>
-                          <hi-option>First Year Experience</hi-option>
-                          <hi-option>Residence Life</hi-option>
-                          <hi-option>Student Support Services</hi-option>
-                        </hi-select>
-                      </hi-dropdown>
+                      <hi-combobox id="upcoming-care-unit" value="all-care-units" input='[{"title":"All Care Units","value":"all-care-units"},{"title":"Admissions Counseling","value":"admissions-counseling"},{"title":"Advising","value":"advising"},{"title":"Career Services","value":"career-services"},{"title":"Financial Aid","value":"financial-aid"},{"title":"First Year Experience","value":"first-year-experience"},{"title":"Residence Life","value":"residence-life"},{"title":"Student Support Services","value":"student-support-services"}]'></hi-combobox>
                     </hi-input-group>
                   </hi-form>
 
                   <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
                     <hi-button aesthetic="link">Actions</hi-button>
-                    <hi-checkbox id="upcoming-show-cancelled">Show Cancelled</hi-checkbox>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox id="upcoming-show-cancelled"></hi-checkbox><hi-label for="upcoming-show-cancelled" class="ml-1">Show Cancelled</hi-label></hi-input-group>
                   </div>
 
                   <div scroll-x="auto" class="mb-8">
@@ -634,7 +828,7 @@
                     <hi-label for="target-hours">Target Hours Per Week</hi-label>
                     <hi-input id="target-hours" type="number" value="0"></hi-input>
                   </hi-input-group>
-                  <hi-checkbox>Block scheduling for the week when target is hit</hi-checkbox>
+                  <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox id="cb-auto-2"></hi-checkbox><hi-label for="cb-auto-2" class="ml-1">Block scheduling for the week when target is hit</hi-label></hi-input-group>
                 </section>
               </hi-case>
 
@@ -644,9 +838,18 @@
                   <h2 class="mb-6">Appointment Queues</h2>
                   <div l-kind="hort" l-width-fixed l-align="center" class="mb-6">
                     <span class="mr-4">Notification Methods:</span>
-                    <hi-checkbox checked class="mr-4">Ding</hi-checkbox>
-                    <hi-checkbox class="mr-4">E-mail</hi-checkbox>
-                    <hi-checkbox>Text Message</hi-checkbox>
+                    <hi-input-group layout-mode="input-label" class="mr-4" style="display: inline-flex; width: auto;">
+                      <hi-checkbox id="notif-ding" checked></hi-checkbox>
+                      <hi-label for="notif-ding">Ding</hi-label>
+                    </hi-input-group>
+                    <hi-input-group layout-mode="input-label" class="mr-4" style="display: inline-flex; width: auto;">
+                      <hi-checkbox id="notif-email"></hi-checkbox>
+                      <hi-label for="notif-email">E-mail</hi-label>
+                    </hi-input-group>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto;">
+                      <hi-checkbox id="notif-text"></hi-checkbox>
+                      <hi-label for="notif-text">Text Message</hi-label>
+                    </hi-input-group>
                   </div>
 
                   <h3 class="mb-4">Students Checked In For Appointments</h3>
@@ -760,25 +963,12 @@
                     <div l-kind="hort" l-wrap l-width-fixed>
                       <hi-input-group style="width: 14rem;" class="mr-4">
                         <hi-label for="requests-care-unit">Care Unit</hi-label>
-                        <hi-dropdown kind="value" id="requests-care-unit">
-                          <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
-                            <hi-option selected>All Care Units</hi-option>
-                            <hi-option>Admissions Counseling</hi-option>
-                            <hi-option>Advising</hi-option>
-                            <hi-option>Career Services</hi-option>
-                            <hi-option>Financial Aid</hi-option>
-                            <hi-option>First Year Experience</hi-option>
-                            <hi-option>Residence Life</hi-option>
-                            <hi-option>Student Support Services</hi-option>
-                          </hi-select>
-                        </hi-dropdown>
+                        <hi-combobox id="requests-care-unit" value="all" input='[{"title":"All Care Units","value":"all"},{"title":"Admissions Counseling","value":"admissions"},{"title":"Advising","value":"advising"},{"title":"Career Services","value":"career"},{"title":"Financial Aid","value":"finaid"},{"title":"First Year Experience","value":"fye"},{"title":"Residence Life","value":"reslife"}]'></hi-combobox>
                       </hi-input-group>
                       <hi-input-group style="width: 14rem;">
                         <hi-label for="requests-sort-by-location">Sort by Location</hi-label>
                         <hi-dropdown kind="value" id="requests-sort-by-location">
-                          <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
-                            <hi-option selected>All Locations</hi-option>
-                          </hi-select>
+                          <hi-select aesthetic="dropdown" allow-key-search mode="value" value="all-locations"><hi-option value="all-locations">All Locations</hi-option></hi-select>
                         </hi-dropdown>
                       </hi-input-group>
                     </div>
@@ -1185,8 +1375,8 @@
                     <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-4">
                       <hi-button aesthetic="link">Actions <hi-icon kind="expand_more" size="small"></hi-icon></hi-button>
                       <div>
-                        <hi-checkbox checked class="mr-4">Only Mine</hi-checkbox>
-                        <hi-checkbox checked>Hide Completed</hi-checkbox>
+                        <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked class="mr-4" id="cb-auto-3"></hi-checkbox><hi-label for="cb-auto-3" class="ml-1">Only Mine</hi-label></hi-input-group>
+                        <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked id="cb-auto-4"></hi-checkbox><hi-label for="cb-auto-4" class="ml-1">Hide Completed</hi-label></hi-input-group>
                       </div>
                     </div>
                     <div scroll-x="auto">
@@ -1219,16 +1409,14 @@
                     <hi-input-group class="mb-4" style="width: 14rem;">
                       <hi-label for="cases-view-as">View As</hi-label>
                       <hi-dropdown kind="value" id="cases-view-as">
-                        <hi-select aesthetic="dropdown" selected-index="0">
-                          <hi-option selected>Cases for James</hi-option>
-                          <hi-option>James's History</hi-option>
-                          <hi-option>Notes about James</hi-option>
-                          <hi-option>Staff Initiated Alerts for James</hi-option>
-                          <hi-option>Student Initiated Alerts for James</hi-option>
-                          <hi-option>Progress Reports for James</hi-option>
-                          <hi-option>Appointment Summaries for James</hi-option>
-                          <hi-option>James's Visits to Support Centers</hi-option>
-                        </hi-select>
+                        <hi-select aesthetic="dropdown" mode="value" value="cases-for-james"><hi-option value="cases-for-james">Cases for James</hi-option>
+<hi-option value="james-s-history">James's History</hi-option>
+<hi-option value="notes-about-james">Notes about James</hi-option>
+<hi-option value="staff-initiated-alerts-f">Staff Initiated Alerts for James</hi-option>
+<hi-option value="student-initiated-alerts">Student Initiated Alerts for James</hi-option>
+<hi-option value="progress-reports-for-jam">Progress Reports for James</hi-option>
+<hi-option value="appointment-summaries-fo">Appointment Summaries for James</hi-option>
+<hi-option value="james-s-visits-to-suppor">James's Visits to Support Centers</hi-option></hi-select>
                       </hi-dropdown>
                     </hi-input-group>
 
@@ -1368,15 +1556,13 @@
                     <hi-input-group class="mb-4" style="width: 14rem;">
                       <hi-label for="jw-history-view-as">View As</hi-label>
                       <hi-dropdown kind="value" id="jw-history-view-as">
-                        <hi-select aesthetic="dropdown" selected-index="0">
-                          <hi-option selected>James's History</hi-option>
-                          <hi-option>Notes about James</hi-option>
-                          <hi-option>Staff Initiated Alerts for James</hi-option>
-                          <hi-option>Student Initiated Alerts for James</hi-option>
-                          <hi-option>Progress Reports for James</hi-option>
-                          <hi-option>Appointment Summaries for James</hi-option>
-                          <hi-option>James's Visits to Support Centers</hi-option>
-                        </hi-select>
+                        <hi-select aesthetic="dropdown" mode="value" value="james-s-history"><hi-option value="james-s-history">James's History</hi-option>
+<hi-option value="notes-about-james">Notes about James</hi-option>
+<hi-option value="staff-initiated-alerts-f">Staff Initiated Alerts for James</hi-option>
+<hi-option value="student-initiated-alerts">Student Initiated Alerts for James</hi-option>
+<hi-option value="progress-reports-for-jam">Progress Reports for James</hi-option>
+<hi-option value="appointment-summaries-fo">Appointment Summaries for James</hi-option>
+<hi-option value="james-s-visits-to-suppor">James's Visits to Support Centers</hi-option></hi-select>
                       </hi-dropdown>
                     </hi-input-group>
 
@@ -1495,15 +1681,13 @@
                     <hi-input-group class="mb-4" style="width: 14rem;">
                       <hi-label for="courses-term">Term</hi-label>
                       <hi-dropdown kind="value" id="courses-term">
-                        <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
-                          <hi-option selected>Spring 2026 (Default Term)</hi-option>
-                          <hi-option>All Terms</hi-option>
-                          <hi-option>Spring 2031</hi-option>
-                          <hi-option>Spring 2031</hi-option>
-                          <hi-option>Fall 2030</hi-option>
-                          <hi-option>Fall 2030</hi-option>
-                          <hi-option>Spring 2030</hi-option>
-                        </hi-select>
+                        <hi-select aesthetic="dropdown" allow-key-search mode="value" value="spring-2026-default-term"><hi-option value="spring-2026-default-term">Spring 2026 (Default Term)</hi-option>
+<hi-option value="all-terms">All Terms</hi-option>
+<hi-option value="spring-2031">Spring 2031</hi-option>
+<hi-option value="spring-2031-2">Spring 2031</hi-option>
+<hi-option value="fall-2030">Fall 2030</hi-option>
+<hi-option value="fall-2030-2">Fall 2030</hi-option>
+<hi-option value="spring-2030">Spring 2030</hi-option></hi-select>
                       </hi-dropdown>
                     </hi-input-group>
                     <div scroll-x="auto">
@@ -1591,39 +1775,31 @@
                       <hi-input-group class="mr-4" style="width: 14rem;">
                         <hi-label>Term</hi-label>
                         <hi-dropdown kind="value">
-                          <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
-                            <hi-option selected>Spring 2026 (Default Term)</hi-option>
-                            <hi-option>All Terms</hi-option>
-                            <hi-option>Spring 2031</hi-option>
-                            <hi-option>Spring 2031</hi-option>
-                            <hi-option>Fall 2030</hi-option>
-                            <hi-option>Fall 2030</hi-option>
-                            <hi-option>Spring 2030</hi-option>
-                          </hi-select>
+                          <hi-select aesthetic="dropdown" allow-key-search mode="value" value="spring-2026-default-term"><hi-option value="spring-2026-default-term">Spring 2026 (Default Term)</hi-option>
+<hi-option value="all-terms">All Terms</hi-option>
+<hi-option value="spring-2031">Spring 2031</hi-option>
+<hi-option value="spring-2031-2">Spring 2031</hi-option>
+<hi-option value="fall-2030">Fall 2030</hi-option>
+<hi-option value="fall-2030-2">Fall 2030</hi-option>
+<hi-option value="spring-2030">Spring 2030</hi-option></hi-select>
                         </hi-dropdown>
                       </hi-input-group>
                       <hi-input-group class="mr-4" style="width: 14rem;">
                         <hi-label>Course</hi-label>
                         <hi-dropdown kind="value">
-                          <hi-select aesthetic="dropdown" selected-index="0">
-                            <hi-option selected>All Courses</hi-option>
-                          </hi-select>
+                          <hi-select aesthetic="dropdown" mode="value" value="all-courses"><hi-option value="all-courses">All Courses</hi-option></hi-select>
                         </hi-dropdown>
                       </hi-input-group>
                       <hi-input-group class="mr-4" style="width: 14rem;">
                         <hi-label>Type</hi-label>
                         <hi-dropdown kind="value">
-                          <hi-select aesthetic="dropdown" selected-index="0">
-                            <hi-option selected>Any Type</hi-option>
-                          </hi-select>
+                          <hi-select aesthetic="dropdown" mode="value" value="any-type"><hi-option value="any-type">Any Type</hi-option></hi-select>
                         </hi-dropdown>
                       </hi-input-group>
                       <hi-input-group style="width: 14rem;">
                         <hi-label>Status</hi-label>
                         <hi-dropdown kind="value">
-                          <hi-select aesthetic="dropdown" selected-index="0">
-                            <hi-option selected>Any Status</hi-option>
-                          </hi-select>
+                          <hi-select aesthetic="dropdown" mode="value" value="any-status"><hi-option value="any-status">Any Status</hi-option></hi-select>
                         </hi-dropdown>
                       </hi-input-group>
                     </div>
@@ -2140,24 +2316,24 @@
                     Checking/unchecking the legend boxes will show/hide corresponding events on the calendar.
                   </p>
                   <div l-kind="hort" l-wrap l-width-fixed class="mb-4">
-                    <hi-checkbox checked class="mr-4">Admissions Counseling</hi-checkbox>
-                    <hi-checkbox checked class="mr-4">Advising</hi-checkbox>
-                    <hi-checkbox checked class="mr-4">Career Services</hi-checkbox>
-                    <hi-checkbox checked class="mr-4">Financial Aid</hi-checkbox>
-                    <hi-checkbox checked class="mr-4">First Year Experience</hi-checkbox>
-                    <hi-checkbox checked class="mr-4">Residence Life</hi-checkbox>
-                    <hi-checkbox checked class="mr-4">Student Support Services</hi-checkbox>
-                    <hi-checkbox checked class="mr-4">Transfer Office</hi-checkbox>
-                    <hi-checkbox checked class="mr-4">Tutoring</hi-checkbox>
-                    <hi-checkbox checked class="mr-4">Course</hi-checkbox>
-                    <hi-checkbox checked class="mr-4">Assignment</hi-checkbox>
-                    <hi-checkbox checked class="mr-4">General</hi-checkbox>
-                    <hi-checkbox checked class="mr-4">Busy</hi-checkbox>
-                    <hi-checkbox checked class="mr-4">Cancelled</hi-checkbox>
-                    <hi-checkbox checked class="mr-4">Blocked</hi-checkbox>
-                    <hi-checkbox checked class="mr-4">School Wide Event</hi-checkbox>
-                    <hi-checkbox checked class="mr-4">All Events</hi-checkbox>
-                    <hi-checkbox checked>My Events</hi-checkbox>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked class="mr-4" id="cb-auto-5"></hi-checkbox><hi-label for="cb-auto-5" class="ml-1">Admissions Counseling</hi-label></hi-input-group>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked class="mr-4" id="cb-auto-6"></hi-checkbox><hi-label for="cb-auto-6" class="ml-1">Advising</hi-label></hi-input-group>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked class="mr-4" id="cb-auto-7"></hi-checkbox><hi-label for="cb-auto-7" class="ml-1">Career Services</hi-label></hi-input-group>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked class="mr-4" id="cb-auto-8"></hi-checkbox><hi-label for="cb-auto-8" class="ml-1">Financial Aid</hi-label></hi-input-group>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked class="mr-4" id="cb-auto-9"></hi-checkbox><hi-label for="cb-auto-9" class="ml-1">First Year Experience</hi-label></hi-input-group>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked class="mr-4" id="cb-auto-10"></hi-checkbox><hi-label for="cb-auto-10" class="ml-1">Residence Life</hi-label></hi-input-group>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked class="mr-4" id="cb-auto-11"></hi-checkbox><hi-label for="cb-auto-11" class="ml-1">Student Support Services</hi-label></hi-input-group>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked class="mr-4" id="cb-auto-12"></hi-checkbox><hi-label for="cb-auto-12" class="ml-1">Transfer Office</hi-label></hi-input-group>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked class="mr-4" id="cb-auto-13"></hi-checkbox><hi-label for="cb-auto-13" class="ml-1">Tutoring</hi-label></hi-input-group>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked class="mr-4" id="cb-auto-14"></hi-checkbox><hi-label for="cb-auto-14" class="ml-1">Course</hi-label></hi-input-group>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked class="mr-4" id="cb-auto-15"></hi-checkbox><hi-label for="cb-auto-15" class="ml-1">Assignment</hi-label></hi-input-group>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked class="mr-4" id="cb-auto-16"></hi-checkbox><hi-label for="cb-auto-16" class="ml-1">General</hi-label></hi-input-group>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked class="mr-4" id="cb-auto-17"></hi-checkbox><hi-label for="cb-auto-17" class="ml-1">Busy</hi-label></hi-input-group>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked class="mr-4" id="cb-auto-18"></hi-checkbox><hi-label for="cb-auto-18" class="ml-1">Cancelled</hi-label></hi-input-group>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked class="mr-4" id="cb-auto-19"></hi-checkbox><hi-label for="cb-auto-19" class="ml-1">Blocked</hi-label></hi-input-group>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked class="mr-4" id="cb-auto-20"></hi-checkbox><hi-label for="cb-auto-20" class="ml-1">School Wide Event</hi-label></hi-input-group>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked class="mr-4" id="cb-auto-21"></hi-checkbox><hi-label for="cb-auto-21" class="ml-1">All Events</hi-label></hi-input-group>
+                    <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox checked id="cb-auto-22"></hi-checkbox><hi-label for="cb-auto-22" class="ml-1">My Events</hi-label></hi-input-group>
                   </div>
                   <p class="clr-gray_80-txt text-sz-s mb-4">* All times listed are in Eastern Time (US &amp; Canada).</p>
                   <hi-link href="#">Print Calendar (PDF)</hi-link>
@@ -2180,20 +2356,9 @@
                   <h2 class="mb-6">Upcoming Appointments</h2>
                   <hi-input-group class="mb-4" style="width: 14rem;">
                     <hi-label for="jw-appt-care-unit">Care Unit</hi-label>
-                    <hi-dropdown kind="value" id="jw-appt-care-unit">
-                      <hi-select aesthetic="dropdown" selected-index="0">
-                        <hi-option selected>All Care Units</hi-option>
-                        <hi-option>Admissions Counseling</hi-option>
-                        <hi-option>Advising</hi-option>
-                        <hi-option>Career Services</hi-option>
-                        <hi-option>Financial Aid</hi-option>
-                        <hi-option>First Year Experience</hi-option>
-                        <hi-option>Residence Life</hi-option>
-                        <hi-option>Student Support Services</hi-option>
-                      </hi-select>
-                    </hi-dropdown>
+                    <hi-combobox id="jw-appt-care-unit" value="all-care-units" input='[{"title":"All Care Units","value":"all-care-units"},{"title":"Admissions Counseling","value":"admissions-counseling"},{"title":"Advising","value":"advising"},{"title":"Career Services","value":"career-services"},{"title":"Financial Aid","value":"financial-aid"},{"title":"First Year Experience","value":"first-year-experience"},{"title":"Residence Life","value":"residence-life"},{"title":"Student Support Services","value":"student-support-services"}]'></hi-combobox>
                   </hi-input-group>
-                  <hi-checkbox class="mb-4">Show Cancelled</hi-checkbox>
+                  <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox class="mb-4" id="cb-auto-23"></hi-checkbox><hi-label for="cb-auto-23" class="ml-1">Show Cancelled</hi-label></hi-input-group>
                   <div scroll-x="auto">
                     <table kind="compact">
                       <thead>
@@ -2219,18 +2384,7 @@
                   <h2 class="mt-6 mb-6">Recent Appointments</h2>
                   <hi-input-group class="mb-4" style="width: 14rem;">
                     <hi-label for="jw-appt-recent-care-unit">Care Unit</hi-label>
-                    <hi-dropdown kind="value" id="jw-appt-recent-care-unit">
-                      <hi-select aesthetic="dropdown" selected-index="0">
-                        <hi-option selected>All Care Units</hi-option>
-                        <hi-option>Admissions Counseling</hi-option>
-                        <hi-option>Advising</hi-option>
-                        <hi-option>Career Services</hi-option>
-                        <hi-option>Financial Aid</hi-option>
-                        <hi-option>First Year Experience</hi-option>
-                        <hi-option>Residence Life</hi-option>
-                        <hi-option>Student Support Services</hi-option>
-                      </hi-select>
-                    </hi-dropdown>
+                    <hi-combobox id="jw-appt-recent-care-unit" value="all-care-units" input='[{"title":"All Care Units","value":"all-care-units"},{"title":"Admissions Counseling","value":"admissions-counseling"},{"title":"Advising","value":"advising"},{"title":"Career Services","value":"career-services"},{"title":"Financial Aid","value":"financial-aid"},{"title":"First Year Experience","value":"first-year-experience"},{"title":"Residence Life","value":"residence-life"},{"title":"Student Support Services","value":"student-support-services"}]'></hi-combobox>
                   </hi-input-group>
                   <div scroll-x="auto">
                     <table kind="compact">
