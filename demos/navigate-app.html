@@ -45,6 +45,16 @@
       white-space: nowrap;
       font-size: 1rem;
     }
+    .institution-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      background: var(--hi-clr--blue-3);
+      color: var(--hi-clr--white);
+    }
     .top-nav__center-controls {
       display: flex;
       align-items: center;
@@ -2508,9 +2518,9 @@
       <section x-area="region" x-region="right" class="pl-8 pr-8 pb-8">
         <hi-switch id="sidebar-view" value="staff-home">
           <hi-case id="sidebar-staff-home" value="staff-home">
-            <section x-area="stack">
-              <div l-kind="hort" l-width-fixed l-justify="center" class="mb-4">
-                <hi-icon kind="school" size="large" theme="blue"></hi-icon>
+            <section x-area="stack" style="position: relative;">
+              <div class="institution-badge" style="position: absolute; top: -1.5rem; right: 1rem; z-index: 1;">
+                <hi-icon kind="account_balance" size="medium" theme="white"></hi-icon>
               </div>
               <hi-tile allow-toolbar aesthetic="outline">
                 <h5 slot="title">Profile Picture</h5>
@@ -2546,9 +2556,9 @@
           </hi-case>
 
           <hi-case id="sidebar-james-wyatt" value="james-wyatt" hidden>
-            <section x-area="stack">
-              <div l-kind="hort" l-width-fixed l-justify="center" class="mb-4">
-                <hi-icon kind="school" size="large" theme="blue"></hi-icon>
+            <section x-area="stack" style="position: relative;">
+              <div class="institution-badge" style="position: absolute; top: -1.5rem; right: 1rem; z-index: 1;">
+                <hi-icon kind="account_balance" size="medium" theme="white"></hi-icon>
               </div>
               <hi-tile allow-toolbar aesthetic="outline">
                 <h5 slot="title">Student Image</h5>
