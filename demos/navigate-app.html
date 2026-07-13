@@ -174,8 +174,10 @@
           <!-- ======================================================== -->
           <hi-case id="staff-home" value="staff-home">
             <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
-              <hi-title heading="Staff Home" level="1"></hi-title>
-              <hi-icon kind="school" size="large" theme="blue"></hi-icon>
+              <div l-kind="hort" l-width-fixed l-align="center">
+                <hi-title heading="Staff Home" level="1"></hi-title>
+                <hi-icon kind="expand_more" size="small" class="ml-2"></hi-icon>
+              </div>
             </div>
 
             <hi-tab-group id="staff-home-tabs" for="staff-home-panels" class="mb-8">
@@ -211,6 +213,12 @@
                         <hi-dropdown kind="value" id="filter-term">
                           <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
                             <hi-option selected>Spring 2026 (Default Term)</hi-option>
+                            <hi-option>All Terms</hi-option>
+                            <hi-option>Spring 2031</hi-option>
+                            <hi-option>Spring 2031</hi-option>
+                            <hi-option>Fall 2030</hi-option>
+                            <hi-option>Fall 2030</hi-option>
+                            <hi-option>Spring 2030</hi-option>
                           </hi-select>
                         </hi-dropdown>
                       </hi-input-group>
@@ -823,8 +831,10 @@
           <!-- ======================================================== -->
           <hi-case id="james-wyatt" value="james-wyatt" hidden>
             <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
-              <hi-title heading="James Wyatt" level="1"></hi-title>
-              <hi-icon kind="school" size="large" theme="blue"></hi-icon>
+              <div l-kind="hort" l-width-fixed l-align="center">
+                <hi-title heading="James Wyatt" level="1"></hi-title>
+                <hi-icon kind="expand_more" size="small" class="ml-2"></hi-icon>
+              </div>
             </div>
 
             <hi-tab-group id="james-tabs" for="james-panels" class="mb-8" scroll-x="auto">
@@ -1136,7 +1146,7 @@
                   <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
                     <h5 slot="title">James's To-Dos</h5>
                     <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-4">
-                      <hi-button aesthetic="link">Actions <hi-icon kind="caret_down" size="small"></hi-icon></hi-button>
+                      <hi-button aesthetic="link">Actions <hi-icon kind="expand_more" size="small"></hi-icon></hi-button>
                       <div>
                         <hi-checkbox checked class="mr-4">Only Mine</hi-checkbox>
                         <hi-checkbox checked>Hide Completed</hi-checkbox>
@@ -1448,8 +1458,14 @@
                     <hi-input-group class="mb-4" style="width: 14rem;">
                       <hi-label for="courses-term">Term</hi-label>
                       <hi-dropdown kind="value" id="courses-term">
-                        <hi-select aesthetic="dropdown" selected-index="0">
+                        <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
                           <hi-option selected>Spring 2026 (Default Term)</hi-option>
+                          <hi-option>All Terms</hi-option>
+                          <hi-option>Spring 2031</hi-option>
+                          <hi-option>Spring 2031</hi-option>
+                          <hi-option>Fall 2030</hi-option>
+                          <hi-option>Fall 2030</hi-option>
+                          <hi-option>Spring 2030</hi-option>
                         </hi-select>
                       </hi-dropdown>
                     </hi-input-group>
@@ -1538,8 +1554,14 @@
                       <hi-input-group class="mr-4" style="width: 14rem;">
                         <hi-label>Term</hi-label>
                         <hi-dropdown kind="value">
-                          <hi-select aesthetic="dropdown" selected-index="0">
+                          <hi-select aesthetic="dropdown" allow-key-search selected-index="0">
                             <hi-option selected>Spring 2026 (Default Term)</hi-option>
+                            <hi-option>All Terms</hi-option>
+                            <hi-option>Spring 2031</hi-option>
+                            <hi-option>Spring 2031</hi-option>
+                            <hi-option>Fall 2030</hi-option>
+                            <hi-option>Fall 2030</hi-option>
+                            <hi-option>Spring 2030</hi-option>
                           </hi-select>
                         </hi-dropdown>
                       </hi-input-group>
@@ -2487,6 +2509,9 @@
         <hi-switch id="sidebar-view" value="staff-home">
           <hi-case id="sidebar-staff-home" value="staff-home">
             <section x-area="stack">
+              <div l-kind="hort" l-width-fixed l-justify="center" class="mb-4">
+                <hi-icon kind="school" size="large" theme="blue"></hi-icon>
+              </div>
               <hi-tile allow-toolbar aesthetic="outline">
                 <h5 slot="title">Profile Picture</h5>
                 <hi-image
@@ -2522,6 +2547,9 @@
 
           <hi-case id="sidebar-james-wyatt" value="james-wyatt" hidden>
             <section x-area="stack">
+              <div l-kind="hort" l-width-fixed l-justify="center" class="mb-4">
+                <hi-icon kind="school" size="large" theme="blue"></hi-icon>
+              </div>
               <hi-tile allow-toolbar aesthetic="outline">
                 <h5 slot="title">Student Image</h5>
                 <hi-image
