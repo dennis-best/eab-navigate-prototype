@@ -16,3 +16,6 @@ Walkthrough Screenshots/
 
 # Scratch/temp analysis frames
 .cursor/tmp-login-frames/
+
+# Raw Playwright recording (converted to videos/prototype.mp4 for the repo)
+videos/*.webm

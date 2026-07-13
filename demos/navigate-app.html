@@ -45,15 +45,32 @@
       white-space: nowrap;
       font-size: 1rem;
     }
+    .page-title-switcher {
+      position: relative;
+      cursor: pointer;
+      outline: none;
+    }
+    .page-title-switcher:focus hi-icon {
+      transform: rotate(180deg);
+    }
+    .page-title-switcher__menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--hi-clr--white);
+      border: 1px solid var(--hi-clr--gray-3);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      padding: 0.75rem 1rem;
+      z-index: var(--hi-depth--above-all, 100);
+      white-space: nowrap;
+    }
     .institution-badge {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: absolute;
+      top: -1.5rem;
+      right: 1rem;
+      z-index: 1;
       width: 3rem;
       height: 3rem;
-      border-radius: 50%;
-      background: var(--hi-clr--blue-3);
-      color: var(--hi-clr--white);
     }
     .top-nav__center-controls {
       display: flex;
@@ -184,9 +201,19 @@
           <!-- ======================================================== -->
           <hi-case id="staff-home" value="staff-home">
             <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
-              <div l-kind="hort" l-width-fixed l-align="center">
+              <div
+                l-kind="hort"
+                l-width-fixed
+                l-align="center"
+                hover="parent"
+                tabindex="0"
+                class="page-title-switcher"
+              >
                 <hi-title heading="Staff Home" level="1"></hi-title>
                 <hi-icon kind="expand_more" size="small" class="ml-2"></hi-icon>
+                <div hover="child" class="page-title-switcher__menu">
+                  <hi-link href="#">Professor Home</hi-link>
+                </div>
               </div>
             </div>
 
@@ -2519,9 +2546,11 @@
         <hi-switch id="sidebar-view" value="staff-home">
           <hi-case id="sidebar-staff-home" value="staff-home">
             <section x-area="stack" style="position: relative;">
-              <div class="institution-badge" style="position: absolute; top: -1.5rem; right: 1rem; z-index: 1;">
-                <hi-icon kind="account_balance" size="medium" theme="white"></hi-icon>
-              </div>
+              <hi-image
+                src="assets/eab-logo.png"
+                alt="EAB"
+                class="institution-badge"
+              ></hi-image>
               <hi-tile allow-toolbar aesthetic="outline">
                 <h5 slot="title">Profile Picture</h5>
                 <hi-image
@@ -2557,9 +2586,11 @@
 
           <hi-case id="sidebar-james-wyatt" value="james-wyatt" hidden>
             <section x-area="stack" style="position: relative;">
-              <div class="institution-badge" style="position: absolute; top: -1.5rem; right: 1rem; z-index: 1;">
-                <hi-icon kind="account_balance" size="medium" theme="white"></hi-icon>
-              </div>
+              <hi-image
+                src="assets/eab-logo.png"
+                alt="EAB"
+                class="institution-badge"
+              ></hi-image>
               <hi-tile allow-toolbar aesthetic="outline">
                 <h5 slot="title">Student Image</h5>
                 <hi-image
