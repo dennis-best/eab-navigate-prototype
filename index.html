@@ -1,19 +1,90 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" hip-font-size-dynamic>
   <head>
-    <meta charset="utf-8" />
     <title>EAB Prototype Demos</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="EAB Global Inc." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="EAB Prototype Demos" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, user-scalable=no, width=device-width, viewport-fit=cover"
+    />
+
+    <script
+      src="https://cdn.dev.eab.com/hif/latest/index.js"
+      auto-start
+      release="prod"
+      system-load-core
+      system-load-baseline
+      system-load-ds
+      system-load-os
+      library-stop-dragula
+      library-stop-moment
+    ></script>
+    <script>
+      $ip.flags.load([
+        ["/eip/hi-form/default-to-rest", true],
+        ["/pip/pi-ip/insert-css-after-script", true],
+        ["/eip/hi-http/enable-xss-purification-response", false],
+      ]);
+    </script>
   </head>
   <body>
-    <h1>EAB Prototype Demos</h1>
-    <ul>
-      <li>
-        <strong>Demo 1: Navigate360 Staff Home</strong>
-        &mdash;
-        <a href="demos/navigate-app.html">View prototype</a>
-        |
-        <a href="demos/proof-of-concept.html">View proof of concept</a>
-      </li>
-    </ul>
+    <main id="app">
+      <div style="max-width: 960px; margin: 0 auto;" class="l-center-all-column pa-9">
+        <hi-eab size="large" style="width: 96px; height: 96px;"></hi-eab>
+        <div class="mt-9">
+          <yi-view-header>
+            <hi-title
+              slot="title"
+              heading="EAB Prototype Demos"
+              level="1"
+            ></hi-title>
+            <p slot="description" class="mt-6">
+              Static HI/P prototype demos built for EAB, each recreating a
+              real product recording as a working, click-through prototype.
+            </p>
+          </yi-view-header>
+        </div>
+
+        <table kind="normal" class="mt-9">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Prototype Link</th>
+              <th>Video / Proof of Concept Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Demo 1: Navigate360 Staff Home</td>
+              <td>
+                <hi-link href="demos/navigate-app.html"
+                  >View prototype</hi-link
+                >
+              </td>
+              <td>
+                <hi-link href="demos/proof-of-concept.html"
+                  >View proof of concept</hi-link
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="text-center mt-9">More demos coming soon.</p>
+      </div>
+    </main>
+    <script type="module"></script>
+    <noscript>
+      <h1>Application Failure</h1>
+      <p>
+        The application cannot offer an experience because it relies on
+        Javascript.
+      </p>
+      <p>Please enable Javascript to use this demo.</p>
+    </noscript>
   </body>
 </html>

@@ -125,7 +125,7 @@
         ]'
         account-avatar='{
           "initials": "JW",
-          "accountAvatarURI": "assets/jack-whitten-profile.png"
+          "accountAvatarURI": "assets/navigate-staff-home/jack-whitten-profile.png"
         }'
       >
         <div slot="logo" class="logo_container">
@@ -1371,14 +1371,14 @@
           <hi-case id="sidebar-staff-home" value="staff-home">
             <section x-area="stack">
               <hi-image
-                src="assets/eab-logo.png"
+                src="assets/shared/eab-logo.png"
                 alt="EAB"
                 class="institution-badge"
               ></hi-image>
               <hi-tile allow-toolbar aesthetic="outline">
                 <h5 slot="title">Profile Picture</h5>
                 <hi-image
-                  src="assets/jack-whitten-profile.png"
+                  src="assets/navigate-staff-home/jack-whitten-profile.png"
                   alt="Jack Whitmore"
                   class="profile-header-photo"
                   width="100%"
@@ -1411,14 +1411,14 @@
           <hi-case id="sidebar-james-wyatt" value="james-wyatt" hidden>
             <section x-area="stack">
               <hi-image
-                src="assets/eab-logo.png"
+                src="assets/shared/eab-logo.png"
                 alt="EAB"
                 class="institution-badge"
               ></hi-image>
               <hi-tile allow-toolbar aesthetic="outline">
                 <h5 slot="title">Student Image</h5>
                 <hi-image
-                  src="assets/james-wyatt-profile.png"
+                  src="assets/navigate-staff-home/james-wyatt-profile.png"
                   alt="James Wyatt"
                   class="profile-header-photo"
                   width="100%"
@@ -1491,11 +1491,11 @@
                   <p class="clr-gray_80-txt text-sz-s">Advisor</p>
                 </div>
                 <div class="mb-3">
-                  <hi-avatar layout-inline image="assets/jack-whitten-profile.png" full-name="Whitmore, Jack" label="Jack Whitmore"></hi-avatar>
+                  <hi-avatar layout-inline image="assets/navigate-staff-home/jack-whitten-profile.png" full-name="Whitmore, Jack" label="Jack Whitmore"></hi-avatar>
                   <p class="clr-gray_80-txt text-sz-s">Advisor</p>
                 </div>
                 <div>
-                  <hi-avatar layout-inline image="assets/jack-whitten-profile.png" full-name="Whitten, Jack" label="Jack Whitten"></hi-avatar>
+                  <hi-avatar layout-inline image="assets/navigate-staff-home/jack-whitten-profile.png" full-name="Whitten, Jack" label="Jack Whitten"></hi-avatar>
                   <p class="clr-gray_80-txt text-sz-s">Advisor</p>
                 </div>
               </hi-tile>
@@ -1575,8 +1575,8 @@
 
       // Page-title menus (Staff Home / James Wyatt) are plain headline +
       // caret with no closed-state chrome, unlike hi-flyout's default
-      // elevated anchor styling - see the video-parity-audit visual-role
-      // override rule.
+      // elevated anchor styling - see the demo-build skill's visual-role
+      // override rule (EAB Demo Builder plugin).
       document.querySelectorAll(".page-title-menu-toggle").forEach((toggle) => {
         const menu = toggle.nextElementSibling;
         if (!menu) return;

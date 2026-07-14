@@ -17,10 +17,10 @@ Walkthrough Screenshots/
 # Scratch/temp analysis frames
 .cursor/tmp-login-frames/
 
-# Raw Playwright recording (converted to videos/prototype.mp4 for the repo)
-videos/*.webm
+# Raw Playwright recording (converted to videos/<demo>/prototype.mp4 for the repo)
+videos/**/*.webm
 
 # EAB Demo Builder (auto-managed, do not edit by hand)
-.cursor/eab-demo-builder/node_modules/
+.cursor/eab-demo-builder/
 .cursor/skills/
 .cursor/commands/demo-*.md

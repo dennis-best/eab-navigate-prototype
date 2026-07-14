@@ -1,0 +1,59 @@
+{
+  "demo": "demos/navigate-app.html",
+  "viewport": { "width": 1600, "height": 1050 },
+  "output": "videos/navigate-staff-home/prototype.webm",
+  "actions": [
+    { "at": 0, "type": "log", "message": "Staff Home > Students tab" },
+
+    { "at": 20, "type": "click", "selector": "#filter-list-type", "message": "Open List Type dropdown" },
+    { "at": 26, "type": "click", "selector": "#filter-list-type" },
+    { "at": 28, "type": "click", "selector": "#filter-term", "message": "Open Term dropdown" },
+    { "at": 33, "type": "click", "selector": "#filter-term" },
+    { "at": 35, "type": "click", "selector": "#filter-relationship", "message": "Open Relationship Type dropdown" },
+    { "at": 37.5, "type": "click", "selector": "#filter-relationship" },
+
+    { "at": 38, "type": "clickTab", "for": "appointments", "message": "Staff Home > Appointments tab" },
+
+    { "at": 54, "type": "click", "selector": "#upcoming-care-unit", "message": "Open Care Unit dropdown" },
+    { "at": 58, "type": "click", "selector": "#upcoming-care-unit" },
+
+    { "at": 65, "type": "clickTab", "for": "availability", "message": "Staff Home > My Availability tab" },
+    { "at": 65, "type": "wheel", "dx": 0, "dy": 400 },
+
+    { "at": 75, "type": "clickTab", "for": "queues", "message": "Staff Home > Appointment Queues tab" },
+    { "at": 86, "type": "clickTab", "for": "requests", "message": "Staff Home > Appointment Requests tab" },
+
+    { "at": 90, "type": "clickTab", "for": "students", "message": "Staff Home > Students tab, search for James Wyatt" },
+    { "at": 90, "type": "fill", "selector": "#top-nav__quick-search", "value": "james" },
+    { "at": 96, "type": "clickTab", "for": "appointments" },
+    { "at": 96, "type": "evaluate", "expression": "window.goToJamesWyatt()" },
+
+    { "at": 99, "type": "log", "message": "James Wyatt > Overview tab" },
+
+    { "at": 119, "type": "click", "selector": "text=Message Student", "message": "Open Message Student panel" },
+    { "at": 133, "type": "click", "selector": "text=Cancel" },
+
+    { "at": 135, "type": "clickTab", "for": "jw-history", "message": "James Wyatt > History tab" },
+    { "at": 143, "type": "clickTab", "for": "jw-overview", "message": "James Wyatt > Overview tab" },
+    { "at": 150, "type": "hover", "selector": "text=Missed Success Markers", "message": "Overview: hover Missed Success Markers" },
+
+    { "at": 231, "type": "wheel", "dx": 0, "dy": 1200, "message": "Overview: scroll to Categories / Custom Attributes" },
+
+    { "at": 276, "type": "clickTab", "for": "jw-success", "message": "James Wyatt > Success Progress tab" },
+
+    { "at": 300, "type": "clickTab", "for": "jw-history", "message": "James Wyatt > History tab (full feed)" },
+    { "at": 300, "type": "wheel", "dx": 0, "dy": 500 },
+
+    { "at": 345, "type": "clickTab", "for": "jw-courses", "message": "James Wyatt > Courses tab" },
+    { "at": 345, "type": "wheel", "dx": 0, "dy": 600 },
+
+    { "at": 398, "type": "clickTab", "for": "jw-journeys", "message": "James Wyatt > Journeys tab" },
+    { "at": 402, "type": "dispatchClick", "selector": "#journey-detail-link", "message": "Open journey detail panel" },
+
+    { "at": 430, "type": "clickTab", "for": "jw-checklist", "message": "James Wyatt > Checklist tab" },
+    { "at": 446, "type": "clickTab", "for": "jw-academic-plan", "message": "James Wyatt > Academic Plan tab" },
+    { "at": 471, "type": "clickTab", "for": "jw-overview", "message": "James Wyatt > Overview tab" },
+    { "at": 486, "type": "clickTab", "for": "jw-conversations", "message": "James Wyatt > Conversations tab" },
+    { "at": 498, "type": "clickTab", "for": "jw-staff-tasks", "message": "James Wyatt > Staff Tasks tab (hold to end)" }
+  ]
+}
