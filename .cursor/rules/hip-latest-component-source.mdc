@@ -1,0 +1,38 @@
+---
+description: Priority order for sourcing HI/P component contracts - local cache, then live docs, then ask. Never fabricate.
+alwaysApply: true
+---
+
+# HI/P Component Source Priority
+
+This rule exists because a prototype once shipped a hand-invented, low-quality table markup instead of a real documented HI/P component. The fix is a strict source-priority order, not a permanent ban on ever looking beyond the local cache.
+
+## Priority order (highest to lowest)
+
+1. **Local plugin cache** — the five namespaces under:
+   ```
+   /Users/dennisbest/Library/Application Support/Cursor/User/globalStorage/eab-hip.hip-designer/kb-design-cache/kb-design/ds/markdown/
+     @eab-eip  @eab-vip  @eab-yip  @eab-dip  @eab-xip
+   ```
+   Fast, free, and the default source. If the component you need is fully documented here, use it and stop.
+
+2. **Project-local live-fetched cache** — [.cursor/hip-live-cache/](../hip-live-cache/) in this repo. Before fetching anything online, check here first — it may already contain a doc fetched in an earlier session.
+
+3. **Live HI/P documentation site** (`docs.hi.eab.com`) — fetch this when:
+   - The local cache has no entry for a component you need, **or**
+   - The local cache's entry is marked deprecated and names a specific successor (e.g. `vi-metric`'s guide says "deprecated, use `vi-info`")
+
+   On a successful fetch: save the real content into `.cursor/hip-live-cache/<component-name>.md` in this repo (create the directory if needed) before using it, so future sessions/builds reuse it without re-fetching. Do **not** write into the plugin's own global cache directory — that is out of scope; this project-local cache is a separate, supplementary layer.
+
+   **Known limitation, checked 2026-07-14:** `docs.hi.eab.com` returned `403 Forbidden` on every path tried (including its root), and is not indexed publicly. It appears to require EAB-internal network access or authentication not available in this environment. Re-check this if network/auth conditions change — do not assume it will always fail, but do not spend repeated turns retrying it once it has failed in the current session.
+
+4. **Ask the user** — if a component is undocumented locally, its likely successor is unreachable online, and there is no other documented match, follow the existing discrepancy protocol (`.cursor/rules/hip-screenshot-discrepancy.mdc`): stop, state the gap explicitly, and ask before inventing anything.
+
+## What this changes vs. the original rule
+
+The original constraint ("use only tags/attributes/classes documented in `.cursor/hip/`") is preserved for the *fabrication* ban - never invent a tag, attribute, or class that doesn't exist in a real, verified source. What changes is that "documented" now explicitly includes live-fetched-and-cached docs (step 2/3), not just the plugin's pre-baked local cache (step 1). A component being merely absent from the local cache is no longer sufficient reason to fabricate a substitute or silently fall back to a worse, older component - check online first.
+
+## What stays out of scope
+
+- Do not modify, refresh, or "fix" the HIP plugin's own cache or its sync mechanism. That is not this project's responsibility.
+- Do not treat a successful live fetch as license to freelance beyond what that fetched doc actually documents - the no-fabrication rule still applies to content sourced from step 3, just as it does to step 1.
