@@ -19,3 +19,8 @@ Walkthrough Screenshots/
 
 # Raw Playwright recording (converted to videos/prototype.mp4 for the repo)
 videos/*.webm
+
+# EAB Demo Builder (auto-managed, do not edit by hand)
+.cursor/eab-demo-builder/node_modules/
+.cursor/skills/
+.cursor/commands/demo-*.md
