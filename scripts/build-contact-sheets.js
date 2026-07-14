@@ -2,10 +2,14 @@
 /**
  * build-contact-sheets.js
  *
- * Takes a change-points JSON file (from extract-changepoints.js) and builds
- * grid "contact sheet" images: many small labeled tiles packed into one
- * image file. This lets a single image read cover dozens of moments in the
- * video, instead of reading one full-resolution frame per moment.
+ * Motion-track tool (see the video-parity-audit skill's static vs. motion
+ * tracks) - an efficiency layer over interaction discovery, NOT a substitute
+ * for the static region-atlas review (scripts/build-region-atlas.js) that
+ * catches always-present chrome/layout errors. Takes a change-points JSON
+ * file (from extract-changepoints.js) and builds grid "contact sheet"
+ * images: many small labeled tiles packed into one image file. This lets a
+ * single image read cover dozens of interaction moments in the video,
+ * instead of reading one full-resolution frame per moment.
  *
  * Each tile is a PAIR, stacked vertically:
  *   - top: the normal full-frame thumbnail at that timestamp

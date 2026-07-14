@@ -41,11 +41,28 @@ async function clickTab(page, forId) {
 }
 
 // hi-link elements don't propagate Playwright's synthetic mouse clicks reliably,
-// so dispatch a real "click" event instead.
+// so dispatch a real "click" event instead. Some links (e.g. inside vi-grid
+// "html" render_type cells) live inside nested shadow roots, so we search
+// recursively through the whole shadow tree rather than just light DOM.
 async function dispatchClick(page, selector) {
   await page.evaluate((sel) => {
-    const el = document.querySelector(sel);
-    if (el) el.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true }));
+    function findDeep(root, s) {
+      const direct = root.querySelector(s);
+      if (direct) return direct;
+      const all = root.querySelectorAll("*");
+      for (const el of all) {
+        if (el.shadowRoot) {
+          const found = findDeep(el.shadowRoot, s);
+          if (found) return found;
+        }
+      }
+      return null;
+    }
+    const el = findDeep(document, sel);
+    // composed:true is required so the event crosses shadow DOM boundaries
+    // (e.g. hi-link cells rendered inside vi-grid's shadow tree) and reaches
+    // document-level delegated listeners.
+    if (el) el.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, composed: true }));
   }, selector);
 }
 
@@ -161,7 +178,13 @@ async function run() {
   }
   await waitUntil(page, 96);
   await clickTab(page, "appointments");
-  await dispatchClick(page, ".goto-wyatt-link");
+  // Links rendered inside vi-grid "html" cells can have their synthetic
+  // clicks intercepted by the framework's internal focus management before
+  // reaching the page's own delegated listener, so call the exposed
+  // navigation function directly instead of simulating a click.
+  await page.evaluate(() => {
+    if (typeof window.goToJamesWyatt === "function") window.goToJamesWyatt();
+  });
 
   // --- 1:39 James Wyatt Overview ---
   await waitUntil(page, 99);

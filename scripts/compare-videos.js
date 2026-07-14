@@ -2,10 +2,29 @@
 /**
  * compare-videos.js
  *
- * Automated pre/post regression gate: for every change-point timestamp,
- * extracts the matching frame from both videos.mp4 files and computes an
- * SSIM (structural similarity) score via ffmpeg's `ssim` filter - pure
- * ffmpeg, no AI tokens spent, until a mismatch is found.
+ * Choreography drift detector, NOT a parity gate. For every change-point
+ * timestamp, extracts the matching frame from both video files and computes
+ * an SSIM (structural similarity) score via ffmpeg's `ssim` filter - pure
+ * ffmpeg, no AI tokens spent.
+ *
+ * This prototype intentionally uses a different design system (HI/P) than
+ * the original app's bespoke styling, so even a functionally-perfect,
+ * correctly-matching frame typically scores ~0.65-0.75, not ~1.0. SSIM is
+ * also too coarse to reliably catch a small, local, ALWAYS-present error
+ * (e.g. a sidebar logo pinned to the wrong corner, or a page title with the
+ * wrong closed-state styling) - those never register as an outlier here
+ * because they don't move the score much against normal styling variance,
+ * and because they're wrong on every frame rather than being a "different"
+ * frame relative to some other reference. Catching that class of miss is
+ * the job of the static track (scripts/build-region-atlas.js), not this
+ * script - see the video-parity-audit skill.
+ *
+ * The one thing this script IS good for: spotting timeline/tab-sequencing
+ * drift - a whole stretch of consecutive low scores can mean the recording
+ * script's assumed choreography (which tab is active at second N) no longer
+ * matches the source video's actual order. The report below flags
+ * consecutive-low-score clusters separately from isolated outliers for
+ * exactly this reason.
  *
  * The original video includes real browser chrome (tabs/address bar/
  * bookmarks) above the app content, while the prototype recording (Playwright)
@@ -18,22 +37,12 @@
  * Usage:
  *   node scripts/compare-videos.js <original-video> <prototype-video> <changepoints-json> [reportPath] [ssimThreshold]
  *
- * Output: writes a JSON report (sorted worst-first) to reportPath, and
- * prints a summary. Any change-point below ssimThreshold should get a
- * full-resolution side-by-side look before declaring parity "done" -
- * that's the one step in this pipeline that costs tokens, and it's now
- * targeted only at genuinely-different moments.
- *
- * IMPORTANT - this is a relative triage heuristic, not an absolute
- * pass/fail gate: this prototype intentionally uses a different design
- * system (HI/P) than the original app's bespoke styling, so even a
- * correctly-matching frame typically scores ~0.65-0.75, not ~1.0. Treat the
- * default threshold as "worth a look", and pay closer attention to outliers
- * that score far below the typical range for that stretch of video (e.g.
- * <0.5) - those are more likely to be genuinely missing/wrong content
- * rather than just different button/table styling. The very first frame(s)
- * of a video (t=0) will also often score low due to fade-in/unstyled-flash
- * artifacts unrelated to real parity - not a bug.
+ * Output: writes a JSON report (sorted worst-first, plus detected clusters)
+ * to reportPath, and prints a summary. Do not chase the absolute score to
+ * zero flagged timestamps or treat a clean report as "static layout is
+ * correct" - it isn't evidence of that either way. Use it only to decide
+ * whether a stretch of the re-recorded prototype drifted out of choreography
+ * with the source video.
  */
 
 const { execFile } = require("child_process");
@@ -143,15 +152,30 @@ async function ssimScore(imgA, imgB) {
 
   const scored = results.filter((r) => r.ssim !== null);
   const failed = results.filter((r) => r.ssim === null);
-  scored.sort((a, b) => a.ssim - b.ssim);
+  const byTime = [...scored].sort((a, b) => a.t - b.t);
 
-  const belowThreshold = scored.filter((r) => r.ssim < ssimThreshold);
+  const belowThreshold = [...scored].sort((a, b) => a.ssim - b.ssim).filter((r) => r.ssim < ssimThreshold);
+
+  // A cluster is 3+ consecutive (by timestamp order) below-threshold points -
+  // a signal of timeline/choreography drift over isolated single-frame noise.
+  const clusters = [];
+  let current = [];
+  for (const r of byTime) {
+    if (r.ssim < ssimThreshold) {
+      current.push(r);
+    } else {
+      if (current.length >= 3) clusters.push(current);
+      current = [];
+    }
+  }
+  if (current.length >= 3) clusters.push(current);
 
   fs.mkdirSync(path.dirname(reportPath), { recursive: true });
   fs.writeFileSync(
     reportPath,
     JSON.stringify(
       {
+        purpose: "choreography-drift-detector, not a parity gate - see script header",
         originalVideo,
         prototypeVideo,
         ssimThreshold,
@@ -159,7 +183,12 @@ async function ssimScore(imgA, imgB) {
         total: results.length,
         belowThresholdCount: belowThreshold.length,
         failedToScore: failed.length,
-        results: scored,
+        possibleChoreographyDriftClusters: clusters.map((c) => ({
+          startT: c[0].t,
+          endT: c[c.length - 1].t,
+          count: c.length,
+        })),
+        results: belowThreshold,
       },
       null,
       2
@@ -167,23 +196,32 @@ async function ssimScore(imgA, imgB) {
   );
 
   console.log(`\n${scored.length}/${results.length} change-points scored (${failed.length} failed to score).`);
-  console.log(`${belowThreshold.length} below threshold ${ssimThreshold} (worst first):`);
+  console.log(`${belowThreshold.length} below threshold ${ssimThreshold} (worst first) - not a fail count, just a shortlist to look at:`);
   for (const r of belowThreshold.slice(0, 30)) {
     console.log(`  t=${r.t.toFixed(2)}s  ssim=${r.ssim.toFixed(4)}`);
   }
   if (belowThreshold.length > 30) {
     console.log(`  ... and ${belowThreshold.length - 30} more (see ${reportPath})`);
   }
-  console.log(`\nFull report: ${reportPath}`);
 
-  if (belowThreshold.length > 0) {
+  if (clusters.length > 0) {
+    console.log(`\n${clusters.length} possible CHOREOGRAPHY DRIFT cluster(s) (3+ consecutive low scores):`);
+    for (const c of clusters) {
+      console.log(`  t=${c[0].t.toFixed(2)}s - t=${c[c.length - 1].t.toFixed(2)}s (${c.length} points)`);
+    }
     console.log(
-      `\nNext step: for each flagged timestamp, pull a full-resolution side-by-side ` +
-        `(e.g. ffmpeg -ss <t> -i <video> -vframes 1 -vf scale=1000:-1 out.jpg for both videos) ` +
-        `and read it before declaring parity done. A low score can also mean an ` +
-        `acknowledged/acceptable design difference, not necessarily a bug.`
+      `  These are worth a full-resolution side-by-side check first - they more likely mean the ` +
+        `recording script's tab/step timing has drifted from the source video's actual order, ` +
+        `rather than isolated content bugs.`
     );
   }
+
+  console.log(`\nFull report: ${reportPath}`);
+  console.log(
+    `\nReminder: this script cannot detect static chrome/layout errors (e.g. a misplaced logo, ` +
+      `wrong title styling) that are wrong on every frame - use scripts/build-region-atlas.js for ` +
+      `that. A clean report here is not evidence that static layout is correct.`
+  );
 })().catch((err) => {
   console.error("FAILED:", err.message);
   process.exit(1);

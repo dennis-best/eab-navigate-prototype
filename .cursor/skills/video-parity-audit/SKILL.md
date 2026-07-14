@@ -2,110 +2,118 @@
 name: video-parity-audit
 description: >-
   Audit a static HTML prototype against a source screen-recording video for
-  exact content parity (dropdown options, chart data, table rows, icons,
-  layout details), using ffmpeg scene-detection and contact-sheet thumbnails
-  instead of manually guessing timestamps and reading full-resolution frames
-  one at a time. Use when a video of a real product is provided and the
-  prototype must match it exactly, when auditing dropdowns/charts/tables
-  against a recording, or when the user says a prototype "doesn't match" a
-  video/screenshots.
+  functional/holistic parity - correct element roles, regions, and content
+  (dropdown options, chart data, table rows, headline behavior, logo
+  placement) rather than pixel-level matching. Use when a video of a real
+  product is provided and the prototype must replicate it functionally, when
+  auditing dropdowns/charts/tables/layout against a recording, or when the
+  user says a prototype "doesn't match" a video/screenshots.
 ---
 
 # Video Parity Audit
 
+## What "parity" means here
+
+Parity is **functional and structural**, not pixel-level:
+
+| Accept | Reject |
+|---|---|
+| Correct element **roles** (a headline is a headline, a filter dropdown has the right options, a data table has the right rows) | Pixel-exact dimensions, spacing, or SSIM chased toward 1.0 |
+| Correct **region placement** (logo above the profile tile, tabs under the title, sidebar on the right) | A HI/P component used just because the docs list it, even when it adds behavior/affordance the source doesn't have |
+| HI/P's own default styling (colors, fonts, borders differing from the source's bespoke CSS) | Missing or misplaced functionality disguised as "close enough" |
+| Content matching exactly (labels, option text, row data, counts) | Approximated or paraphrased content |
+
+If you catch yourself justifying a gap with "the design system renders it that way," stop - that is exactly the failure mode this skill exists to prevent. See the **visual-role override rule** below.
+
 ## Why this exists
 
-Manually guessing timestamps and reading one full-resolution video frame at a
-time is expensive (each image read costs real tokens) and unreliable (it is
-easy to guess a timestamp that misses a real UI change entirely — this
-happened on this project: a Term dropdown with real data was declared "never
-opened in the video" simply because the wrong timestamps were sampled).
+Two related problems, verified on this project:
 
-This skill replaces that with: scene-detection to find every real UI change
-automatically, contact sheets to triage dozens of moments per image read, and
-targeted full-resolution reads only for the handful of moments that need
-precise text/data extraction.
+1. **Motion-only tooling misses static chrome.** A wrongly-positioned sidebar logo and a page title with the wrong closed-state styling were both wrong from the very first frame onward. Neither ever "changed," so change-point detection and SSIM comparison - both built to catch *differences between frames* - had nothing to flag. They were declared parity-passed while visibly wrong the whole time.
+2. **Manually guessing timestamps and reading one full-resolution frame at a time is expensive and unreliable.** A Term dropdown with real data was once declared "never opened in the video" simply because the wrong timestamps were sampled.
+
+The workflow below runs **two tracks together**: a **static track** that forces a direct look at chrome/layout/region placement that never changes, and a **motion track** that uses scene-detection and contact sheets to efficiently find real interaction moments (dropdown opens, tab switches, panel appears).
+
+```mermaid
+flowchart TD
+    subgraph staticTrack ["Static track - always run, this is the primary audit surface"]
+        A["Pick one anchor frame per distinct screen/state"] --> B["Region atlas: crop named regions at each anchor"]
+        B --> C["Semantic inventory: what exists on this screen"]
+        C --> D["Holistic parity checklist per screen"]
+    end
+    subgraph motionTrack ["Motion track - interaction discovery only"]
+        E["Change-points"] --> F["Contact sheets"]
+        F --> G["Full-res reads for option lists / exact data"]
+    end
+    staticTrack --> H["Fix every real gap in one pass"]
+    motionTrack --> H
+    H --> I["Re-record prototype"]
+    I --> J["Choreography drift check - timeline sync only, not a parity gate"]
+```
 
 ## This is a mandatory, enforced process, not an optional checklist
 
-This skill was rewritten after repeated partial audits produced a stream of
-"one more thing you missed" corrections (dropdown search boxes, missing
-default filter values, un-rendered checkbox labels, a table that quietly
-capped out at 2 rows despite claiming "401 total results" via pagination).
-Every one of those had a common cause: the audit was scoped to *whatever had
-just been pointed out* instead of being exhaustive and reading real component
-contracts. The rules below close those gaps. Do not skip steps to save time —
-skipping is what caused the repeat misses in the first place.
+This skill was rewritten twice after two different classes of repeat misses:
+
+- **Content misses** (dropdown search boxes, missing default filter values, un-rendered checkbox labels, a table capped at 2 rows despite claiming "401 total results"). Cause: the audit was scoped to whatever had just been pointed out instead of being exhaustive.
+- **Static chrome misses** (a sidebar logo floating in the wrong corner at the wrong size, a page title wrapped in a component that added an unwanted drop shadow). Cause: the audit was built entirely around change detection, which structurally cannot see something that is wrong on every frame, and around SSIM, which is too coarse to flag a small, local, always-present error.
+
+Do not skip steps to save time - skipping is what caused both classes of repeat misses.
 
 ## Workflow
 
 ```
 Task Progress:
-- [ ] Step 1: Extract change-points from the ENTIRE source video (no sampled windows)
-- [ ] Step 2: Build contact sheets (thumbnail + auto diff-crop per tile) from the change-points
-- [ ] Step 3: Triage every contact sheet, note every distinct screen/state
-- [ ] Step 4: Pull targeted full-resolution frames for interesting timestamps
-- [ ] Step 5: Read real component contracts before asserting how anything behaves
-- [ ] Step 6: Run the full per-screen, all-element-type checklist against the prototype
-- [ ] Step 7: Fix every real gap in one pass, including data extrapolation and filter consistency
-- [ ] Step 8: Re-render the prototype recording
-- [ ] Step 9: Run the SSIM regression gate against the prototype recording and fix anything flagged
+- [ ] Step 1: Identify every distinct screen/state and pick one anchor timestamp per screen
+- [ ] Step 2: Build a region atlas (static track) - readable crops of named regions at each anchor
+- [ ] Step 3: Write a semantic inventory per screen - what exists, not what changed
+- [ ] Step 4: Extract change-points and build contact sheets (motion track) for interaction discovery
+- [ ] Step 5: Pull targeted full-resolution frames for interesting timestamps
+- [ ] Step 6: Read real component contracts before asserting how anything behaves - apply the visual-role override rule
+- [ ] Step 7: Run the full per-screen, all-element-type holistic checklist against the prototype
+- [ ] Step 8: Fix every real gap in one pass, including data extrapolation and filter consistency
+- [ ] Step 9: Re-render the prototype recording
+- [ ] Step 10: Run the choreography drift check and fix anything it flags
 ```
 
-### Step 1: Extract change-points
+### Step 1: Identify screens and anchors
+
+Watch (or skim frames of) the whole video and list every distinct screen/state: each tab, each panel/dialog open state, each major view. For each, pick one representative timestamp where that screen is fully settled (no mid-transition animation). This list of `{ screenId, t }` anchors drives the static track - it is independent of, and comes before, change-point detection.
+
+### Step 2: Region atlas (static track)
+
+```bash
+node scripts/build-region-atlas.js videos/original.mp4 <regions-config.json> .tmp/region-atlas
+```
+
+Given the anchors from Step 1 and a config of named region crops (e.g. `topNav`, `pageHeader`, `mainContent`, `rightSidebar` - in the source video's native pixel coordinates), writes one readable JPG per region per anchor to `.tmp/region-atlas/<screenId>/<region>.jpg`. Pure ffmpeg, zero AI-token cost.
+
+Read every crop. This is the step that catches things like a misplaced logo or a title with the wrong closed-state styling - errors that are wrong on every frame and therefore invisible to change detection or SSIM. Do not skip this step because "nothing changed there" - that is precisely the case it exists to cover.
+
+### Step 3: Semantic inventory
+
+For each screen, write down what actually exists - not a diff, an inventory: regions present and their order, headline text and whether it's a plain heading vs. an interactive menu, tabs, filters/dropdowns and their default values, tables/charts and their approximate shape, sidebar tiles, logos/brand marks and where they sit. This is a page-understanding step. Do it before touching the prototype so you're comparing a real mental model of the screen, not a laundry list of isolated complaints.
+
+### Step 4: Change-points and contact sheets (motion track)
 
 ```bash
 node scripts/extract-changepoints.js videos/original.mp4
-```
-
-Writes `.tmp/changepoints/original.json`, a list of `{t}` timestamps where
-the screen visibly changed. Default sensitivity (`0.003`) is tuned for
-desktop UI walkthroughs where dropdowns/panels only cover part of the screen.
-
-**Do not use ffmpeg's typical scene-cut default (~0.02)** — it is tuned for
-full-frame video-editing cuts and silently misses partial-screen UI changes
-like a dropdown opening. This was verified empirically: `0.02` produced zero
-change-points across a window known to contain multiple dropdown
-open/close events; `0.003` correctly caught them.
-
-If a specific video is very noisy (e.g. a webcam bubble with a talking head
-covering part of the frame), raise the threshold incrementally and re-check
-that known interaction windows are still captured before trusting the result.
-
-### Step 2: Build contact sheets
-
-```bash
 node scripts/build-contact-sheets.js videos/original.mp4 .tmp/changepoints/original.json
 ```
 
-Writes grid images to `.tmp/contact-sheets/sheet-NN.jpg` (default 30 tiles
-per sheet, 6 columns) plus `manifest.json` mapping every grid tile, in
-row-major order, to its exact source timestamp.
+This track exists to efficiently find **interaction moments** - dropdown opens/closes, tab switches, panels appearing - not to audit static layout (that's Step 2's job).
 
-**Each tile is a vertical pair, not a single thumbnail**: the top half is
-the normal full-frame thumbnail (context), the bottom half is an
-auto-cropped, upscaled "what changed" region computed by
-`scripts/diff-region.js` (ffmpeg `blend=difference` + `bbox`, against the
-previous change-point — pure ffmpeg, zero AI-token cost). This exists
-because a small change in a corner of the screen (e.g. a dropdown menu
-appearing near a page title) is easy to miss in a 320px-wide full-frame
-thumbnail when something bigger is happening elsewhere in the same frame —
-this was verified empirically on this project (see "Known misses" below).
-A blank gray tile in the bottom half means ffmpeg detected no region above
-the diff threshold — not necessarily "nothing happened," just nothing large
-enough to bound a crop around; if that seems surprising for a given
-timestamp, pull it at full resolution (Step 4) to be sure.
+`extract-changepoints.js` writes `.tmp/changepoints/original.json`, a list of `{t}` timestamps where the screen visibly changed. Default sensitivity (`0.003`) is tuned for desktop UI walkthroughs where dropdowns/panels only cover part of the screen.
 
-### Step 3: Triage
+**Do not use ffmpeg's typical scene-cut default (~0.02)** - it is tuned for full-frame video-editing cuts and silently misses partial-screen UI changes like a dropdown opening. Verified empirically: `0.02` produced zero change-points across a window known to contain multiple dropdown open/close events; `0.003` correctly caught them.
 
-Read each `sheet-NN.jpg` with the Read tool. One image read covers ~30
-moments (as pairs). Check BOTH halves of every tile — the full frame for
-context and the diff-crop for exactly what changed — don't rely on the full
-frame alone. Look for state changes: a dropdown opening, a chart appearing,
-a table populating, a tab switching. Note the approximate tile position and
-look up its exact timestamp in `manifest.json`.
+If a specific video is very noisy (e.g. a webcam bubble with a talking head covering part of the frame), raise the threshold incrementally and re-check that known interaction windows are still captured before trusting the result.
 
-### Step 4: Targeted full-resolution reads
+`build-contact-sheets.js` writes grid images to `.tmp/contact-sheets/sheet-NN.jpg` (default 30 tiles per sheet, 6 columns) plus `manifest.json` mapping every grid tile, in row-major order, to its exact source timestamp. Each tile is a vertical pair: the top half is the normal full-frame thumbnail (context), the bottom half is an auto-cropped, upscaled "what changed" region (via `diff-region.js`, ffmpeg `blend=difference` + `bbox`, zero AI-token cost). Check both halves of every tile. A blank gray bottom half means ffmpeg found no region above the diff threshold, not necessarily "nothing happened" - pull it at full resolution (Step 5) if that seems surprising.
+
+Read each sheet with the Read tool - one image read covers ~30 moments. Look for state changes and note the approximate tile position, then look up its exact timestamp in `manifest.json`.
+
+### Step 5: Targeted full-resolution reads
 
 For each timestamp worth reading precisely:
 
@@ -113,186 +121,92 @@ For each timestamp worth reading precisely:
 ffmpeg -ss <t> -i videos/original.mp4 -vframes 1 -vf scale=1000:-1 out.jpg
 ```
 
-Read `out.jpg`. If text is still too small (e.g. a dropdown's option list),
-crop tighter before scaling:
+Read `out.jpg`. If text is still too small (e.g. a dropdown's option list), crop tighter before scaling:
 
 ```bash
 ffmpeg -ss <t> -i videos/original.mp4 -vframes 1 -vf "crop=W:H:X:Y,scale=1000:-1" out.jpg
 ```
 
-Crop coordinates are in the source video's native resolution
-(check with `ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 <video>`),
-not the scaled-down coordinates of any earlier screenshot.
+Crop coordinates are in the source video's native resolution (check with `ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 <video>`), not the scaled-down coordinates of any earlier screenshot.
 
-### Step 5: Read real component contracts — never guess
+### Step 6: Read real component contracts - and know when to override them
 
-Before asserting how any component behaves (a select, combobox, table,
-chart, checkbox, tabs, tiles, icons — anything), read its actual doc, not
-just a catalog/index file that only lists filenames. For this design system
-the real per-component contracts live at:
+Before building or asserting anything about any UI category (tables, grids, lists, charts, metrics, cards, tags, avatars, empty states, flyouts, accordions, progress indicators, layout columns - anything), inventory **all five HIP documentation namespaces** in the local design cache - not just `@eab-eip`:
 
 ```
-/Users/dennisbest/Library/Application Support/Cursor/User/globalStorage/eab-hip.hip-designer/kb-design-cache/kb-design/ds/markdown/@eab-eip/<component>/visual_guide.md
+/Users/dennisbest/Library/Application Support/Cursor/User/globalStorage/eab-hip.hip-designer/kb-design-cache/kb-design/ds/markdown/
+  @eab-eip  — form/nav/basic elements (hi-*)
+  @eab-vip  — visualization components (vi-grid, vi-list, vi-table, vi-tree, vi-metric, vi-columns, vi-funnel, vi-renderer)
+  @eab-yip  — styling mixins (yi-table, yi-card, yi-layout, yi-view-state, yi-hover, …)
+  @eab-dip  — design helpers
+  @eab-xip  — sitemap helpers
 ```
 
-Two failure modes this specifically prevents, both of which happened on this
-project before this rule was enforced:
-- Treating `hi-select[allow-key-search]` as "a visible search box" (it's
-  actually silent keyboard type-ahead — no visible input). The real
-  documented component for a visible search input with grouped/headed
-  options is `hi-combobox`, using `input='[{"title":...,"value":...},
-  {"title":"Heading","heading":true}, ...]'`.
-- Assuming `<hi-checkbox>Some Label</hi-checkbox>` renders a visible label
-  from its slotted text. It does not — `hi-checkbox`'s shadow DOM has no
-  slot for it; the label never appears no matter how long you wait or
-  what you click. The documented pattern is a **separate sibling
-  `<hi-label for="...">`** (wrap both in `hi-input-group
-  layout-mode="input-label"` for horizontal layout). Any
-  `<hi-checkbox>text</hi-checkbox>` in this codebase is a bug, not a style
-  choice.
+**Mandatory routing before building:**
+- Data table with sort icons, row checkboxes, bulk Actions → **`vi-grid`** (`@eab-vip/vi-grid/visual_guide.md`), NOT bare `<table kind="compact">` (`@eab-yip/yi-table` is styling-only - borders/density, no sort/selection).
+- Activity/history feed list → **`vi-list mode="item"`** (`@eab-vip/vi-list`).
+- KPI/stat tile row → **`vi-metric`** or documented successor (`@eab-vip`).
+- Category/tag chips → **`hi-tag-group` / `hi-tag`** (`@eab-eip/hi-tag`).
+- Empty/placeholder states → **`yi-view-state`** (`@eab-yip/yi-view-state`).
+- Progress bars → **`hi-meter`** (`@eab-eip/hi-meter`); `hi-progress-bar` is not a documented tag.
+- Avatar rows → **`hi-avatar layout-inline`** (`@eab-eip/hi-avatar`).
+- Collapsible term/section blocks → **`hi-accordion`** (`@eab-eip/hi-accordion`).
+- Multi-column layouts → **`yi-layout` `l-size` grid** (`@eab-yip/yi-layout`).
+- Charts → **`vi-chart`** if a cached contract or working example exists (check `@eab-vip` examples under `kb-design/ds/examples/visualizations/`). If `vi-chart` does not render or has no local contract, build a flagged custom SVG/HTML fallback and note the gap - do not silently substitute a table or skip the chart.
 
-**Render-test anything ambiguous** instead of trusting doc prose alone:
-render both candidate variants locally with Playwright, screenshot the
-relevant state (e.g. an open dropdown), and compare against the matching
-video frame. Concrete example: docs describe `hi-select[aesthetic="dropdown"]`
-as having "no visual indicator" for the selected option, but a render test
-showed it actually does highlight the selected item by default — settled by
-evidence, not by re-reading the prose more carefully.
+Per-component contracts live at `.../markdown/@eab-<namespace>/<component>/visual_guide.md`.
 
-**Known hidden-tab rendering bug**: a `hi-select` with `selected-index="0"`
-+ `<hi-option selected>` mounted inside an initially-`hidden` `hi-case` (any
-tab that isn't the default active one) silently fails to display its
-closed-state label text — internal `selectedIndex` is correct, but
-`hi-dropdown`'s `values` array stays `[]` and the box renders empty. This is
-NOT fixable by re-triggering clicks/opens after the fact. The robust fix:
-use `mode="value"` with an explicit `value="..."` attribute (and
-`value="..."` on each `<hi-option>`) instead of `selected-index`/`selected`
-— this pattern renders correctly regardless of initial visibility. Any
-`hi-select` that drives a default-visible filter should use this pattern,
-not the ambiguous `selected-index` + `selected` combination.
+**Visual-role override rule (new):** HIP is a toolkit, not a ceiling *or* a floor. If a documented component's behavior matches what's on tape, use it. But if the *only* documented way to make something interactive brings along visual affordance the source doesn't have - e.g. wrapping a plain page-title headline in `hi-flyout` to make it clickable, which adds a drop-shadowed anchor state the source never shows - **do not use it as-is**. Build the closed-state appearance with plain HTML/CSS to match the source's actual look (a heading + a caret icon, no shadow, no background), and reserve the documented component (or a minimal custom toggle) for the open/expanded state only. Note the deviation informationally; it does not block continuing.
 
-### Step 6: Full per-screen, all-element-type checklist
+This is a correction to the previous version of this rule, which flatly said "page-title dropdown menus → `hi-flyout`." That rule caused a real miss on this project: a Staff Home page title picked up an unwanted drop shadow purely because `hi-flyout`'s default anchor styling was applied without checking whether it matched the source's plain-headline appearance.
 
-Do not scope the audit to "the thing that was just complained about." For
-every screen/state found in Step 3, check every element type that's present,
-against the matching video frame(s):
+Two more failure modes this section prevents, both of which happened on this project:
+- Treating `hi-select[allow-key-search]` as "a visible search box" (it's actually silent keyboard type-ahead - no visible input). The real documented component for a visible search input with grouped/headed options is `hi-combobox`, using `input='[{"title":...,"value":...}, {"title":"Heading","heading":true}, ...]'`.
+- Assuming `<hi-checkbox>Some Label</hi-checkbox>` renders a visible label from its slotted text. It does not - `hi-checkbox`'s shadow DOM has no slot for it. The documented pattern is a separate sibling `<hi-label for="...">` (wrap both in `hi-input-group layout-mode="input-label"` for horizontal layout).
 
-- **Interactive controls** (dropdowns/selects/comboboxes): search input
-  present? selected-item highlighted? grouped/headed options? exact option
-  text/order, including real duplicates? if it's a filter over a
-  table/list/chart, does the default selection and the data shown agree
-  with each other (see filter-consistency rule below)?
-- **Tables**: exact columns, sort affordances, row data, pagination — and if
-  a count/pager implies more rows than are directly visible, extrapolate
-  plausible additional rows to match that implied scale (see data rule
-  below).
-- **Charts**: chart type, axes, data shown — not a placeholder table where
-  the video shows a chart, or vice versa.
-- **Icons/logos**: real brand marks vs generic icons (see brand-asset rule
-  below).
+**Render-test anything ambiguous** instead of trusting doc prose alone: render both candidate variants locally with Playwright, screenshot the relevant state, and compare against the matching video frame. Concrete example: docs describe `hi-select[aesthetic="dropdown"]` as having "no visual indicator" for the selected option, but a render test showed it actually does highlight the selected item by default - settled by evidence, not by re-reading the prose more carefully.
+
+**Known hidden-tab rendering bug**: a `hi-select` with `selected-index="0"` + `<hi-option selected>` mounted inside an initially-`hidden` `hi-case` (any tab that isn't the default active one) silently fails to display its closed-state label text. This is NOT fixable by re-triggering clicks/opens after the fact. The robust fix: use `mode="value"` with an explicit `value="..."` attribute (and `value="..."` on each `<hi-option>`) instead of `selected-index`/`selected`.
+
+### Step 7: Full per-screen, all-element-type holistic checklist
+
+Do not scope the audit to "the thing that was just complained about." For every screen/state found in Step 1, check every element type present, against both the region atlas (Step 2) and the matching video frame(s):
+
+- **Regions and layout structure**: sections present/absent, ordering, panel placement, panel-relative positioning (e.g. a logo sits *above* a profile tile in normal document flow, not absolutely positioned into a corner).
+- **Headlines vs. interactive title menus**: does the closed state look like plain text (+ a caret if it opens something), or has a component's default styling added chrome the source doesn't have?
+- **Interactive controls** (dropdowns/selects/comboboxes): search input present? selected-item highlighted? grouped/headed options? exact option text/order, including real duplicates? if it's a filter over a table/list/chart, does the default selection and the data shown agree (see filter-consistency rule)?
+- **Tables**: exact columns, sort affordances, row data, pagination - extrapolate additional rows if a count/pager implies more than are directly visible (see data rule).
+- **Charts**: chart type, axes, data shown - not a placeholder table where the video shows a chart, or vice versa.
+- **Icons/logos**: real brand marks vs. generic icons, and correct size/position, not just "present somewhere in the HTML" (see brand-asset rule).
 - **Text/labels/counts**: exact copy, not paraphrased or approximated.
 - **Images/photos**: matches what's in the video where identity matters.
-- **Layout/structure**: sections present/absent, ordering, panel placement.
 
-**HIP is a toolkit, not a ceiling.** If a documented component matches
-what's on tape, use it (from the real docs, not a guess). If nothing in the
-design system matches, do not skip it, approximate it away, or stop and wait
-for permission — build it with plain HTML/CSS/JS so the prototype actually
-replicates the video. Note afterward (informationally) that a piece was
-custom-built outside the design system; that note doesn't block continuing.
-The only case that still warrants pausing to ask is a real brand/logo asset
-you don't have the actual file for.
+**Data rule**: where the video directly shows data, copy it exactly - don't paraphrase or "clean it up," including apparent glitches like real duplicate entries. Where the UI *implies* more data exists than is directly visible, extrapolate enough additional plausible rows/items to back that implied scale, using the visible entries as the template.
 
-**Data rule**: where the video directly shows data, copy it exactly — don't
-paraphrase or "clean it up," including apparent glitches like real duplicate
-entries. Where the UI *implies* more data exists than is directly visible
-(a pager showing "401 total results" while only 2 rows are ever fully
-readable on tape, a scrollbar implying more list items, etc.), extrapolate
-enough additional plausible rows/items to back that implied scale, using the
-visible entries as the template for columns/format/value ranges — don't
-leave it artificially sparse just because that's all that was directly
-readable.
+**Filter-consistency rule**: a dropdown/toggle/tab that filters a table/list/chart is not decorative - its default selected value and the data shown beneath it must agree, and if the video shows the filter changed to a different value producing different results, the prototype's data should differ too. Audit the control and the data it filters as one unit.
 
-**Filter-consistency rule**: a dropdown/toggle/tab that filters a
-table/list/chart is not a decorative, standalone control — its default
-selected value and the data shown beneath it must agree with each other (the
-right kind/count of rows for that specific selection, not a generic
-dataset), and if the video shows the same filter changed to a different
-value producing different results, the prototype's data should differ
-between those states too, not stay identical regardless of selection. Audit
-the control and the data it filters as one unit, not separately.
+**Real brand assets rule**: if a visible element looks like an organization/product logo or brand mark - as opposed to a generic UI icon - never approximate it with the closest stock icon. Flag it per the discrepancy protocol and ask for the actual asset file before implementing anything. Concrete example from this project: an institution logo above a profile picture was implemented as `hi-icon kind="account_balance"` instead of being flagged - the fix was `hi-image src=".../real-logo.png"`. Once you do have the real asset, still verify its **placement and size** against the region atlas - having the right file in the wrong spot is the same class of miss with a different symptom (this also happened on this project: the correct logo asset was used but pinned to the wrong corner at the wrong size).
 
-**Real brand assets rule**: if a visible element looks like an
-organization/product logo or brand mark — as opposed to a generic UI icon
-(arrows, carets, status glyphs) — never approximate it with the closest
-stock icon from the design system. Stop and flag it per the discrepancy
-protocol, and ask the user for the actual asset file before implementing
-anything. Concrete example from this project: an institution logo above a
-profile picture was implemented as `hi-icon kind="account_balance"` (a
-generic bank/institution glyph) instead of being flagged as "this looks
-like a real logo, please provide the asset" — the user had to point out the
-mistake themselves. The fix was `hi-image src=".../real-logo.png"`, matching
-the pattern already used elsewhere in the same file for actual brand marks.
+### Step 8: Fix every real gap in one pass
 
-### Step 7: Fix every real gap in one pass
+Fix everything found in Step 7 together, not one complaint at a time.
 
-Fix everything found in Step 6 together, not one complaint at a time — that
-one-at-a-time pattern is exactly what this rewrite exists to stop.
-
-### Step 8: Re-render
+### Step 9: Re-render
 
 Re-run the prototype's recording script to produce a new prototype video.
 
-### Step 9: SSIM regression gate (mandatory before declaring "done")
+### Step 10: Choreography drift check (not a parity gate)
 
 ```bash
 node scripts/compare-videos.js videos/original.mp4 videos/prototype.mp4 .tmp/changepoints/original.json .tmp/compare-videos/report.json
 ```
 
-For every change-point timestamp, extracts the matching frame from both
-videos and scores similarity via ffmpeg's `ssim` filter (pure ffmpeg, zero
-AI-token cost). Writes a report sorted worst-first and prints the
-lowest-scoring timestamps.
+This computes an SSIM similarity score per change-point via pure ffmpeg - zero AI-token cost. **It is a relative drift/heuristic tool, not a parity pass/fail gate.** A prototype using a different design system than the source app will typically score ~0.65-0.75 even on a frame that is functionally perfect - don't chase the score toward 1.0, and never treat "SSIM looks fine" as evidence that static chrome is correct (it structurally cannot detect that - see Step 2).
 
-This is a **relative triage heuristic, not an absolute pass/fail gate** —
-a prototype using a different design system than the source app will
-typically score ~0.65-0.75 even on a correctly-matching frame, not ~1.0.
-Don't chase the absolute score to zero; instead:
-
-- Look for outliers scoring far below the typical range for that stretch of
-  video (e.g. well under the batch's median) — those are more likely to be
-  genuinely missing/wrong content, not just different button/table styling.
-- Ignore t≈0 low scores by default — video start often has a fade-in or an
-  unstyled-content flash that's unrelated to real parity.
-- For every flagged timestamp that isn't an obvious edge case, pull a
-  full-resolution side-by-side (Step 4's ffmpeg command, run against both
-  videos) and read it — this is the one step in the whole pipeline that
-  costs real tokens, and it's now targeted only at the handful of moments
-  the automated pass couldn't clear.
-- Never declare a video-parity pass "done" without running this step at
-  least once after the final re-render. Fix what it flags (or explicitly
-  note it as an acknowledged/acceptable design difference) and re-run until
-  clear.
-- **Watch for tab-sequencing/timeline drift, not just content gaps**: a
-  cluster of consecutive low scores across a whole stretch (rather than one
-  isolated frame) can mean the recording script's assumed choreography
-  (which tab is active at second N) no longer matches the source video's
-  actual order — a different failure mode than a missing element, and one
-  content fixes alone won't resolve. Pull full-resolution frames from both
-  videos at a couple of timestamps in that stretch to tell which case it is
-  before fixing anything.
+Use it for exactly one thing: **spotting timeline/tab-sequencing drift**. A cluster of consecutive low scores across a whole stretch (rather than one isolated frame) means the recording script's assumed choreography no longer matches the source video's actual order - pull full-resolution frames from both videos at a couple of timestamps in that stretch to confirm before fixing anything. Ignore isolated outliers and t≈0 low scores (fade-in/unstyled-content flash) by default.
 
 ## Efficiency notes
 
-- 25fps video over ~500s is ~12,500 raw frames. Change-point detection
-  typically reduces this to a few hundred meaningful moments — roughly a
-  15-40x reduction before any images are even read.
-- Reading one 30-tile contact sheet costs roughly what reading one normal
-  single-frame screenshot costs, not 30x that. Most of the review should
-  happen at the contact-sheet level; only drop to full-resolution single
-  frames for moments that actually need precise text/data reading.
-- `diff-region.js` and `compare-videos.js` are both pure-ffmpeg, zero
-  -AI-token tools — they can run over every single change-point without
-  concern for cost. Reserve token-costing image reads for triage (contact
-  sheets) and for the handful of moments those two tools flag as needing a
-  closer look.
+- 25fps video over ~500s is ~12,500 raw frames. Change-point detection typically reduces this to a few hundred meaningful moments for the motion track - but the static track (Step 2) runs on a much smaller, fixed set of one-anchor-per-screen crops, independent of that count.
+- Reading one 30-tile contact sheet costs roughly what reading one normal single-frame screenshot costs, not 30x that.
+- `diff-region.js`, `build-region-atlas.js`, and `compare-videos.js` are all pure-ffmpeg, zero-AI-token tools - they can run freely. Reserve token-costing image reads for the region atlas, contact-sheet triage, and the handful of full-resolution reads those flag as needing a closer look.

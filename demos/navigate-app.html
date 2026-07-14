@@ -45,32 +45,35 @@
       white-space: nowrap;
       font-size: 1rem;
     }
-    .page-title-switcher {
+    .page-title-menu-wrap {
       position: relative;
+      display: inline-flex;
+    }
+    .page-title-flyout-anchor {
+      display: inline-flex;
+      align-items: center;
       cursor: pointer;
-      outline: none;
     }
-    .page-title-switcher:focus hi-icon {
-      transform: rotate(180deg);
-    }
-    .page-title-switcher__menu {
+    .page-title-menu {
       position: absolute;
       top: 100%;
       left: 0;
-      background: var(--hi-clr--white);
-      border: 1px solid var(--hi-clr--gray-3);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-      padding: 0.75rem 1rem;
-      z-index: var(--hi-depth--above-all, 100);
+      z-index: 10;
+      margin-top: 0.25rem;
+      background: var(--hi-clr--white, #fff);
+      border: 1px solid var(--hi-clr--gray_30, #d5d5d5);
+      border-radius: var(--hi-radius--m, 4px);
+      padding: 0.5rem 0.75rem;
       white-space: nowrap;
     }
+    .page-title-menu[hidden] {
+      display: none;
+    }
     .institution-badge {
-      position: absolute;
-      top: -1.5rem;
-      right: 1rem;
-      z-index: 1;
-      width: 3rem;
-      height: 3rem;
+      display: block;
+      width: 6rem;
+      height: 6rem;
+      margin: 0 0 1rem;
     }
     .top-nav__center-controls {
       display: flex;
@@ -201,17 +204,12 @@
           <!-- ======================================================== -->
           <hi-case id="staff-home" value="staff-home">
             <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
-              <div
-                l-kind="hort"
-                l-width-fixed
-                l-align="center"
-                hover="parent"
-                tabindex="0"
-                class="page-title-switcher"
-              >
-                <hi-title heading="Staff Home" level="1"></hi-title>
-                <hi-icon kind="expand_more" size="small" class="ml-2"></hi-icon>
-                <div hover="child" class="page-title-switcher__menu">
+              <div class="page-title-menu-wrap">
+                <div class="page-title-flyout-anchor page-title-menu-toggle">
+                  <hi-title heading="Staff Home" level="1"></hi-title>
+                  <hi-icon kind="expand_more" size="small" class="ml-2"></hi-icon>
+                </div>
+                <div class="page-title-menu" hidden>
                   <hi-link href="#">Professor Home</hi-link>
                 </div>
               </div>
@@ -281,243 +279,7 @@
                   <div class="mb-6" scroll-x="auto">
                     <hi-button aesthetic="link">Actions</hi-button>
 
-                    <table kind="compact" class="mt-6">
-                      <thead>
-                        <tr>
-                          <th><hi-checkbox aria-label="Select all students"></hi-checkbox></th>
-                          <th class="text-uppercase">Name</th>
-                          <th class="text-uppercase">ID</th>
-                          <th class="text-uppercase">Student List</th>
-                          <th class="text-uppercase">Cumulative GPA</th>
-                          <th class="text-uppercase">Predicted Concern</th>
-                          <th class="text-uppercase">Category</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Adam, Michael"></hi-checkbox></td>
-                          <td><hi-link href="#">Adam, Michael</hi-link></td>
-                          <td>87650214</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            Completed probation requirement, Financial Aid, First generation student,
-                            Full-Time, Pre-enrollment risk, Study group member
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Aguila, Peggy"></hi-checkbox></td>
-                          <td><hi-link href="#">Aguila, Peggy</hi-link></td>
-                          <td>14538206</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            Completed probation requirement, Financial Aid, First generation student,
-                            Full-Time, Pre-enrollment risk, Study group member
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Bennett, Sofia"></hi-checkbox></td>
-                          <td><hi-link href="#">Bennett, Sofia</hi-link></td>
-                          <td>46780179</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            Completed probation requirement, Financial Aid, First generation student, Full-Time, Pre-enrollment risk, Study group member
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Castillo, Noah"></hi-checkbox></td>
-                          <td><hi-link href="#">Castillo, Noah</hi-link></td>
-                          <td>57526752</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            Completed probation requirement, Financial Aid, First generation student, Full-Time, Good Academic Standing
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Delgado, Isabella"></hi-checkbox></td>
-                          <td><hi-link href="#">Delgado, Isabella</hi-link></td>
-                          <td>89332232</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            Financial Aid, Full-Time, Study group member
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Estrada, Ethan"></hi-checkbox></td>
-                          <td><hi-link href="#">Estrada, Ethan</hi-link></td>
-                          <td>98243062</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            First generation student, Part-Time, Pre-enrollment risk
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Farrow, Mia"></hi-checkbox></td>
-                          <td><hi-link href="#">Farrow, Mia</hi-link></td>
-                          <td>69341220</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            Good Academic Standing, Full-Time
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Gutierrez, Lucas"></hi-checkbox></td>
-                          <td><hi-link href="#">Gutierrez, Lucas</hi-link></td>
-                          <td>17231592</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            Financial Aid, First generation student, Full-Time, Study group member
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Hensley, Emma"></hi-checkbox></td>
-                          <td><hi-link href="#">Hensley, Emma</hi-link></td>
-                          <td>26925441</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            Pre-enrollment risk, Part-Time
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Ibarra, Mason"></hi-checkbox></td>
-                          <td><hi-link href="#">Ibarra, Mason</hi-link></td>
-                          <td>59211901</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            Completed probation requirement, Full-Time, Good Academic Standing
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Jacobs, Olivia"></hi-checkbox></td>
-                          <td><hi-link href="#">Jacobs, Olivia</hi-link></td>
-                          <td>11530347</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            Completed probation requirement, Financial Aid, First generation student, Full-Time, Pre-enrollment risk, Study group member
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Kowalski, Logan"></hi-checkbox></td>
-                          <td><hi-link href="#">Kowalski, Logan</hi-link></td>
-                          <td>62351044</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            Completed probation requirement, Financial Aid, First generation student, Full-Time, Good Academic Standing
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Lindqvist, Ella"></hi-checkbox></td>
-                          <td><hi-link href="#">Lindqvist, Ella</hi-link></td>
-                          <td>80553011</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            Financial Aid, Full-Time, Study group member
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Mercado, Caleb"></hi-checkbox></td>
-                          <td><hi-link href="#">Mercado, Caleb</hi-link></td>
-                          <td>94413093</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            First generation student, Part-Time, Pre-enrollment risk
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Nakamura, Zoe"></hi-checkbox></td>
-                          <td><hi-link href="#">Nakamura, Zoe</hi-link></td>
-                          <td>85869960</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            Good Academic Standing, Full-Time
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Ortega, Elijah"></hi-checkbox></td>
-                          <td><hi-link href="#">Ortega, Elijah</hi-link></td>
-                          <td>52636644</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            Financial Aid, First generation student, Full-Time, Study group member
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Patel, Chloe"></hi-checkbox></td>
-                          <td><hi-link href="#">Patel, Chloe</hi-link></td>
-                          <td>70205099</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            Pre-enrollment risk, Part-Time
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Quintana, Aiden"></hi-checkbox></td>
-                          <td><hi-link href="#">Quintana, Aiden</hi-link></td>
-                          <td>37041436</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            Completed probation requirement, Full-Time, Good Academic Standing
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Reyes, Grace"></hi-checkbox></td>
-                          <td><hi-link href="#">Reyes, Grace</hi-link></td>
-                          <td>33463338</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            Completed probation requirement, Financial Aid, First generation student, Full-Time, Pre-enrollment risk, Study group member
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Suarez, Hunter"></hi-checkbox></td>
-                          <td><hi-link href="#">Suarez, Hunter</hi-link></td>
-                          <td>11261486</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>
-                            Completed probation requirement, Financial Aid, First generation student, Full-Time, Good Academic Standing
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <vi-grid id="grid-21" class="" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":true,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"name":{"title":"Name","render_type":"html"},"id":{"title":"ID","render_type":"html"},"student_list":{"title":"Student List","render_type":"html"},"cumulative_gpa":{"title":"Cumulative GPA","render_type":"html"},"predicted_concern":{"title":"Predicted Concern","render_type":"html"},"category":{"title":"Category","render_type":"html"}}}' input='[{"id":"87650214","name":"<hi-link href=\"#\">Adam, Michael</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student,\n                            Full-Time, Pre-enrollment risk, Study group member"},{"id":"14538206","name":"<hi-link href=\"#\">Aguila, Peggy</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student,\n                            Full-Time, Pre-enrollment risk, Study group member"},{"id":"46780179","name":"<hi-link href=\"#\">Bennett, Sofia</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student, Full-Time, Pre-enrollment risk, Study group member"},{"id":"57526752","name":"<hi-link href=\"#\">Castillo, Noah</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student, Full-Time, Good Academic Standing"},{"id":"89332232","name":"<hi-link href=\"#\">Delgado, Isabella</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Financial Aid, Full-Time, Study group member"},{"id":"98243062","name":"<hi-link href=\"#\">Estrada, Ethan</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"First generation student, Part-Time, Pre-enrollment risk"},{"id":"69341220","name":"<hi-link href=\"#\">Farrow, Mia</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Good Academic Standing, Full-Time"},{"id":"17231592","name":"<hi-link href=\"#\">Gutierrez, Lucas</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Financial Aid, First generation student, Full-Time, Study group member"},{"id":"26925441","name":"<hi-link href=\"#\">Hensley, Emma</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Pre-enrollment risk, Part-Time"},{"id":"59211901","name":"<hi-link href=\"#\">Ibarra, Mason</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Full-Time, Good Academic Standing"},{"id":"11530347","name":"<hi-link href=\"#\">Jacobs, Olivia</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student, Full-Time, Pre-enrollment risk, Study group member"},{"id":"62351044","name":"<hi-link href=\"#\">Kowalski, Logan</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student, Full-Time, Good Academic Standing"},{"id":"80553011","name":"<hi-link href=\"#\">Lindqvist, Ella</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Financial Aid, Full-Time, Study group member"},{"id":"94413093","name":"<hi-link href=\"#\">Mercado, Caleb</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"First generation student, Part-Time, Pre-enrollment risk"},{"id":"85869960","name":"<hi-link href=\"#\">Nakamura, Zoe</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Good Academic Standing, Full-Time"},{"id":"52636644","name":"<hi-link href=\"#\">Ortega, Elijah</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Financial Aid, First generation student, Full-Time, Study group member"},{"id":"70205099","name":"<hi-link href=\"#\">Patel, Chloe</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Pre-enrollment risk, Part-Time"},{"id":"37041436","name":"<hi-link href=\"#\">Quintana, Aiden</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Full-Time, Good Academic Standing"},{"id":"33463338","name":"<hi-link href=\"#\">Reyes, Grace</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student, Full-Time, Pre-enrollment risk, Study group member"},{"id":"11261486","name":"<hi-link href=\"#\">Suarez, Hunter</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student, Full-Time, Good Academic Standing"}]'></vi-grid>
                   </div>
 
                   <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mt-6">
@@ -545,28 +307,7 @@
                   </div>
 
                   <div scroll-x="auto" class="mb-8">
-                    <table kind="compact">
-                      <thead>
-                        <tr>
-                          <th><hi-checkbox aria-label="Select all upcoming appointments"></hi-checkbox></th>
-                          <th class="text-uppercase">Date/Time</th>
-                          <th class="text-uppercase">Attendee</th>
-                          <th class="text-uppercase">Service</th>
-                          <th class="text-uppercase">Comment</th>
-                          <th class="text-uppercase">Meeting Type</th>
-                          <th class="text-uppercase">Report Filed?</th>
-                          <th class="text-uppercase">Details</th>
-                          <th class="text-uppercase">Pre Appt Questions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td colspan="9" class="text-center clr-gray_80-txt">
-                            This user has no upcoming appointments.
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <vi-grid id="grid-22" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":true,"table_sort":true,"table_filter":false,"table_pagination":false},"messages":{"state_empty":{"title":"","description":"This user has no upcoming appointments."}}}' type='{"fields":{"date_time":{"title":"Date/Time","render_type":"html"},"attendee":{"title":"Attendee","render_type":"html"},"service":{"title":"Service","render_type":"html"},"comment":{"title":"Comment","render_type":"html"},"meeting_type":{"title":"Meeting Type","render_type":"html"},"report_filed":{"title":"Report Filed?","render_type":"html"},"details":{"title":"Details","render_type":"html"},"pre_appt_questions":{"title":"Pre Appt Questions","render_type":"html"}}}' input='[]'></vi-grid>
                   </div>
 
                   <h2 class="mb-6">Reporting</h2>
@@ -578,121 +319,129 @@
 
                   <hi-switch id="reporting-panels" value="recent-appointments">
                     <hi-case id="recent-appointments" value="recent-appointments">
-                      <div scroll-x="auto">
-                        <table kind="compact">
-                          <thead>
-                            <tr>
-                              <th class="text-uppercase">Date</th>
-                              <th class="text-uppercase">Service</th>
-                              <th class="text-uppercase">Course</th>
-                              <th class="text-uppercase">Comment</th>
-                              <th class="text-uppercase">Attendee</th>
-                              <th class="text-uppercase">Report Filed?</th>
-                              <th class="text-uppercase">Details</th>
-                              <th class="text-uppercase">Pre Appt Questions</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>06/19/2026<br />11:15am - 12:00pm ET<br />(45m)</td>
-                              <td>Academic Planning</td>
-                              <td>N/A</td>
-                              <td></td>
-                              <td><hi-link href="#">Aguila, Peggy</hi-link></td>
-                              <td>Not Yet</td>
-                              <td><hi-link href="#">Details</hi-link></td>
-                              <td>N/A</td>
-                            </tr>
-                            <tr>
-                              <td>05/15/2026<br />9:00am - 9:45am ET<br />(45m)</td>
-                              <td>Course-based Tutoring</td>
-                              <td>BIO-101 Intro to Biology</td>
-                              <td></td>
-                              <td><hi-link href="#" class="goto-wyatt-link">Wyatt, James</hi-link></td>
-                              <td>Not Yet</td>
-                              <td><hi-link href="#">Details</hi-link></td>
-                              <td>N/A</td>
-                            </tr>
-                            <tr>
-                              <td>05/07/2026<br />7:57am - 8:00am ET<br />(3m)</td>
-                              <td>Campus Tour</td>
-                              <td>N/A</td>
-                              <td></td>
-                              <td><hi-link href="#">Adam, Michael</hi-link></td>
-                              <td><hi-button aesthetic="primary" size="small">Report Details</hi-button></td>
-                              <td><hi-link href="#">Details</hi-link></td>
-                              <td>N/A</td>
-                            </tr>
-                            <tr>
-                              <td>04/14/2026<br />11:01am - 11:02am ET<br />(1m)</td>
-                              <td>Academic Planning</td>
-                              <td>N/A</td>
-                              <td></td>
-                              <td><hi-link href="#">Andrews, Garland</hi-link></td>
-                              <td><hi-button aesthetic="primary" size="small">Report Details</hi-button></td>
-                              <td><hi-link href="#">Details</hi-link></td>
-                              <td>N/A</td>
-                            </tr>
-                            <tr>
-                              <td>04/07/2026<br />4:09pm - 4:12pm ET<br />(3m)</td>
-                              <td>Course-based Tutoring</td>
-                              <td>ANTH-101 Intro to Anthropology</td>
-                              <td></td>
-                              <td><hi-link href="#" class="goto-wyatt-link">Wyatt, James</hi-link></td>
-                              <td><hi-button aesthetic="primary" size="small">Report Details</hi-button></td>
-                              <td><hi-link href="#">Details</hi-link></td>
-                              <td>N/A</td>
-                            </tr>
-                            <tr>
-                              <td>04/07/2026<br />4:04pm - 4:06pm ET</td>
-                              <td>Course-based Tutoring</td>
-                              <td>ANTH-101 Intro to Anthropology</td>
-                              <td></td>
-                              <td><hi-link href="#" class="goto-wyatt-link">Wyatt, James</hi-link></td>
-                              <td>Not Yet</td>
-                              <td>Not Available</td>
-                              <td>N/A</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
+                      <hi-form class="mb-6">
+                        <hi-input-group style="width: 14rem;">
+                          <hi-label for="recent-appt-care-unit">Care Unit</hi-label>
+                          <hi-combobox id="recent-appt-care-unit" value="all-care-units" input='[{"title":"All Care Units","value":"all-care-units"},{"title":"Admissions Counseling","value":"admissions-counseling"},{"title":"Advising","value":"advising"},{"title":"Career Services","value":"career-services"},{"title":"Financial Aid","value":"financial-aid"},{"title":"First Year Experience","value":"first-year-experience"},{"title":"Residence Life","value":"residence-life"},{"title":"Student Support Services","value":"student-support-services"}]'></hi-combobox>
+                        </hi-input-group>
+                      </hi-form>
+
+                      <vi-grid
+                        id="recent-appointments-grid"
+                        bulk-actions='[{"value":"export","title":"Export Selected"},{"value":"print","title":"Print Selected"}]'
+                        settings='{
+                          "hidden": {
+                            "export": true,
+                            "add_row": true,
+                            "grid_table": true,
+                            "sort_manager": true,
+                            "column_manager": true,
+                            "settings_manager": true,
+                            "clear_all_limits": true,
+                            "global_search": true,
+                            "pagination_row_size": true,
+                            "auto_fit_column_width": true
+                          },
+                          "allow": {
+                            "row_selections": true,
+                            "table_sort": true,
+                            "table_filter": false,
+                            "table_pagination": false
+                          },
+                          "messages": { "bulk_actions": { "description": "Actions" } }
+                        }'
+                        type='{
+                          "fields": {
+                            "count": { "title": "", "render_type": "text", "sortable": false, "filterable": false },
+                            "date": { "title": "Date", "render_type": "html" },
+                            "service": { "title": "Service", "render_type": "text" },
+                            "course": { "title": "Course", "render_type": "text" },
+                            "comment": { "title": "Comment", "render_type": "text" },
+                            "attendee": { "title": "Attendee", "render_type": "html" },
+                            "report_filed": { "title": "Report Filed?", "render_type": "html" },
+                            "details": { "title": "Details", "render_type": "html" },
+                            "pre_appt_questions": { "title": "Pre Appt Questions", "render_type": "text" }
+                          }
+                        }'
+                        input='[
+                          {
+                            "id": "appt-1",
+                            "count": "1/1",
+                            "date": "06/19/2026<br/>11:15am - 12:00pm ET<br/>(45m)",
+                            "service": "Academic Planning",
+                            "course": "N/A",
+                            "comment": "",
+                            "attendee": "<hi-link href=\"#\">Aguila, Peggy</hi-link>",
+                            "report_filed": "Not Yet",
+                            "details": "<hi-link href=\"#\">Details</hi-link>",
+                            "pre_appt_questions": "N/A"
+                          },
+                          {
+                            "id": "appt-2",
+                            "count": "1/1",
+                            "date": "05/15/2026<br/>9:00am - 9:45am ET<br/>(45m)",
+                            "service": "Course-based Tutoring",
+                            "course": "BIO-101 Intro to Biology",
+                            "comment": "",
+                            "attendee": "<hi-link href=\"#\" class=\"goto-wyatt-link\">Wyatt, James</hi-link>",
+                            "report_filed": "Not Yet",
+                            "details": "<hi-link href=\"#\">Details</hi-link>",
+                            "pre_appt_questions": "N/A"
+                          },
+                          {
+                            "id": "appt-3",
+                            "count": "1/1",
+                            "date": "05/07/2026<br/>7:57am - 8:00am ET<br/>(3m)",
+                            "service": "Campus Tour",
+                            "course": "N/A",
+                            "comment": "",
+                            "attendee": "<hi-link href=\"#\">Adam, Michael</hi-link>",
+                            "report_filed": "<hi-button aesthetic=\"primary\" size=\"small\">Report Details</hi-button>",
+                            "details": "<hi-link href=\"#\">Details</hi-link>",
+                            "pre_appt_questions": "N/A"
+                          },
+                          {
+                            "id": "appt-4",
+                            "count": "1/1",
+                            "date": "04/14/2026<br/>11:01am - 11:02am ET<br/>(1m)",
+                            "service": "Academic Planning",
+                            "course": "N/A",
+                            "comment": "",
+                            "attendee": "<hi-link href=\"#\">Andrews, Garland</hi-link>",
+                            "report_filed": "<hi-button aesthetic=\"primary\" size=\"small\">Report Details</hi-button>",
+                            "details": "<hi-link href=\"#\">Details</hi-link>",
+                            "pre_appt_questions": "N/A"
+                          },
+                          {
+                            "id": "appt-5",
+                            "count": "1/1",
+                            "date": "04/07/2026<br/>4:09pm - 4:12pm ET<br/>(3m)",
+                            "service": "Course-based Tutoring",
+                            "course": "ANTH-101 Intro to Anthropology",
+                            "comment": "",
+                            "attendee": "<hi-link href=\"#\" class=\"goto-wyatt-link\">Wyatt, James</hi-link>",
+                            "report_filed": "<hi-button aesthetic=\"primary\" size=\"small\">Report Details</hi-button>",
+                            "details": "<hi-link href=\"#\">Details</hi-link>",
+                            "pre_appt_questions": "N/A"
+                          },
+                          {
+                            "id": "appt-6",
+                            "count": "1/1",
+                            "date": "04/07/2026<br/>4:04pm - 4:06pm ET",
+                            "service": "Course-based Tutoring",
+                            "course": "ANTH-101 Intro to Anthropology",
+                            "comment": "",
+                            "attendee": "<hi-link href=\"#\" class=\"goto-wyatt-link\">Wyatt, James</hi-link>",
+                            "report_filed": "Not Yet",
+                            "details": "Not Available",
+                            "pre_appt_questions": "N/A"
+                          }
+                        ]'>
+                      </vi-grid>
                     </hi-case>
                     <hi-case id="recent-reports" value="recent-reports" hidden>
                       <div scroll-x="auto">
-                        <table kind="compact">
-                          <thead>
-                            <tr>
-                              <th class="text-uppercase">Date</th>
-                              <th class="text-uppercase">Student Name</th>
-                              <th class="text-uppercase">Summary</th>
-                              <th class="text-uppercase">Follow-Up?</th>
-                              <th class="text-uppercase">Details</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>05/07/2026</td>
-                              <td><hi-link href="#">Adam, Michael</hi-link></td>
-                              <td>Jack Whitmore and Michael Adam discuss Michael's plans. M...</td>
-                              <td>No</td>
-                              <td><hi-link href="#">Details</hi-link> &nbsp; <hi-link href="#">Delete</hi-link></td>
-                            </tr>
-                            <tr>
-                              <td>04/14/2026</td>
-                              <td><hi-link href="#">Andrews, Garland</hi-link></td>
-                              <td></td>
-                              <td>No</td>
-                              <td><hi-link href="#">Details</hi-link> &nbsp; <hi-link href="#">Delete</hi-link></td>
-                            </tr>
-                            <tr>
-                              <td>04/07/2026</td>
-                              <td><hi-link href="#" class="goto-wyatt-link">Wyatt, James</hi-link></td>
-                              <td>went over this concept</td>
-                              <td>No</td>
-                              <td><hi-link href="#">Details</hi-link> &nbsp; <hi-link href="#">Delete</hi-link></td>
-                            </tr>
-                          </tbody>
-                        </table>
+                        <vi-grid id="grid-26" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"date":{"title":"Date","render_type":"html"},"student_name":{"title":"Student Name","render_type":"html"},"summary":{"title":"Summary","render_type":"html"},"follow_up":{"title":"Follow-Up?","render_type":"html"},"details":{"title":"Details","render_type":"html"}}}' input='[{"id":"row-23","date":"05/07/2026","student_name":"<hi-link href=\"#\">Adam, Michael</hi-link>","summary":"Jack Whitmore and Michael Adam discuss Michael's plans. M...","follow_up":"No","details":"<hi-link href=\"#\">Details</hi-link> &nbsp; <hi-link href=\"#\">Delete</hi-link>"},{"id":"row-24","date":"04/14/2026","student_name":"<hi-link href=\"#\">Andrews, Garland</hi-link>","summary":"","follow_up":"No","details":"<hi-link href=\"#\">Details</hi-link> &nbsp; <hi-link href=\"#\">Delete</hi-link>"},{"id":"row-25","date":"04/07/2026","student_name":"<hi-link href=\"#\" class=\"goto-wyatt-link\">Wyatt, James</hi-link>","summary":"went over this concept","follow_up":"No","details":"<hi-link href=\"#\">Details</hi-link> &nbsp; <hi-link href=\"#\">Delete</hi-link>"}]'></vi-grid>
                       </div>
                     </hi-case>
                   </hi-switch>
@@ -704,111 +453,7 @@
                 <section x-area="zone">
                   <h2 class="mb-6">My Availability</h2>
                   <div scroll-x="auto" class="mb-8">
-                    <table kind="compact">
-                      <thead>
-                        <tr>
-                          <th class="text-uppercase">Days of Week</th>
-                          <th class="text-uppercase">Times</th>
-                          <th class="text-uppercase">Dates</th>
-                          <th class="text-uppercase">Location</th>
-                          <th class="text-uppercase">Purpose</th>
-                          <th class="text-uppercase">Care Unit</th>
-                          <th class="text-uppercase">Personal Link</th>
-                          <th class="text-uppercase">Meeting Type</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Mon, Tue, Wed, Thu, Fri</td>
-                          <td>9:00am - 4:30pm</td>
-                          <td>Forever</td>
-                          <td>Hornet Tutoring Center</td>
-                          <td>Math Lab, Writing Lab<br />For: Appointments/Drop-Ins/Campaigns</td>
-                          <td>Tutoring</td>
-                          <td>Yes</td>
-                          <td>In-person</td>
-                          <td><hi-link href="#">Edit</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td>Mon, Tue, Wed, Thu, Fri</td>
-                          <td>8:00am - 5:00pm</td>
-                          <td>Forever</td>
-                          <td>Admissions Office</td>
-                          <td>Campus Tour<br />For: Appointments/Drop-Ins/Campaigns</td>
-                          <td>Admissions Counseling</td>
-                          <td>No</td>
-                          <td>In-person</td>
-                          <td><hi-link href="#">Edit</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td>Mon</td>
-                          <td>9:00am - 5:30pm</td>
-                          <td>Forever</td>
-                          <td>Financial Aid Center</td>
-                          <td>Applying for Financial Aid<br />For: Appointments/Drop-Ins/Campaigns</td>
-                          <td>Financial Aid</td>
-                          <td>No</td>
-                          <td>WhatsApp Video Call</td>
-                          <td><hi-link href="#">Edit</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td>Mon, Tue, Wed, Thu, Fri</td>
-                          <td>9:00am - 4:30pm</td>
-                          <td>Forever</td>
-                          <td>Hornet Tutoring Center</td>
-                          <td>ANTH-101, BIO-101, Course-based Tutoring</td>
-                          <td>Tutoring</td>
-                          <td>Yes</td>
-                          <td>In-person</td>
-                          <td><hi-link href="#">Edit</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td>Fri</td>
-                          <td>9:00am - 4:30pm</td>
-                          <td>Forever</td>
-                          <td>Financial Aid Center</td>
-                          <td>Applying for Financial Aid<br />For: Appointments/Drop-Ins/Campaigns</td>
-                          <td>Financial Aid</td>
-                          <td>No</td>
-                          <td>In Person</td>
-                          <td><hi-link href="#">Edit</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td>Tue, Wed, Thu</td>
-                          <td>8:00am - 4:00pm</td>
-                          <td>Forever</td>
-                          <td>Hornet Tutoring Center</td>
-                          <td>Academic Planning, Changing a Major, General Advising</td>
-                          <td>Advising</td>
-                          <td>Yes</td>
-                          <td>WhatsApp Video Call</td>
-                          <td><hi-link href="#">Edit</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td>Tue, Wed, Thu</td>
-                          <td>8:00am - 4:00pm</td>
-                          <td>Forever</td>
-                          <td>Financial Aid Center</td>
-                          <td>Applying for Financial Aid<br />For: Appointments/Drop-Ins/Campaigns</td>
-                          <td>Financial Aid</td>
-                          <td>No</td>
-                          <td>WhatsApp Video Call</td>
-                          <td><hi-link href="#">Edit</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td>Mon</td>
-                          <td>9:00am - 5:30pm</td>
-                          <td>Forever</td>
-                          <td>Hornet Tutoring Center</td>
-                          <td>Academic Planning, Changing a Major, General Advising</td>
-                          <td>Advising</td>
-                          <td>Yes</td>
-                          <td>In-person</td>
-                          <td><hi-link href="#">Edit</hi-link></td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <vi-grid id="grid-35" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"days_of_week":{"title":"Days of Week","render_type":"html"},"times":{"title":"Times","render_type":"html"},"dates":{"title":"Dates","render_type":"html"},"location":{"title":"Location","render_type":"html"},"purpose":{"title":"Purpose","render_type":"html"},"care_unit":{"title":"Care Unit","render_type":"html"},"personal_link":{"title":"Personal Link","render_type":"html"},"meeting_type":{"title":"Meeting Type","render_type":"html"},"col8":{"title":"","render_type":"html"}}}' input='[{"id":"row-27","days_of_week":"Mon, Tue, Wed, Thu, Fri","times":"9:00am - 4:30pm","dates":"Forever","location":"Hornet Tutoring Center","purpose":"Math Lab, Writing Lab<br>For: Appointments/Drop-Ins/Campaigns","care_unit":"Tutoring","personal_link":"Yes","meeting_type":"In-person","col8":"<hi-link href=\"#\">Edit</hi-link>"},{"id":"row-28","days_of_week":"Mon, Tue, Wed, Thu, Fri","times":"8:00am - 5:00pm","dates":"Forever","location":"Admissions Office","purpose":"Campus Tour<br>For: Appointments/Drop-Ins/Campaigns","care_unit":"Admissions Counseling","personal_link":"No","meeting_type":"In-person","col8":"<hi-link href=\"#\">Edit</hi-link>"},{"id":"row-29","days_of_week":"Mon","times":"9:00am - 5:30pm","dates":"Forever","location":"Financial Aid Center","purpose":"Applying for Financial Aid<br>For: Appointments/Drop-Ins/Campaigns","care_unit":"Financial Aid","personal_link":"No","meeting_type":"WhatsApp Video Call","col8":"<hi-link href=\"#\">Edit</hi-link>"},{"id":"row-30","days_of_week":"Mon, Tue, Wed, Thu, Fri","times":"9:00am - 4:30pm","dates":"Forever","location":"Hornet Tutoring Center","purpose":"ANTH-101, BIO-101, Course-based Tutoring","care_unit":"Tutoring","personal_link":"Yes","meeting_type":"In-person","col8":"<hi-link href=\"#\">Edit</hi-link>"},{"id":"row-31","days_of_week":"Fri","times":"9:00am - 4:30pm","dates":"Forever","location":"Financial Aid Center","purpose":"Applying for Financial Aid<br>For: Appointments/Drop-Ins/Campaigns","care_unit":"Financial Aid","personal_link":"No","meeting_type":"In Person","col8":"<hi-link href=\"#\">Edit</hi-link>"},{"id":"row-32","days_of_week":"Tue, Wed, Thu","times":"8:00am - 4:00pm","dates":"Forever","location":"Hornet Tutoring Center","purpose":"Academic Planning, Changing a Major, General Advising","care_unit":"Advising","personal_link":"Yes","meeting_type":"WhatsApp Video Call","col8":"<hi-link href=\"#\">Edit</hi-link>"},{"id":"row-33","days_of_week":"Tue, Wed, Thu","times":"8:00am - 4:00pm","dates":"Forever","location":"Financial Aid Center","purpose":"Applying for Financial Aid<br>For: Appointments/Drop-Ins/Campaigns","care_unit":"Financial Aid","personal_link":"No","meeting_type":"WhatsApp Video Call","col8":"<hi-link href=\"#\">Edit</hi-link>"},{"id":"row-34","days_of_week":"Mon","times":"9:00am - 5:30pm","dates":"Forever","location":"Hornet Tutoring Center","purpose":"Academic Planning, Changing a Major, General Advising","care_unit":"Advising","personal_link":"Yes","meeting_type":"In-person","col8":"<hi-link href=\"#\">Edit</hi-link>"}]'></vi-grid>
                   </div>
 
                   <h3 class="mb-4">Personal Availability Link</h3>
@@ -854,102 +499,22 @@
 
                   <h3 class="mb-4">Students Checked In For Appointments</h3>
                   <div scroll-x="auto" class="mb-8">
-                    <table kind="compact">
-                      <thead>
-                        <tr>
-                          <th><hi-checkbox aria-label="Select all checked in for appointments"></hi-checkbox></th>
-                          <th class="text-uppercase">Name</th>
-                          <th class="text-uppercase">Service</th>
-                          <th class="text-uppercase">Appointment Time</th>
-                          <th class="text-uppercase">Comment</th>
-                          <th class="text-uppercase">Meeting Type</th>
-                          <th class="text-uppercase">URL/Phone Number</th>
-                          <th class="text-uppercase">Checked In At</th>
-                          <th class="text-uppercase">Wait Duration</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td colspan="9" class="text-center clr-gray_80-txt">
-                            There are not any student appointments checked in.
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <vi-grid id="grid-36" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":true,"table_sort":true,"table_filter":false,"table_pagination":false},"messages":{"state_empty":{"title":"","description":"There are not any student appointments checked in."}}}' type='{"fields":{"name":{"title":"Name","render_type":"html"},"service":{"title":"Service","render_type":"html"},"appointment_time":{"title":"Appointment Time","render_type":"html"},"comment":{"title":"Comment","render_type":"html"},"meeting_type":{"title":"Meeting Type","render_type":"html"},"url_phone_number":{"title":"URL/Phone Number","render_type":"html"},"checked_in_at":{"title":"Checked In At","render_type":"html"},"wait_duration":{"title":"Wait Duration","render_type":"html"}}}' input='[]'></vi-grid>
                   </div>
 
                   <h3 class="mb-4">Students Checked In For Drop-Ins With Me</h3>
                   <div scroll-x="auto" class="mb-8">
-                    <table kind="compact">
-                      <thead>
-                        <tr>
-                          <th><hi-checkbox aria-label="Select all checked in for drop-ins"></hi-checkbox></th>
-                          <th class="text-uppercase">Name</th>
-                          <th class="text-uppercase">Service</th>
-                          <th class="text-uppercase">Comment</th>
-                          <th class="text-uppercase">First Available</th>
-                          <th class="text-uppercase">Prioritized At</th>
-                          <th class="text-uppercase">Checked In At</th>
-                          <th class="text-uppercase">Wait Duration</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td colspan="8" class="text-center clr-gray_80-txt">
-                            You do not have any students currently waiting.
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <vi-grid id="grid-37" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":true,"table_sort":true,"table_filter":false,"table_pagination":false},"messages":{"state_empty":{"title":"","description":"You do not have any students currently waiting."}}}' type='{"fields":{"name":{"title":"Name","render_type":"html"},"service":{"title":"Service","render_type":"html"},"comment":{"title":"Comment","render_type":"html"},"first_available":{"title":"First Available","render_type":"html"},"prioritized_at":{"title":"Prioritized At","render_type":"html"},"checked_in_at":{"title":"Checked In At","render_type":"html"},"wait_duration":{"title":"Wait Duration","render_type":"html"}}}' input='[]'></vi-grid>
                   </div>
 
                   <h3 class="mb-4">In-Progress Visits</h3>
                   <div scroll-x="auto" class="mb-8">
-                    <table kind="compact">
-                      <thead>
-                        <tr>
-                          <th><hi-checkbox aria-label="Select all in-progress visits"></hi-checkbox></th>
-                          <th class="text-uppercase">Attendee Name: Student ID</th>
-                          <th class="text-uppercase">Start Time</th>
-                          <th class="text-uppercase">Appt Time</th>
-                          <th class="text-uppercase">Check In Time</th>
-                          <th class="text-uppercase">Service</th>
-                          <th class="text-uppercase">Course</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td colspan="7" class="text-center clr-gray_80-txt">
-                            You do not have any students currently waiting.
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <vi-grid id="grid-38" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":true,"table_sort":true,"table_filter":false,"table_pagination":false},"messages":{"state_empty":{"title":"","description":"You do not have any students currently waiting."}}}' type='{"fields":{"attendee_name_student_id":{"title":"Attendee Name: Student ID","render_type":"html"},"start_time":{"title":"Start Time","render_type":"html"},"appt_time":{"title":"Appt Time","render_type":"html"},"check_in_time":{"title":"Check In Time","render_type":"html"},"service":{"title":"Service","render_type":"html"},"course":{"title":"Course","render_type":"html"}}}' input='[]'></vi-grid>
                   </div>
 
                   <h3 class="mb-4">Students In Other Staff Queues</h3>
                   <div scroll-x="auto">
-                    <table kind="compact">
-                      <thead>
-                        <tr>
-                          <th><hi-checkbox aria-label="Select all students in other staff queues"></hi-checkbox></th>
-                          <th class="text-uppercase">Name</th>
-                          <th class="text-uppercase">Staff</th>
-                          <th class="text-uppercase">Service</th>
-                          <th class="text-uppercase">Comment</th>
-                          <th class="text-uppercase">Prioritized At</th>
-                          <th class="text-uppercase">Checked In At</th>
-                          <th class="text-uppercase">Wait Duration</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td colspan="8" class="text-center clr-gray_80-txt">
-                            There are currently no students waiting on other staff.
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <vi-grid id="grid-39" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":true,"table_sort":true,"table_filter":false,"table_pagination":false},"messages":{"state_empty":{"title":"","description":"There are currently no students waiting on other staff."}}}' type='{"fields":{"name":{"title":"Name","render_type":"html"},"staff":{"title":"Staff","render_type":"html"},"service":{"title":"Service","render_type":"html"},"comment":{"title":"Comment","render_type":"html"},"prioritized_at":{"title":"Prioritized At","render_type":"html"},"checked_in_at":{"title":"Checked In At","render_type":"html"},"wait_duration":{"title":"Wait Duration","render_type":"html"}}}' input='[]'></vi-grid>
                   </div>
                 </section>
               </hi-case>
@@ -977,76 +542,7 @@
                   <hi-button aesthetic="link" class="mb-4">Actions</hi-button>
 
                   <div scroll-x="auto">
-                    <table kind="compact">
-                      <thead>
-                        <tr>
-                          <th><hi-checkbox aria-label="Select all appointment requests"></hi-checkbox></th>
-                          <th class="text-uppercase">Date/Time</th>
-                          <th class="text-uppercase">Student</th>
-                          <th class="text-uppercase">Service</th>
-                          <th class="text-uppercase">Course</th>
-                          <th class="text-uppercase">Location</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Wyatt, James"></hi-checkbox></td>
-                          <td>02/09/2026 12:43pm ET</td>
-                          <td><hi-link href="#" class="goto-wyatt-link">Wyatt, James</hi-link></td>
-                          <td>Applying for Financial Aid</td>
-                          <td>N/A</td>
-                          <td>Bright Success Center</td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Bradley, Ava"></hi-checkbox></td>
-                          <td>01/23/2025 10:21am ET</td>
-                          <td><hi-link href="#">Bradley, Ava</hi-link></td>
-                          <td>Applying for Financial Aid</td>
-                          <td>N/A</td>
-                          <td>Financial Aid Center</td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Bradley, Ava"></hi-checkbox></td>
-                          <td>01/23/2025 10:17am ET</td>
-                          <td><hi-link href="#">Bradley, Ava</hi-link></td>
-                          <td>Applying for Financial Aid</td>
-                          <td>N/A</td>
-                          <td>Financial Aid Center</td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Wyatt, James"></hi-checkbox></td>
-                          <td>11/01/2024 12:51pm ET</td>
-                          <td><hi-link href="#" class="goto-wyatt-link">Wyatt, James</hi-link></td>
-                          <td>Academic Planning</td>
-                          <td>N/A</td>
-                          <td>Hornet Tutoring Center</td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Weiss, Marie"></hi-checkbox></td>
-                          <td>06/25/2024 4:30pm ET</td>
-                          <td><hi-link href="#">Weiss, Marie</hi-link></td>
-                          <td>Career Readiness</td>
-                          <td>N/A</td>
-                          <td>Bright Success Center</td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Acevedo, Helen"></hi-checkbox></td>
-                          <td>05/22/2024 10:33am ET</td>
-                          <td><hi-link href="#">Acevedo, Helen</hi-link></td>
-                          <td>General Advising</td>
-                          <td>N/A</td>
-                          <td>Hornet Tutoring Center</td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox aria-label="Select Wyatt, James"></hi-checkbox></td>
-                          <td>04/02/2024 3:33pm ET</td>
-                          <td><hi-link href="#" class="goto-wyatt-link">Wyatt, James</hi-link></td>
-                          <td>Course-based Tutoring</td>
-                          <td>8.01 Physics I</td>
-                          <td>Virtual (Zoom)</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <vi-grid id="grid-47" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":true,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"date_time":{"title":"Date/Time","render_type":"html"},"student":{"title":"Student","render_type":"html"},"service":{"title":"Service","render_type":"html"},"course":{"title":"Course","render_type":"html"},"location":{"title":"Location","render_type":"html"}}}' input='[{"id":"row-40","date_time":"02/09/2026 12:43pm ET","student":"<hi-link href=\"#\" class=\"goto-wyatt-link\">Wyatt, James</hi-link>","service":"Applying for Financial Aid","course":"N/A","location":"Bright Success Center"},{"id":"row-41","date_time":"01/23/2025 10:21am ET","student":"<hi-link href=\"#\">Bradley, Ava</hi-link>","service":"Applying for Financial Aid","course":"N/A","location":"Financial Aid Center"},{"id":"row-42","date_time":"01/23/2025 10:17am ET","student":"<hi-link href=\"#\">Bradley, Ava</hi-link>","service":"Applying for Financial Aid","course":"N/A","location":"Financial Aid Center"},{"id":"row-43","date_time":"11/01/2024 12:51pm ET","student":"<hi-link href=\"#\" class=\"goto-wyatt-link\">Wyatt, James</hi-link>","service":"Academic Planning","course":"N/A","location":"Hornet Tutoring Center"},{"id":"row-44","date_time":"06/25/2024 4:30pm ET","student":"<hi-link href=\"#\">Weiss, Marie</hi-link>","service":"Career Readiness","course":"N/A","location":"Bright Success Center"},{"id":"row-45","date_time":"05/22/2024 10:33am ET","student":"<hi-link href=\"#\">Acevedo, Helen</hi-link>","service":"General Advising","course":"N/A","location":"Hornet Tutoring Center"},{"id":"row-46","date_time":"04/02/2024 3:33pm ET","student":"<hi-link href=\"#\" class=\"goto-wyatt-link\">Wyatt, James</hi-link>","service":"Course-based Tutoring","course":"8.01 Physics I","location":"Virtual (Zoom)"}]'></vi-grid>
                   </div>
                 </section>
               </hi-case>
@@ -1058,9 +554,14 @@
           <!-- ======================================================== -->
           <hi-case id="james-wyatt" value="james-wyatt" hidden>
             <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
-              <div l-kind="hort" l-width-fixed l-align="center">
-                <hi-title heading="James Wyatt" level="1"></hi-title>
-                <hi-icon kind="expand_more" size="small" class="ml-2"></hi-icon>
+              <div class="page-title-menu-wrap">
+                <div class="page-title-flyout-anchor page-title-menu-toggle">
+                  <hi-title heading="James Wyatt" level="1"></hi-title>
+                  <hi-icon kind="expand_more" size="small" class="ml-2"></hi-icon>
+                </div>
+                <div class="page-title-menu" hidden>
+                  <hi-link href="#" class="goto-staff-home-link">Staff Home</hi-link>
+                </div>
               </div>
             </div>
 
@@ -1088,41 +589,17 @@
                 <section x-area="zone">
                   <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
                     <h5 slot="title">Student Summary</h5>
-                    <div l-kind="hort" l-wrap l-width-fixed class="mb-4">
-                      <div style="width: 20%;">
-                        <p class="clr-gray_80-txt text-sz-s">Course Grade D/F</p>
-                        <p class="text-sz-l">3</p>
-                      </div>
-                      <div style="width: 20%;">
-                        <p class="clr-gray_80-txt text-sz-s">Repeated Courses</p>
-                        <p class="text-sz-l">1</p>
-                      </div>
-                      <div style="width: 20%;">
-                        <p class="clr-gray_80-txt text-sz-s">Withdrawn Courses</p>
-                        <p class="text-sz-l">0</p>
-                      </div>
-                      <div style="width: 20%;">
-                        <p class="clr-gray_80-txt text-sz-s">Missed Success Markers</p>
-                        <p class="text-sz-l">2</p>
-                      </div>
-                      <div style="width: 20%;">
-                        <p class="clr-gray_80-txt text-sz-s">Cumulative GPA</p>
-                        <p class="text-sz-l">2.64</p>
-                      </div>
+                    <div l-kind="hort" l-wrap l-width-fixed l-gutter class="mb-4">
+                      <vi-metric header="Course Grade D/F" value="3" aesthetic="boxed" style="flex: 1 1 9rem;"></vi-metric>
+                      <vi-metric header="Repeated Courses" value="1" aesthetic="boxed" style="flex: 1 1 9rem;"></vi-metric>
+                      <vi-metric header="Withdrawn Courses" value="0" aesthetic="boxed" style="flex: 1 1 9rem;"></vi-metric>
+                      <vi-metric header="Missed Success Markers" value="2" aesthetic="boxed" style="flex: 1 1 9rem;"></vi-metric>
+                      <vi-metric header="Cumulative GPA" value="2.64" aesthetic="boxed" style="flex: 1 1 9rem;"></vi-metric>
                     </div>
-                    <div l-kind="hort" l-wrap l-width-fixed>
-                      <div style="width: 33%;">
-                        <p class="clr-gray_80-txt text-sz-s">Total Credits Earned</p>
-                        <p>39.00</p>
-                      </div>
-                      <div style="width: 33%;">
-                        <p class="clr-gray_80-txt text-sz-s">Credit Completion % at this Institution</p>
-                        <p>72%</p>
-                      </div>
-                      <div style="width: 33%;">
-                        <p class="clr-gray_80-txt text-sz-s">Predicted Concern</p>
-                        <p>Unpredicted</p>
-                      </div>
+                    <div l-kind="hort" l-wrap l-width-fixed l-gutter>
+                      <vi-metric header="Total Credits Earned" value="39.00" aesthetic="boxed" style="flex: 1 1 12rem;"></vi-metric>
+                      <vi-metric header="Credit Completion % at this Institution" value="72%" aesthetic="boxed" style="flex: 1 1 12rem;"></vi-metric>
+                      <vi-metric header="Predicted Concern" value="Unpredicted" aesthetic="boxed" style="flex: 1 1 12rem;"></vi-metric>
                     </div>
                   </hi-tile>
 
@@ -1175,32 +652,32 @@
                     <hi-tile allow-toolbar aesthetic="outline" style="width: 49%;" class="mr-4">
                       <h5 slot="title">Categories</h5>
                       <hi-search placeholder="Search in Results" hidden-result-message hidden-status-message class="mb-4"></hi-search>
-                      <ul>
-                        <li>Active holds</li>
-                        <li>Completed probation requirement</li>
-                        <li>Financial Aid</li>
-                        <li>First generation student</li>
-                        <li>Good Academic Standing</li>
-                        <li>Honors student</li>
-                        <li>North Hall</li>
-                        <li>Pell-Eligible</li>
-                        <li>Pre-enrollment risk</li>
-                        <li>Re-enrollment grant recipient</li>
-                      </ul>
+                      <hi-tag-group>
+                        <hi-tag>Active holds</hi-tag>
+                        <hi-tag>Completed probation requirement</hi-tag>
+                        <hi-tag>Financial Aid</hi-tag>
+                        <hi-tag>First generation student</hi-tag>
+                        <hi-tag>Good Academic Standing</hi-tag>
+                        <hi-tag>Honors student</hi-tag>
+                        <hi-tag>North Hall</hi-tag>
+                        <hi-tag>Pell-Eligible</hi-tag>
+                        <hi-tag>Pre-enrollment risk</hi-tag>
+                        <hi-tag>Re-enrollment grant recipient</hi-tag>
+                      </hi-tag-group>
                       <p class="clr-gray_80-txt text-sz-s mt-4">1-15 of 15</p>
                     </hi-tile>
                     <hi-tile allow-toolbar aesthetic="outline" style="width: 49%;">
                       <h5 slot="title">Tags</h5>
                       <hi-button aesthetic="secondary" size="small" class="mb-4">+ Add Tag</hi-button>
                       <hi-search placeholder="Search in Results" hidden-result-message hidden-status-message class="mb-4"></hi-search>
-                      <ul>
-                        <li>1L</li>
-                        <li>3L</li>
-                        <li>Exploring Masters</li>
-                        <li>F26 M3 Start</li>
-                        <li>FAFSA</li>
-                        <li>FASS</li>
-                      </ul>
+                      <hi-tag-group>
+                        <hi-tag>1L</hi-tag>
+                        <hi-tag>3L</hi-tag>
+                        <hi-tag>Exploring Masters</hi-tag>
+                        <hi-tag>F26 M3 Start</hi-tag>
+                        <hi-tag>FAFSA</hi-tag>
+                        <hi-tag>FASS</hi-tag>
+                      </hi-tag-group>
                       <p class="clr-gray_80-txt text-sz-s mt-4">1-19 of 19</p>
                     </hi-tile>
                   </div>
@@ -1222,24 +699,7 @@
                   <hi-tile allow-toolbar aesthetic="outline">
                     <h5 slot="title">Custom Attributes</h5>
                     <div scroll-x="auto">
-                      <table kind="compact">
-                        <thead>
-                          <tr>
-                            <th class="text-uppercase">Attribute</th>
-                            <th class="text-uppercase">Value</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Engagement Impact</td>
-                            <td>Student Council</td>
-                          </tr>
-                          <tr>
-                            <td>Last Meal Swipe Date</td>
-                            <td>2/14/25</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <vi-grid id="grid-50" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"attribute":{"title":"Attribute","render_type":"html"},"value":{"title":"Value","render_type":"html"}}}' input='[{"id":"row-48","attribute":"Engagement Impact","value":"Student Council"},{"id":"row-49","attribute":"Last Meal Swipe Date","value":"2/14/25"}]'></vi-grid>
                     </div>
                     <p class="clr-gray_80-txt text-sz-s mt-4">1-2 of 2</p>
                   </hi-tile>
@@ -1261,8 +721,8 @@
                       <span class="clr-gray_80-txt text-sz-s">Negative Influencers</span>
                       <span class="clr-gray_80-txt text-sz-s">Positive Influencers</span>
                     </div>
-                    <hi-tile aesthetic="outline" class="text-center clr-gray_80-txt">
-                      Data is not available for this student
+                    <hi-tile aesthetic="outline" class="text-center">
+                      <yi-view-state kind="icon" icon="feedback" description="Data is not available for this student"></yi-view-state>
                     </hi-tile>
                     <p class="mt-4">Predicted Concern: Unpredicted</p>
                   </hi-tile>
@@ -1280,46 +740,14 @@
                     </hi-tab-group>
                     <p class="mb-4">2 missed markers</p>
                     <div scroll-x="auto">
-                      <table kind="compact">
-                        <thead>
-                          <tr>
-                            <th class="text-uppercase">Notification</th>
-                            <th class="text-uppercase">Outcome</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>
-                              BIO101, B, 0-30<br />
-                              Recommended grade: B (1 course)<br />
-                              Complete between 0 and 30 credits
-                            </td>
-                            <td>Needs attention<br />1 Attempt</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              MATH101, B, 0-30<br />
-                              Recommended grade: B (1 course)<br />
-                              Complete between 0 and 30 credits
-                            </td>
-                            <td>Needs attention<br />1 Attempt</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              BIO 201, B, 0-60<br />
-                              Recommended grade: B (1 course)<br />
-                              Complete between 0 and 60 credits
-                            </td>
-                            <td>Disabled</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <vi-grid id="grid-54" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"notification":{"title":"Notification","render_type":"html"},"outcome":{"title":"Outcome","render_type":"html"}}}' input='[{"id":"row-51","notification":"BIO101, B, 0-30<br>\n                              Recommended grade: B (1 course)<br>\n                              Complete between 0 and 30 credits","outcome":"Needs attention<br>1 Attempt"},{"id":"row-52","notification":"MATH101, B, 0-30<br>\n                              Recommended grade: B (1 course)<br>\n                              Complete between 0 and 30 credits","outcome":"Needs attention<br>1 Attempt"},{"id":"row-53","notification":"BIO 201, B, 0-60<br>\n                              Recommended grade: B (1 course)<br>\n                              Complete between 0 and 60 credits","outcome":"Disabled"}]'></vi-grid>
                     </div>
                   </hi-tile>
 
                   <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
                     <h5 slot="title">GPA Trends By Term</h5>
                     <p class="clr-gray_80-txt text-sz-s mb-4">* Terms with no attempted credits are not shown.</p>
+                    <!-- vi-chart attempted but did not render (no cached contract; dual-series line chart). Flagged fallback. -->
                     <div l-kind="hort" l-width-fixed l-align="center" class="mb-2">
                       <span class="mr-2" style="display:inline-block; width:0.75rem; height:0.75rem; background-color:#b3aee0;"></span>
                       <span class="mr-6 text-sz-s">Term GPA</span>
@@ -1380,27 +808,7 @@
                       </div>
                     </div>
                     <div scroll-x="auto">
-                      <table kind="compact">
-                        <thead>
-                          <tr>
-                            <th class="text-uppercase">To-Do</th>
-                            <th class="text-uppercase">Due Date</th>
-                            <th class="text-uppercase">Viewable to Student</th>
-                            <th class="text-uppercase">Created By</th>
-                            <th class="text-uppercase">Created On</th>
-                            <th class="text-uppercase">Completed On</th>
-                            <th class="text-uppercase">Completed By</th>
-                            <th class="text-uppercase">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td colspan="8" class="text-center clr-gray_80-txt">
-                              You have no upcoming or outstanding To-Dos.
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <vi-grid id="grid-55" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false},"messages":{"state_empty":{"title":"","description":"You have no upcoming or outstanding To-Dos."}}}' type='{"fields":{"to_do":{"title":"To-Do","render_type":"html"},"due_date":{"title":"Due Date","render_type":"html"},"viewable_to_student":{"title":"Viewable to Student","render_type":"html"},"created_by":{"title":"Created By","render_type":"html"},"created_on":{"title":"Created On","render_type":"html"},"completed_on":{"title":"Completed On","render_type":"html"},"completed_by":{"title":"Completed By","render_type":"html"},"actions":{"title":"Actions","render_type":"html"}}}' input='[]'></vi-grid>
                     </div>
                   </hi-tile>
 
@@ -1429,124 +837,7 @@
                     </div>
 
                     <div scroll-x="auto">
-                      <table kind="compact">
-                        <thead>
-                          <tr>
-                            <th class="text-uppercase">Case ID</th>
-                            <th class="text-uppercase">Date Opened</th>
-                            <th class="text-uppercase">Reasons</th>
-                            <th class="text-uppercase">Issued By</th>
-                            <th class="text-uppercase">Assigned To</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td><hi-link href="#">511</hi-link></td>
-                            <td>07/01/2026</td>
-                            <td>Needs Tutoring</td>
-                            <td>Jack Whitten</td>
-                            <td>Unassigned</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">507</hi-link></td>
-                            <td>06/19/2026</td>
-                            <td>Noise Complaint</td>
-                            <td>Jack Whitten</td>
-                            <td>Joseph Gonzalez, Lee White, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">506</hi-link></td>
-                            <td>06/19/2026</td>
-                            <td>Student Accessibility Referral</td>
-                            <td>Jack Whitten</td>
-                            <td>Joseph Gonzalez, Lee White, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore, Jack Wheeler, Student Accessibility Services</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">505</hi-link></td>
-                            <td>06/19/2026</td>
-                            <td>Student Academic Issue</td>
-                            <td>Jack Whitten</td>
-                            <td>Joseph Gonzalez, Lee White, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore, Jack Wheeler</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">504</hi-link></td>
-                            <td>06/19/2026</td>
-                            <td>Career Services</td>
-                            <td>Jack Whitten</td>
-                            <td>Joseph Gonzalez, Lee White, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">503</hi-link></td>
-                            <td>06/18/2026</td>
-                            <td>I am seeking on-campus employment</td>
-                            <td>James Wyatt</td>
-                            <td>Career Services, Jack Whitmore, Jack Whitten</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">500</hi-link></td>
-                            <td>05/19/2026</td>
-                            <td>Concern for D or F</td>
-                            <td>Jack Wheeler</td>
-                            <td>Joseph Gonzalez, Lee White, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">498</hi-link></td>
-                            <td>05/14/2026</td>
-                            <td>Career Services</td>
-                            <td>Jack Whitten</td>
-                            <td>Joseph Gonzalez, Lee White, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">502</hi-link></td>
-                            <td>05/28/2026</td>
-                            <td>Needs Tutoring</td>
-                            <td>Jack Whitmore</td>
-                            <td>Unassigned</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">499</hi-link></td>
-                            <td>05/14/2026</td>
-                            <td>Needs Tutoring</td>
-                            <td>Jack Whitten</td>
-                            <td>Unassigned</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">497</hi-link></td>
-                            <td>05/13/2026</td>
-                            <td>Needs Tutoring</td>
-                            <td>Jack Whitten</td>
-                            <td>Unassigned</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">494</hi-link></td>
-                            <td>04/22/2026</td>
-                            <td>Student Academic Issue</td>
-                            <td>Jack Whitten</td>
-                            <td>Joseph Gonzalez, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore, Jack Wheeler</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">492</hi-link></td>
-                            <td>03/06/2026</td>
-                            <td>Needs Tutoring</td>
-                            <td>Joshua Hudson</td>
-                            <td>Unassigned</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">489</hi-link></td>
-                            <td>02/18/2026</td>
-                            <td>Student Question Follow-Up</td>
-                            <td>AI Assistant for Students</td>
-                            <td>Joseph Gonzalez, Jack Whitten, Beth Allen, Jack Wheeler, Jack Whitmore</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">485</hi-link></td>
-                            <td>12/15/2025</td>
-                            <td>Concern for D or F</td>
-                            <td>Jack Whitten</td>
-                            <td>Jack Williams, Joseph Gonzalez, Jack Whitten, Beth Allen, Jack Wheeler, Jack Whitmore</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <vi-grid id="grid-71" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"case_id":{"title":"Case ID","render_type":"html"},"date_opened":{"title":"Date Opened","render_type":"html"},"reasons":{"title":"Reasons","render_type":"html"},"issued_by":{"title":"Issued By","render_type":"html"},"assigned_to":{"title":"Assigned To","render_type":"html"}}}' input='[{"id":"row-56","case_id":"<hi-link href=\"#\">511</hi-link>","date_opened":"07/01/2026","reasons":"Needs Tutoring","issued_by":"Jack Whitten","assigned_to":"Unassigned"},{"id":"row-57","case_id":"<hi-link href=\"#\">507</hi-link>","date_opened":"06/19/2026","reasons":"Noise Complaint","issued_by":"Jack Whitten","assigned_to":"Joseph Gonzalez, Lee White, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore"},{"id":"row-58","case_id":"<hi-link href=\"#\">506</hi-link>","date_opened":"06/19/2026","reasons":"Student Accessibility Referral","issued_by":"Jack Whitten","assigned_to":"Joseph Gonzalez, Lee White, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore, Jack Wheeler, Student Accessibility Services"},{"id":"row-59","case_id":"<hi-link href=\"#\">505</hi-link>","date_opened":"06/19/2026","reasons":"Student Academic Issue","issued_by":"Jack Whitten","assigned_to":"Joseph Gonzalez, Lee White, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore, Jack Wheeler"},{"id":"row-60","case_id":"<hi-link href=\"#\">504</hi-link>","date_opened":"06/19/2026","reasons":"Career Services","issued_by":"Jack Whitten","assigned_to":"Joseph Gonzalez, Lee White, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore"},{"id":"row-61","case_id":"<hi-link href=\"#\">503</hi-link>","date_opened":"06/18/2026","reasons":"I am seeking on-campus employment","issued_by":"James Wyatt","assigned_to":"Career Services, Jack Whitmore, Jack Whitten"},{"id":"row-62","case_id":"<hi-link href=\"#\">500</hi-link>","date_opened":"05/19/2026","reasons":"Concern for D or F","issued_by":"Jack Wheeler","assigned_to":"Joseph Gonzalez, Lee White, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore"},{"id":"row-63","case_id":"<hi-link href=\"#\">498</hi-link>","date_opened":"05/14/2026","reasons":"Career Services","issued_by":"Jack Whitten","assigned_to":"Joseph Gonzalez, Lee White, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore"},{"id":"row-64","case_id":"<hi-link href=\"#\">502</hi-link>","date_opened":"05/28/2026","reasons":"Needs Tutoring","issued_by":"Jack Whitmore","assigned_to":"Unassigned"},{"id":"row-65","case_id":"<hi-link href=\"#\">499</hi-link>","date_opened":"05/14/2026","reasons":"Needs Tutoring","issued_by":"Jack Whitten","assigned_to":"Unassigned"},{"id":"row-66","case_id":"<hi-link href=\"#\">497</hi-link>","date_opened":"05/13/2026","reasons":"Needs Tutoring","issued_by":"Jack Whitten","assigned_to":"Unassigned"},{"id":"row-67","case_id":"<hi-link href=\"#\">494</hi-link>","date_opened":"04/22/2026","reasons":"Student Academic Issue","issued_by":"Jack Whitten","assigned_to":"Joseph Gonzalez, Annette Brock, Jack Whitten, Beth Allen, Jack Whitmore, Jack Wheeler"},{"id":"row-68","case_id":"<hi-link href=\"#\">492</hi-link>","date_opened":"03/06/2026","reasons":"Needs Tutoring","issued_by":"Joshua Hudson","assigned_to":"Unassigned"},{"id":"row-69","case_id":"<hi-link href=\"#\">489</hi-link>","date_opened":"02/18/2026","reasons":"Student Question Follow-Up","issued_by":"AI Assistant for Students","assigned_to":"Joseph Gonzalez, Jack Whitten, Beth Allen, Jack Wheeler, Jack Whitmore"},{"id":"row-70","case_id":"<hi-link href=\"#\">485</hi-link>","date_opened":"12/15/2025","reasons":"Concern for D or F","issued_by":"Jack Whitten","assigned_to":"Jack Williams, Joseph Gonzalez, Jack Whitten, Beth Allen, Jack Wheeler, Jack Whitmore"}]'></vi-grid>
                     </div>
                     <p class="clr-gray_80-txt text-sz-s mt-4">Showing items 1-15 of 55</p>
                   </hi-tile>
@@ -1584,47 +875,60 @@
                     </hi-input-group>
 
                     <h4 class="mb-4">Jul 2026</h4>
-                    <div class="mb-4">
-                      <div l-kind="hort" l-width-fixed l-justify="between" l-align="center">
-                        <h5>Advising Appointment</h5>
-                        <span class="text-sz-s">Jack Whitten</span>
-                      </div>
-                      <p class="text-sz-s clr-gray_80-txt">Fri, Jul 3, 2026 &nbsp; General Advising</p>
-                      <p class="text-sz-s"><b>Time:</b> 7/3/2026, 11:15 AM - 12:00 PM ET</p>
-                      <p class="text-sz-s"><b>Location:</b> Hornet Tutoring Center</p>
-                      <p class="text-sz-s"><b>Comments:</b></p>
-                    </div>
-                    <div class="mb-4">
-                      <div l-kind="hort" l-width-fixed l-justify="between" l-align="center">
-                        <h5>Alert Issued</h5>
-                        <span class="text-sz-s">Jack Whitten</span>
-                      </div>
-                      <p class="text-sz-s clr-gray_80-txt">Wed, Jul 1, 2026 &nbsp; Needs Tutoring</p>
-                      <p class="text-sz-s"><b>Issuing Evaluation:</b></p>
-                    </div>
-                    <div class="mb-6">
-                      <div l-kind="hort" l-width-fixed l-justify="between" l-align="center">
-                        <h5>Case Opened</h5>
-                        <span class="text-sz-s">Jack Whitten</span>
-                      </div>
-                      <p class="text-sz-s clr-gray_80-txt">Wed, Jul 1, 2026 &nbsp; Needs Tutoring</p>
-                      <p class="text-sz-s"><b>Comments:</b></p>
-                      <p class="text-sz-s">set up tutoring appointment</p>
-                      <hi-link href="#">Manage Case</hi-link>
-                    </div>
+                    <vi-list
+                      id="jw-history-jul-2026"
+                      mode="item"
+                      settings='{"hidden":{"global_search":true,"pagination_controls":true,"pagination_row_message":true}}'
+                      type='{
+                        "fields": {
+                          "title": { "render_type": "text", "alias": "title" },
+                          "sub_title": { "render_type": "text", "alias": "sub_title" },
+                          "description": { "render_type": "html", "alias": "description" }
+                        }
+                      }'
+                      input='[
+                        {
+                          "id": "hist-jul-1",
+                          "title": "Advising Appointment",
+                          "sub_title": "Jack Whitten",
+                          "description": "<p class=\"text-sz-s clr-gray_80-txt\">Fri, Jul 3, 2026 &nbsp; General Advising</p><p class=\"text-sz-s\"><b>Time:</b> 7/3/2026, 11:15 AM - 12:00 PM ET</p><p class=\"text-sz-s\"><b>Location:</b> Hornet Tutoring Center</p><p class=\"text-sz-s\"><b>Comments:</b></p>"
+                        },
+                        {
+                          "id": "hist-jul-2",
+                          "title": "Alert Issued",
+                          "sub_title": "Jack Whitten",
+                          "description": "<p class=\"text-sz-s clr-gray_80-txt\">Wed, Jul 1, 2026 &nbsp; Needs Tutoring</p><p class=\"text-sz-s\"><b>Issuing Evaluation:</b></p>"
+                        },
+                        {
+                          "id": "hist-jul-3",
+                          "title": "Case Opened",
+                          "sub_title": "Jack Whitten",
+                          "description": "<p class=\"text-sz-s clr-gray_80-txt\">Wed, Jul 1, 2026 &nbsp; Needs Tutoring</p><p class=\"text-sz-s\"><b>Comments:</b></p><p class=\"text-sz-s\">set up tutoring appointment</p><hi-link href=\"#\">Manage Case</hi-link>"
+                        }
+                      ]'>
+                    </vi-list>
 
-                    <h4 class="mb-4">Jun 2026</h4>
-                    <div class="mb-4">
-                      <div l-kind="hort" l-width-fixed l-justify="between" l-align="center">
-                        <h5>Advising Appointment</h5>
-                        <span class="text-sz-s">Jack Whitten</span>
-                      </div>
-                      <p class="text-sz-s clr-gray_80-txt">Fri, Jun 26, 2026 &nbsp; Academic Planning</p>
-                      <p class="text-sz-s"><b>Time:</b> 6/26/2026, 11:00 AM - 11:45 AM ET</p>
-                      <p class="text-sz-s"><b>Location:</b> Hornet Tutoring Center</p>
-                      <p class="text-sz-s"><b>Comments:</b></p>
-                      <p class="text-sz-s">James Wyatt: Is there anything I should bring?</p>
-                    </div>
+                    <h4 class="mb-4 mt-6">Jun 2026</h4>
+                    <vi-list
+                      id="jw-history-jun-2026"
+                      mode="item"
+                      settings='{"hidden":{"global_search":true,"pagination_controls":true,"pagination_row_message":true}}'
+                      type='{
+                        "fields": {
+                          "title": { "render_type": "text", "alias": "title" },
+                          "sub_title": { "render_type": "text", "alias": "sub_title" },
+                          "description": { "render_type": "html", "alias": "description" }
+                        }
+                      }'
+                      input='[
+                        {
+                          "id": "hist-jun-1",
+                          "title": "Advising Appointment",
+                          "sub_title": "Jack Whitten",
+                          "description": "<p class=\"text-sz-s clr-gray_80-txt\">Fri, Jun 26, 2026 &nbsp; Academic Planning</p><p class=\"text-sz-s\"><b>Time:</b> 6/26/2026, 11:00 AM - 11:45 AM ET</p><p class=\"text-sz-s\"><b>Location:</b> Hornet Tutoring Center</p><p class=\"text-sz-s\"><b>Comments:</b></p><p class=\"text-sz-s\">James Wyatt: Is there anything I should bring?</p>"
+                        }
+                      ]'>
+                    </vi-list>
                   </hi-tile>
                 </section>
               </hi-case>
@@ -1653,22 +957,7 @@
                 <section x-area="zone">
                   <h2 class="mb-6">Form Submissions</h2>
                   <div scroll-x="auto">
-                    <table kind="compact">
-                      <thead>
-                        <tr>
-                          <th class="text-uppercase">Form Name</th>
-                          <th class="text-uppercase">Date Submitted</th>
-                          <th class="text-uppercase">Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td colspan="3" class="text-center clr-gray_80-txt">
-                            No form submissions.
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <vi-grid id="grid-72" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false},"messages":{"state_empty":{"title":"","description":"No form submissions."}}}' type='{"fields":{"form_name":{"title":"Form Name","render_type":"html"},"date_submitted":{"title":"Date Submitted","render_type":"html"},"status":{"title":"Status","render_type":"html"}}}' input='[]'></vi-grid>
                   </div>
                 </section>
               </hi-case>
@@ -1691,81 +980,7 @@
                       </hi-dropdown>
                     </hi-input-group>
                     <div scroll-x="auto">
-                      <table kind="compact">
-                        <thead>
-                          <tr>
-                            <th class="text-uppercase">Course</th>
-                            <th class="text-uppercase">Professor</th>
-                            <th class="text-uppercase">Days/Times</th>
-                            <th class="text-uppercase">Mid</th>
-                            <th class="text-uppercase">Final</th>
-                            <th class="text-uppercase">LMS Current Course Score</th>
-                            <th class="text-uppercase">Absence</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>
-                              <p class="mb-1"><strong>Ended on 05/15/2026</strong></p>
-                              ANTH-101-1 Intro to Anthropology
-                            </td>
-                            <td><hi-link href="#">Mary Schafer</hi-link></td>
-                            <td>01/05/2026 - 05/15/2026<br />MW 6:00pm - 9:10pm ET<br />Harris Hall - Room 213-A</td>
-                            <td></td>
-                            <td></td>
-                            <td>91.98%</td>
-                            <td>0 (0)</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <p class="mb-1"><strong>Ended on 05/22/2026</strong></p>
-                              BIO-101-2 Intro to Biology
-                            </td>
-                            <td><hi-link href="#">Jack Whitten</hi-link></td>
-                            <td>01/05/2026 - 05/22/2026<br />TR 11:00am - 12:30pm ET<br />Not Specified</td>
-                            <td></td>
-                            <td></td>
-                            <td>N/A</td>
-                            <td>3 (3)</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <p class="mb-1"><strong>Ended on 05/15/2026</strong></p>
-                              BIO-230-B2 Human Physiology
-                            </td>
-                            <td><hi-link href="#">Joshua Hudson</hi-link></td>
-                            <td>01/05/2026 - 05/15/2026<br />MWF 10:00am - 10:45am ET<br />Benet Hall - Room 202</td>
-                            <td></td>
-                            <td></td>
-                            <td>75.00%</td>
-                            <td>0 (0)</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <p class="mb-1"><strong>Ended on 05/15/2026</strong></p>
-                              BIO-250-5 Biochemistry
-                            </td>
-                            <td><hi-link href="#">Joshua Hudson</hi-link></td>
-                            <td>01/05/2026 - 05/15/2026<br />TR 11:00am - 12:15pm ET<br />Edwards Annex - Room 504</td>
-                            <td></td>
-                            <td></td>
-                            <td>71.00%</td>
-                            <td>0 (0)</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <p class="mb-1"><strong>Ended on 05/15/2026</strong></p>
-                              PSY-201-C4 Behavioral Change
-                            </td>
-                            <td><hi-link href="#">Floyd Jackson</hi-link></td>
-                            <td>01/05/2026 - 05/15/2026<br />MWF 1:00pm - 1:50pm ET<br />Newman Building - Room 108</td>
-                            <td></td>
-                            <td></td>
-                            <td>87.60%</td>
-                            <td>0 (0)</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <vi-grid id="grid-78" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"course":{"title":"Course","render_type":"html"},"professor":{"title":"Professor","render_type":"html"},"days_times":{"title":"Days/Times","render_type":"html"},"mid":{"title":"Mid","render_type":"html"},"final":{"title":"Final","render_type":"html"},"lms_current_course_score":{"title":"LMS Current Course Score","render_type":"html"},"absence":{"title":"Absence","render_type":"html"}}}' input='[{"id":"row-73","course":"<p class=\"mb-1\"><strong>Ended on 05/15/2026</strong></p>\n                              ANTH-101-1 Intro to Anthropology","professor":"<hi-link href=\"#\">Mary Schafer</hi-link>","days_times":"01/05/2026 - 05/15/2026<br>MW 6:00pm - 9:10pm ET<br>Harris Hall - Room 213-A","mid":"","final":"","lms_current_course_score":"91.98%","absence":"0 (0)"},{"id":"row-74","course":"<p class=\"mb-1\"><strong>Ended on 05/22/2026</strong></p>\n                              BIO-101-2 Intro to Biology","professor":"<hi-link href=\"#\">Jack Whitten</hi-link>","days_times":"01/05/2026 - 05/22/2026<br>TR 11:00am - 12:30pm ET<br>Not Specified","mid":"","final":"","lms_current_course_score":"N/A","absence":"3 (3)"},{"id":"row-75","course":"<p class=\"mb-1\"><strong>Ended on 05/15/2026</strong></p>\n                              BIO-230-B2 Human Physiology","professor":"<hi-link href=\"#\">Joshua Hudson</hi-link>","days_times":"01/05/2026 - 05/15/2026<br>MWF 10:00am - 10:45am ET<br>Benet Hall - Room 202","mid":"","final":"","lms_current_course_score":"75.00%","absence":"0 (0)"},{"id":"row-76","course":"<p class=\"mb-1\"><strong>Ended on 05/15/2026</strong></p>\n                              BIO-250-5 Biochemistry","professor":"<hi-link href=\"#\">Joshua Hudson</hi-link>","days_times":"01/05/2026 - 05/15/2026<br>TR 11:00am - 12:15pm ET<br>Edwards Annex - Room 504","mid":"","final":"","lms_current_course_score":"71.00%","absence":"0 (0)"},{"id":"row-77","course":"<p class=\"mb-1\"><strong>Ended on 05/15/2026</strong></p>\n                              PSY-201-C4 Behavioral Change","professor":"<hi-link href=\"#\">Floyd Jackson</hi-link>","days_times":"01/05/2026 - 05/15/2026<br>MWF 1:00pm - 1:50pm ET<br>Newman Building - Room 108","mid":"","final":"","lms_current_course_score":"87.60%","absence":"0 (0)"}]'></vi-grid>
                     </div>
                   </hi-tile>
 
@@ -1804,82 +1019,7 @@
                       </hi-input-group>
                     </div>
                     <div scroll-x="auto">
-                      <table kind="compact">
-                        <thead>
-                          <tr>
-                            <th class="text-uppercase">Course</th>
-                            <th class="text-uppercase">Term</th>
-                            <th class="text-uppercase">Assignment</th>
-                            <th class="text-uppercase">Type</th>
-                            <th class="text-uppercase">Status</th>
-                            <th class="text-uppercase">Due Date</th>
-                            <th class="text-uppercase">Percentage</th>
-                            <th class="text-uppercase">Grade Hidden From Student</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>ANTH-101 Intro to Anthropology</td>
-                            <td>Spring 2026</td>
-                            <td>Language, Power, and Identity</td>
-                            <td>Other</td>
-                            <td>Completed On Time</td>
-                            <td>05/01/2026</td>
-                            <td>91%</td>
-                            <td>Yes</td>
-                          </tr>
-                          <tr>
-                            <td>ANTH-101 Intro to Anthropology</td>
-                            <td>Spring 2026</td>
-                            <td>Thinking Like an Anthropologist</td>
-                            <td>Other</td>
-                            <td>Completed On Time</td>
-                            <td>05/27/2026</td>
-                            <td>90%</td>
-                            <td>Yes</td>
-                          </tr>
-                          <tr>
-                            <td>ANTH-101 Intro to Anthropology</td>
-                            <td>Spring 2026</td>
-                            <td>Humans and Their Environments</td>
-                            <td>Other</td>
-                            <td>Completed On Time</td>
-                            <td>05/15/2026</td>
-                            <td>93%</td>
-                            <td>Yes</td>
-                          </tr>
-                          <tr>
-                            <td>BIO-230-B2 Human Physiology</td>
-                            <td>Spring 2026</td>
-                            <td>Neural Signaling and Response</td>
-                            <td>Other</td>
-                            <td>Completed On Time</td>
-                            <td>02/18/2026</td>
-                            <td>72%</td>
-                            <td>Yes</td>
-                          </tr>
-                          <tr>
-                            <td>BIO-230-B2 Human Physiology</td>
-                            <td>Spring 2026</td>
-                            <td>Cells to Systems</td>
-                            <td>Other</td>
-                            <td>Not Completed On Time</td>
-                            <td>02/15/2026</td>
-                            <td>80%</td>
-                            <td>Yes</td>
-                          </tr>
-                          <tr>
-                            <td>BIO-230-B2 Human Physiology</td>
-                            <td>Spring 2026</td>
-                            <td>Breathing for Life</td>
-                            <td>Other</td>
-                            <td>Past Due</td>
-                            <td>03/15/2026</td>
-                            <td>50%</td>
-                            <td>Yes</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <vi-grid id="grid-85" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"course":{"title":"Course","render_type":"html"},"term":{"title":"Term","render_type":"html"},"assignment":{"title":"Assignment","render_type":"html"},"type":{"title":"Type","render_type":"html"},"status":{"title":"Status","render_type":"html"},"due_date":{"title":"Due Date","render_type":"html"},"percentage":{"title":"Percentage","render_type":"html"},"grade_hidden_from_student":{"title":"Grade Hidden From Student","render_type":"html"}}}' input='[{"id":"row-79","course":"ANTH-101 Intro to Anthropology","term":"Spring 2026","assignment":"Language, Power, and Identity","type":"Other","status":"Completed On Time","due_date":"05/01/2026","percentage":"91%","grade_hidden_from_student":"Yes"},{"id":"row-80","course":"ANTH-101 Intro to Anthropology","term":"Spring 2026","assignment":"Thinking Like an Anthropologist","type":"Other","status":"Completed On Time","due_date":"05/27/2026","percentage":"90%","grade_hidden_from_student":"Yes"},{"id":"row-81","course":"ANTH-101 Intro to Anthropology","term":"Spring 2026","assignment":"Humans and Their Environments","type":"Other","status":"Completed On Time","due_date":"05/15/2026","percentage":"93%","grade_hidden_from_student":"Yes"},{"id":"row-82","course":"BIO-230-B2 Human Physiology","term":"Spring 2026","assignment":"Neural Signaling and Response","type":"Other","status":"Completed On Time","due_date":"02/18/2026","percentage":"72%","grade_hidden_from_student":"Yes"},{"id":"row-83","course":"BIO-230-B2 Human Physiology","term":"Spring 2026","assignment":"Cells to Systems","type":"Other","status":"Not Completed On Time","due_date":"02/15/2026","percentage":"80%","grade_hidden_from_student":"Yes"},{"id":"row-84","course":"BIO-230-B2 Human Physiology","term":"Spring 2026","assignment":"Breathing for Life","type":"Other","status":"Past Due","due_date":"03/15/2026","percentage":"50%","grade_hidden_from_student":"Yes"}]'></vi-grid>
                     </div>
                     <p class="clr-gray_80-txt text-sz-s mt-4">Showing items 1-15 of 40</p>
                   </hi-tile>
@@ -1887,116 +1027,98 @@
                   <hi-tile allow-toolbar aesthetic="outline">
                     <h5 slot="title">Term Details</h5>
 
-                    <div class="mb-6">
-                      <h4 class="mb-2">Spring 2026</h4>
-                      <div l-kind="hort" l-width-fixed>
-                        <div style="width: 60%;">
-                          <p>0 (3) ANTH101LEC &mdash; Intro to Anthropology</p>
-                          <p>0 (3) BIO230LEC &mdash; Human Physiology</p>
-                          <p>0 (3) BIO250LEC &mdash; Biochemistry</p>
-                          <p>0 (3) PSY201LEC &mdash; Behavioral Change</p>
+                    <hi-accordion class="mb-6">
+                      <hi-bar><strong>Spring 2026</strong></hi-bar>
+                      <hi-note>
+                        <div l-kind="hort" l-width-fixed>
+                          <div l-size="7">
+                            <ul class="card__list">
+                              <li>0 (3) ANTH101LEC &mdash; Intro to Anthropology</li>
+                              <li>0 (3) BIO230LEC &mdash; Human Physiology</li>
+                              <li>0 (3) BIO250LEC &mdash; Biochemistry</li>
+                              <li>0 (3) PSY201LEC &mdash; Behavioral Change</li>
+                            </ul>
+                          </div>
+                          <div l-size="5">
+                            <p class="clr-gray_80-txt text-sz-s">Term at a glance</p>
+                            <p>Credits: 0</p>
+                            <p>Credit Comp %: 0%</p>
+                            <p>Term GPA: 0.0</p>
+                            <p>Cum GPA: 2.64</p>
+                            <p>Academic Standing: Academic Suspension</p>
+                          </div>
                         </div>
-                        <div style="width: 40%;">
-                          <p class="clr-gray_80-txt text-sz-s">Term at a glance</p>
-                          <p>Credits: 0</p>
-                          <p>Credit Comp %: 0%</p>
-                          <p>Term GPA: 0.0</p>
-                          <p>Cum GPA: 2.64</p>
-                          <p>Academic Standing: Academic Suspension</p>
+                      </hi-note>
+                      <hi-bar><strong>Fall 2025</strong></hi-bar>
+                      <hi-note>
+                        <div l-kind="hort" l-width-fixed>
+                          <div l-size="7">
+                            <ul class="card__list">
+                              <li>C (3) BIO201LEC &mdash; Evolutionary Biology</li>
+                              <li>B (3) CHEM111LEC &mdash; Principles of Chemicals</li>
+                              <li>A (3) FREN250IPRAC &mdash; French Literature Primer</li>
+                              <li>B (3) MATH171LEC &mdash; Precalculus</li>
+                            </ul>
+                          </div>
+                          <div l-size="5">
+                            <p class="clr-gray_80-txt text-sz-s">Term at a glance</p>
+                            <p>Credits: 12</p>
+                            <p>Credit Comp %: 100%</p>
+                            <p>Term GPA: 3.0</p>
+                            <p>Cum GPA: 2.64</p>
+                            <p>Academic Standing: Withdrawn</p>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-
-                    <div class="mb-6">
-                      <h4 class="mb-2">Fall 2025</h4>
-                      <div l-kind="hort" l-width-fixed>
-                        <div style="width: 60%;">
-                          <p>C (3) BIO201LEC &mdash; Evolutionary Biology</p>
-                          <p>B (3) CHEM111LEC &mdash; Principles of Chemicals</p>
-                          <p>A (3) FREN250IPRAC &mdash; French Literature Primer</p>
-                          <p>B (3) MATH171LEC &mdash; Precalculus</p>
+                      </hi-note>
+                      <hi-bar><strong>Spring 2025</strong></hi-bar>
+                      <hi-note>
+                        <div l-kind="hort" l-width-fixed>
+                          <div l-size="7">
+                            <ul class="card__list">
+                              <li>B (3) BIO111LEC &mdash; Cellular Biology</li>
+                              <li>C (0/3) BIO150LEC &mdash; Biodiversity</li>
+                              <li>F (3) CHEM111LEC &mdash; Principles of Chemicals</li>
+                              <li>B (3) ENG111LEC &mdash; Composition and Writing II</li>
+                              <li>A (3) PSY150LEC &mdash; Adolescent Psychology</li>
+                            </ul>
+                          </div>
+                          <div l-size="5">
+                            <p class="clr-gray_80-txt text-sz-s">Term at a glance</p>
+                            <p>Credits: 12</p>
+                            <p>Credit Comp %: 80%</p>
+                            <p>Term GPA: 2.4</p>
+                            <p>Cum GPA: 2.5</p>
+                            <p>Academic Standing: Good Standing</p>
+                          </div>
                         </div>
-                        <div style="width: 40%;">
-                          <p class="clr-gray_80-txt text-sz-s">Term at a glance</p>
-                          <p>Credits: 12</p>
-                          <p>Credit Comp %: 100%</p>
-                          <p>Term GPA: 3.0</p>
-                          <p>Cum GPA: 2.64</p>
-                          <p>Academic Standing: Withdrawn</p>
+                      </hi-note>
+                      <hi-bar><strong>Fall 2024</strong></hi-bar>
+                      <hi-note>
+                        <div l-kind="hort" l-width-fixed>
+                          <div l-size="7">
+                            <ul class="card__list">
+                              <li>D (3) BIO101LEC &mdash; Intro to Biology</li>
+                              <li>B (3) CHEM101LEC &mdash; Intro to Chemistry</li>
+                              <li>A (3) ENG101LEC &mdash; Composition and Writing I</li>
+                              <li>D (3) MATH101LEC &mdash; College Algebra</li>
+                              <li>A (3) PSY111LEC &mdash; Abnormal Psychology</li>
+                            </ul>
+                          </div>
+                          <div l-size="5">
+                            <p class="clr-gray_80-txt text-sz-s">Term at a glance</p>
+                            <p>Credits: 15</p>
+                            <p>Credit Comp %: 100%</p>
+                            <p>Term GPA: 2.6</p>
+                            <p>Cum GPA: 2.6</p>
+                            <p>Academic Standing: Good Standing</p>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-
-                    <div class="mb-6">
-                      <h4 class="mb-2">Spring 2025</h4>
-                      <div l-kind="hort" l-width-fixed>
-                        <div style="width: 60%;">
-                          <p>B (3) BIO111LEC &mdash; Cellular Biology</p>
-                          <p>C (0/3) BIO150LEC &mdash; Biodiversity</p>
-                          <p>F (3) CHEM111LEC &mdash; Principles of Chemicals</p>
-                          <p>B (3) ENG111LEC &mdash; Composition and Writing II</p>
-                          <p>A (3) PSY150LEC &mdash; Adolescent Psychology</p>
-                        </div>
-                        <div style="width: 40%;">
-                          <p class="clr-gray_80-txt text-sz-s">Term at a glance</p>
-                          <p>Credits: 12</p>
-                          <p>Credit Comp %: 80%</p>
-                          <p>Term GPA: 2.4</p>
-                          <p>Cum GPA: 2.5</p>
-                          <p>Academic Standing: Good Standing</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="mb-6">
-                      <h4 class="mb-2">Fall 2024</h4>
-                      <div l-kind="hort" l-width-fixed>
-                        <div style="width: 60%;">
-                          <p>D (3) BIO101LEC &mdash; Intro to Biology</p>
-                          <p>B (3) CHEM101LEC &mdash; Intro to Chemistry</p>
-                          <p>A (3) ENG101LEC &mdash; Composition and Writing I</p>
-                          <p>D (3) MATH101LEC &mdash; College Algebra</p>
-                          <p>A (3) PSY111LEC &mdash; Abnormal Psychology</p>
-                        </div>
-                        <div style="width: 40%;">
-                          <p class="clr-gray_80-txt text-sz-s">Term at a glance</p>
-                          <p>Credits: 15</p>
-                          <p>Credit Comp %: 100%</p>
-                          <p>Term GPA: 2.6</p>
-                          <p>Cum GPA: 2.6</p>
-                          <p>Academic Standing: Good Standing</p>
-                        </div>
-                      </div>
-                    </div>
+                      </hi-note>
+                    </hi-accordion>
 
                     <h4 class="mb-2">Pre-Enrollment and Progression</h4>
                     <div scroll-x="auto">
-                      <table kind="compact">
-                        <thead>
-                          <tr>
-                            <th class="text-uppercase">Test</th>
-                            <th class="text-uppercase">Score</th>
-                            <th class="text-uppercase">Date</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>ACT - Composite (COMP)</td>
-                            <td>27</td>
-                            <td>2013-10-07</td>
-                          </tr>
-                          <tr>
-                            <td>Advanced Placement Test - French Language (FRA)</td>
-                            <td>4</td>
-                            <td>2014-10-07</td>
-                          </tr>
-                          <tr>
-                            <td>SAT - Math (MATH)</td>
-                            <td>520</td>
-                            <td>2014-10-07</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <vi-grid id="grid-89" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"test":{"title":"Test","render_type":"html"},"score":{"title":"Score","render_type":"html"},"date":{"title":"Date","render_type":"html"}}}' input='[{"id":"row-86","test":"ACT - Composite (COMP)","score":"27","date":"2013-10-07"},{"id":"row-87","test":"Advanced Placement Test - French Language (FRA)","score":"4","date":"2014-10-07"},{"id":"row-88","test":"SAT - Math (MATH)","score":"520","date":"2014-10-07"}]'></vi-grid>
                     </div>
                   </hi-tile>
                 </section>
@@ -2005,10 +1127,7 @@
               <!-- ======================= MAJOR EXPLORER ======================= -->
               <hi-case id="jw-major-explorer" value="jw-major-explorer" hidden>
                 <section x-area="zone">
-                  <h2 class="mb-6">Major Explorer</h2>
-                  <p class="clr-gray_80-txt">
-                    Looks at different majors based on predictive indicators for this student.
-                  </p>
+                  <yi-view-state kind="icon" icon="search" title="Major Explorer" description="Looks at different majors based on predictive indicators for this student."></yi-view-state>
                 </section>
               </hi-case>
 
@@ -2027,86 +1146,11 @@
 
                       <p class="clr-gray_80-txt text-sz-s">Completion Progress</p>
                       <p class="mb-2">2 of 6 completed</p>
-                      <hi-progress-bar value="33" max="100" class="mb-6"></hi-progress-bar>
+                      <hi-meter value="33" max="100" class="mb-6"></hi-meter>
 
                       <h3 class="mb-4">Journey Steps</h3>
                       <div scroll-x="auto">
-                        <table kind="compact">
-                          <thead>
-                            <tr>
-                              <th><hi-checkbox aria-label="Select all steps"></hi-checkbox></th>
-                              <th class="text-uppercase">Step Title</th>
-                              <th class="text-uppercase">Due Date</th>
-                              <th class="text-uppercase">Status</th>
-                              <th class="text-uppercase">Completed By</th>
-                              <th class="text-uppercase">Completed On</th>
-                              <th class="text-uppercase">Updated By</th>
-                              <th class="text-uppercase">Updated On</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td><hi-checkbox></hi-checkbox></td>
-                              <td><hi-link href="#">Schedule Appointment&hellip;</hi-link></td>
-                              <td>&ndash;</td>
-                              <td>Completed</td>
-                              <td>Jack Whitmore</td>
-                              <td>07/07/2026</td>
-                              <td>Jack Whitmore</td>
-                              <td>07/07/2026</td>
-                            </tr>
-                            <tr>
-                              <td><hi-checkbox></hi-checkbox></td>
-                              <td><hi-link href="#">Attend Career Fair</hi-link></td>
-                              <td>&ndash;</td>
-                              <td>Completed</td>
-                              <td>Jack Whitmore</td>
-                              <td>01/23/2025</td>
-                              <td>Jack Whitmore</td>
-                              <td>01/23/2025</td>
-                            </tr>
-                            <tr>
-                              <td><hi-checkbox></hi-checkbox></td>
-                              <td><hi-link href="#" id="journey-detail-link">Sign Up for an Account o&hellip;</hi-link></td>
-                              <td>&ndash;</td>
-                              <td>Incomplete</td>
-                              <td>&ndash;</td>
-                              <td>&ndash;</td>
-                              <td>jwhitten@woodley.edu.jw&hellip;</td>
-                              <td>04/02/2026</td>
-                            </tr>
-                            <tr>
-                              <td><hi-checkbox></hi-checkbox></td>
-                              <td><hi-link href="#">Attend a Resume Works&hellip;</hi-link></td>
-                              <td>&ndash;</td>
-                              <td>Incomplete</td>
-                              <td>&ndash;</td>
-                              <td>&ndash;</td>
-                              <td>&ndash;</td>
-                              <td>&ndash;</td>
-                            </tr>
-                            <tr>
-                              <td><hi-checkbox></hi-checkbox></td>
-                              <td><hi-link href="#">Explore Career Quizzes o&hellip;</hi-link></td>
-                              <td>&ndash;</td>
-                              <td>Incomplete</td>
-                              <td>&ndash;</td>
-                              <td>&ndash;</td>
-                              <td>&ndash;</td>
-                              <td>&ndash;</td>
-                            </tr>
-                            <tr>
-                              <td><hi-checkbox></hi-checkbox></td>
-                              <td><hi-link href="#">Testing</hi-link></td>
-                              <td>&ndash;</td>
-                              <td>Incomplete</td>
-                              <td>&ndash;</td>
-                              <td>&ndash;</td>
-                              <td>&ndash;</td>
-                              <td>&ndash;</td>
-                            </tr>
-                          </tbody>
-                        </table>
+                        <vi-grid id="grid-96" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":true,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"step_title":{"title":"Step Title","render_type":"html"},"due_date":{"title":"Due Date","render_type":"html"},"status":{"title":"Status","render_type":"html"},"completed_by":{"title":"Completed By","render_type":"html"},"completed_on":{"title":"Completed On","render_type":"html"},"updated_by":{"title":"Updated By","render_type":"html"},"updated_on":{"title":"Updated On","render_type":"html"}}}' input='[{"id":"row-90","step_title":"<hi-link href=\"#\">Schedule Appointment…</hi-link>","due_date":"–","status":"Completed","completed_by":"Jack Whitmore","completed_on":"07/07/2026","updated_by":"Jack Whitmore","updated_on":"07/07/2026"},{"id":"row-91","step_title":"<hi-link href=\"#\">Attend Career Fair</hi-link>","due_date":"–","status":"Completed","completed_by":"Jack Whitmore","completed_on":"01/23/2025","updated_by":"Jack Whitmore","updated_on":"01/23/2025"},{"id":"row-92","step_title":"<hi-link href=\"#\" id=\"journey-detail-link\">Sign Up for an Account o…</hi-link>","due_date":"–","status":"Incomplete","completed_by":"–","completed_on":"–","updated_by":"jwhitten@woodley.edu.jw…","updated_on":"04/02/2026"},{"id":"row-93","step_title":"<hi-link href=\"#\">Attend a Resume Works…</hi-link>","due_date":"–","status":"Incomplete","completed_by":"–","completed_on":"–","updated_by":"–","updated_on":"–"},{"id":"row-94","step_title":"<hi-link href=\"#\">Explore Career Quizzes o…</hi-link>","due_date":"–","status":"Incomplete","completed_by":"–","completed_on":"–","updated_by":"–","updated_on":"–"},{"id":"row-95","step_title":"<hi-link href=\"#\">Testing</hi-link>","due_date":"–","status":"Incomplete","completed_by":"–","completed_on":"–","updated_by":"–","updated_on":"–"}]'></vi-grid>
                       </div>
                       <p class="clr-gray_80-txt text-sz-s mt-4">1-6 of 6</p>
                     </section>
@@ -2150,68 +1194,7 @@
                   <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
                     <h5 slot="title">Checklist</h5>
                     <div scroll-x="auto">
-                      <table kind="compact">
-                        <thead>
-                          <tr>
-                            <th class="text-uppercase">Item Name</th>
-                            <th class="text-uppercase">Category</th>
-                            <th class="text-uppercase">Status</th>
-                            <th class="text-uppercase">Start Date</th>
-                            <th class="text-uppercase">Due Date</th>
-                            <th class="text-uppercase">Assigned By</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td><hi-link href="#">Buy books and supplies for Fall&hellip;</hi-link></td>
-                            <td>To-Do</td>
-                            <td>Incomplete</td>
-                            <td>&ndash;</td>
-                            <td>07/19/2026</td>
-                            <td>School</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">Driving? Get your parking pass.</hi-link></td>
-                            <td>To-Do</td>
-                            <td>Incomplete</td>
-                            <td>&ndash;</td>
-                            <td>07/19/2026</td>
-                            <td>School</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">First week of Fall 2026 classes</hi-link></td>
-                            <td>Event</td>
-                            <td>Incomplete</td>
-                            <td>&ndash;</td>
-                            <td>08/18/2026</td>
-                            <td>School</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">Pick Fall 2026 classes and sche&hellip;</hi-link></td>
-                            <td>To-Do</td>
-                            <td>Incomplete</td>
-                            <td>08/19/2026</td>
-                            <td>12/18/2026</td>
-                            <td>School</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">Sign Up for an Account on Forage</hi-link></td>
-                            <td>Preparing For The Workforce!</td>
-                            <td>Incomplete</td>
-                            <td>&ndash;</td>
-                            <td>&ndash;</td>
-                            <td>School</td>
-                          </tr>
-                          <tr>
-                            <td><hi-link href="#">Attend a Resume Workshop</hi-link></td>
-                            <td>Preparing For The Workforce!</td>
-                            <td>Incomplete</td>
-                            <td>&ndash;</td>
-                            <td>&ndash;</td>
-                            <td>School</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <vi-grid id="grid-103" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"item_name":{"title":"Item Name","render_type":"html"},"category":{"title":"Category","render_type":"html"},"status":{"title":"Status","render_type":"html"},"start_date":{"title":"Start Date","render_type":"html"},"due_date":{"title":"Due Date","render_type":"html"},"assigned_by":{"title":"Assigned By","render_type":"html"}}}' input='[{"id":"row-97","item_name":"<hi-link href=\"#\">Buy books and supplies for Fall…</hi-link>","category":"To-Do","status":"Incomplete","start_date":"–","due_date":"07/19/2026","assigned_by":"School"},{"id":"row-98","item_name":"<hi-link href=\"#\">Driving? Get your parking pass.</hi-link>","category":"To-Do","status":"Incomplete","start_date":"–","due_date":"07/19/2026","assigned_by":"School"},{"id":"row-99","item_name":"<hi-link href=\"#\">First week of Fall 2026 classes</hi-link>","category":"Event","status":"Incomplete","start_date":"–","due_date":"08/18/2026","assigned_by":"School"},{"id":"row-100","item_name":"<hi-link href=\"#\">Pick Fall 2026 classes and sche…</hi-link>","category":"To-Do","status":"Incomplete","start_date":"08/19/2026","due_date":"12/18/2026","assigned_by":"School"},{"id":"row-101","item_name":"<hi-link href=\"#\">Sign Up for an Account on Forage</hi-link>","category":"Preparing For The Workforce!","status":"Incomplete","start_date":"–","due_date":"–","assigned_by":"School"},{"id":"row-102","item_name":"<hi-link href=\"#\">Attend a Resume Workshop</hi-link>","category":"Preparing For The Workforce!","status":"Incomplete","start_date":"–","due_date":"–","assigned_by":"School"}]'></vi-grid>
                     </div>
                     <p class="clr-gray_80-txt text-sz-s mt-4">1-18 of 18</p>
                   </hi-tile>
@@ -2219,31 +1202,7 @@
                   <hi-tile allow-toolbar aesthetic="outline">
                     <h5 slot="title">Onboarding Questions</h5>
                     <div scroll-x="auto">
-                      <table kind="compact">
-                        <thead>
-                          <tr>
-                            <th class="text-uppercase">Question</th>
-                            <th class="text-uppercase">Student Response</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Are you a new student at Woodley University?</td>
-                            <td>Yes</td>
-                          </tr>
-                          <tr>
-                            <td>I am a&hellip;</td>
-                            <td>Sophomore</td>
-                          </tr>
-                          <tr>
-                            <td>Please select all that apply.</td>
-                            <td>
-                              I'm interested in studying abroad, I plan to live on campus,
-                              I'm interested in becoming involved n service/vol&hellip;
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <vi-grid id="grid-107" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"question":{"title":"Question","render_type":"html"},"student_response":{"title":"Student Response","render_type":"html"}}}' input='[{"id":"row-104","question":"Are you a new student at Woodley University?","student_response":"Yes"},{"id":"row-105","question":"I am a…","student_response":"Sophomore"},{"id":"row-106","question":"Please select all that apply.","student_response":"I'm interested in studying abroad, I plan to live on campus,\n                              I'm interested in becoming involved n service/vol…"}]'></vi-grid>
                     </div>
                   </hi-tile>
                 </section>
@@ -2257,8 +1216,8 @@
                     <p class="clr-gray_80-txt text-sz-s">James Wyatt's Goals: BS Biology | BS Education</p>
                   </div>
 
-                  <div l-kind="hort" l-wrap l-width-fixed>
-                    <div style="width: 24%;">
+                  <div l-kind="hort" l-wrap l-width-fixed l-gutter>
+                    <div l-size="3">
                       <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
                         <h5 slot="title">Planning Tools</h5>
                         <hi-button aesthetic="primary" stretched class="mb-4">Create Plan for James</hi-button>
@@ -2273,28 +1232,32 @@
                         <p><hi-link href="#">Quick Plans</hi-link></p>
                       </hi-tile>
                     </div>
-                    <div style="width: 48%;" class="ml-4">
+                    <div l-size="6">
                       <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
                         <h5 slot="title">Fall 2026</h5>
                         <p class="clr-gray_80-txt text-sz-s mb-4">Starts August 19, 2026 &middot; Credits Planned: 21</p>
-                        <p class="mb-2"><hi-link href="#">ENG101 - Composition and Writing I</hi-link><br /><span class="clr-gray_80-txt text-sz-s">Section 1 &ndash; Scheduled</span></p>
-                        <p class="mb-2"><hi-link href="#">ENG111 - Composition and Writing II</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></p>
-                        <p class="mb-2"><hi-link href="#">MATH101 - College Algebra</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></p>
-                        <p class="mb-2"><hi-link href="#">MATH111 - Precalculus</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></p>
-                        <p class="mb-2"><hi-link href="#">PSY111 - Abnormal Psychology</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></p>
-                        <p class="mb-2"><hi-link href="#">PSY250 - Social Psychology</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></p>
-                        <p><hi-link href="#">SOC101 - Intro to Sociology</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></p>
+                        <ul class="card__list">
+                          <li><hi-link href="#">ENG101 - Composition and Writing I</hi-link><br /><span class="clr-gray_80-txt text-sz-s">Section 1 &ndash; Scheduled</span></li>
+                          <li><hi-link href="#">ENG111 - Composition and Writing II</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></li>
+                          <li><hi-link href="#">MATH101 - College Algebra</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></li>
+                          <li><hi-link href="#">MATH111 - Precalculus</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></li>
+                          <li><hi-link href="#">PSY111 - Abnormal Psychology</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></li>
+                          <li><hi-link href="#">PSY250 - Social Psychology</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></li>
+                          <li><hi-link href="#">SOC101 - Intro to Sociology</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></li>
+                        </ul>
                       </hi-tile>
                       <hi-tile allow-toolbar aesthetic="outline">
                         <h5 slot="title">Spring 2027</h5>
                         <p class="clr-gray_80-txt text-sz-s mb-4">Starts January 04, 2027 &middot; Credits Planned: 18</p>
-                        <p class="mb-2"><hi-link href="#">CSC101 - Introduction to Computing</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></p>
-                        <p class="mb-2"><hi-link href="#">ENG101 - Composition and Writing I</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></p>
-                        <p class="mb-2"><hi-link href="#">ENG111 - Composition and Writing II</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></p>
-                        <p><hi-link href="#">ENG210 - Creative Writing</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></p>
+                        <ul class="card__list">
+                          <li><hi-link href="#">CSC101 - Introduction to Computing</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></li>
+                          <li><hi-link href="#">ENG101 - Composition and Writing I</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></li>
+                          <li><hi-link href="#">ENG111 - Composition and Writing II</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></li>
+                          <li><hi-link href="#">ENG210 - Creative Writing</hi-link><br /><span class="clr-gray_80-txt text-sz-s">No Scheduled Sections</span></li>
+                        </ul>
                       </hi-tile>
                     </div>
-                    <div style="width: 24%;" class="ml-4">
+                    <div l-size="3">
                       <hi-tile allow-toolbar aesthetic="outline">
                         <p class="clr-gray_80-txt text-sz-s">You can view your Draft Plans here.</p>
                       </hi-tile>
@@ -2344,9 +1307,7 @@
               <hi-case id="jw-study-hall" value="jw-study-hall" hidden>
                 <section x-area="zone">
                   <h2 class="mb-6">Study Hall</h2>
-                  <p class="clr-gray_80-txt">
-                    James's study hall hours, if he is leveraging study hall.
-                  </p>
+                  <yi-view-state kind="icon" icon="feedback" description="James's study hall hours, if he is leveraging study hall."></yi-view-state>
                 </section>
               </hi-case>
 
@@ -2360,25 +1321,7 @@
                   </hi-input-group>
                   <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;"><hi-checkbox class="mb-4" id="cb-auto-23"></hi-checkbox><hi-label for="cb-auto-23" class="ml-1">Show Cancelled</hi-label></hi-input-group>
                   <div scroll-x="auto">
-                    <table kind="compact">
-                      <thead>
-                        <tr>
-                          <th class="text-uppercase">Date</th>
-                          <th class="text-uppercase">Care Unit</th>
-                          <th class="text-uppercase">Service/Course</th>
-                          <th class="text-uppercase">Comment</th>
-                          <th class="text-uppercase">Meeting Type</th>
-                          <th class="text-uppercase">Organizer</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td colspan="6" class="text-center clr-gray_80-txt">
-                            James Wyatt does not have any upcoming appointments.
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <vi-grid id="grid-108" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false},"messages":{"state_empty":{"title":"","description":"James Wyatt does not have any upcoming appointments."}}}' type='{"fields":{"date":{"title":"Date","render_type":"html"},"care_unit":{"title":"Care Unit","render_type":"html"},"service_course":{"title":"Service/Course","render_type":"html"},"comment":{"title":"Comment","render_type":"html"},"meeting_type":{"title":"Meeting Type","render_type":"html"},"organizer":{"title":"Organizer","render_type":"html"}}}' input='[]'></vi-grid>
                   </div>
 
                   <h2 class="mt-6 mb-6">Recent Appointments</h2>
@@ -2387,92 +1330,7 @@
                     <hi-combobox id="jw-appt-recent-care-unit" value="all-care-units" input='[{"title":"All Care Units","value":"all-care-units"},{"title":"Admissions Counseling","value":"admissions-counseling"},{"title":"Advising","value":"advising"},{"title":"Career Services","value":"career-services"},{"title":"Financial Aid","value":"financial-aid"},{"title":"First Year Experience","value":"first-year-experience"},{"title":"Residence Life","value":"residence-life"},{"title":"Student Support Services","value":"student-support-services"}]'></hi-combobox>
                   </hi-input-group>
                   <div scroll-x="auto">
-                    <table kind="compact">
-                      <thead>
-                        <tr>
-                          <th class="text-uppercase">Date</th>
-                          <th class="text-uppercase">Care Unit</th>
-                          <th class="text-uppercase">Service/Course</th>
-                          <th class="text-uppercase">Comment</th>
-                          <th class="text-uppercase">Organizer</th>
-                          <th class="text-uppercase">Report Filed?</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>07/03/2026</td>
-                          <td>Advising</td>
-                          <td>General Advising</td>
-                          <td></td>
-                          <td><hi-link href="#">Whitten, Jack</hi-link></td>
-                          <td>Not Yet</td>
-                        </tr>
-                        <tr>
-                          <td>06/26/2026</td>
-                          <td>Advising</td>
-                          <td>Academic Planning</td>
-                          <td>James Wyatt: Is there anything I should bring?</td>
-                          <td><hi-link href="#">Whitten, Jack</hi-link></td>
-                          <td>Not Yet</td>
-                        </tr>
-                        <tr>
-                          <td>06/19/2026</td>
-                          <td>Advising</td>
-                          <td>Academic Planning</td>
-                          <td></td>
-                          <td><hi-link href="#">Whitten, Jack</hi-link></td>
-                          <td>Not Yet</td>
-                        </tr>
-                        <tr>
-                          <td>06/19/2026</td>
-                          <td>Advising</td>
-                          <td>Academic Planning</td>
-                          <td>This is why James is here</td>
-                          <td><hi-link href="#">Whitten, Jack</hi-link></td>
-                          <td><hi-button aesthetic="primary" size="small">Details</hi-button></td>
-                        </tr>
-                        <tr>
-                          <td>06/19/2026</td>
-                          <td>Financial Aid</td>
-                          <td>Applying for Financial Aid, Emergency Tuition Grant</td>
-                          <td></td>
-                          <td><hi-link href="#">Gonzalez, Joseph</hi-link></td>
-                          <td><hi-button aesthetic="primary" size="small">Details</hi-button></td>
-                        </tr>
-                        <tr>
-                          <td>05/15/2026</td>
-                          <td>Tutoring</td>
-                          <td>Intro to Biology</td>
-                          <td></td>
-                          <td><hi-link href="#">Whitmore, Jack</hi-link></td>
-                          <td>Not Yet</td>
-                        </tr>
-                        <tr>
-                          <td>05/12/2026</td>
-                          <td>Financial Aid</td>
-                          <td>Applying for Financial Aid</td>
-                          <td></td>
-                          <td><hi-link href="#">Gonzalez, Joseph</hi-link></td>
-                          <td>Not Yet</td>
-                        </tr>
-                        <tr>
-                          <td>05/08/2026</td>
-                          <td>Advising</td>
-                          <td>Applying for Financial Aid</td>
-                          <td></td>
-                          <td><hi-link href="#">Whitten, Jack</hi-link></td>
-                          <td><hi-button aesthetic="primary" size="small">Details</hi-button></td>
-                        </tr>
-                        <tr>
-                          <td>05/07/2026</td>
-                          <td>Advising</td>
-                          <td>Academic Planning</td>
-                          <td></td>
-                          <td><hi-link href="#">Williams, Jack</hi-link></td>
-                          <td>Not Yet</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <vi-grid id="grid-118" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"date":{"title":"Date","render_type":"html"},"care_unit":{"title":"Care Unit","render_type":"html"},"service_course":{"title":"Service/Course","render_type":"html"},"comment":{"title":"Comment","render_type":"html"},"organizer":{"title":"Organizer","render_type":"html"},"report_filed":{"title":"Report Filed?","render_type":"html"}}}' input='[{"id":"row-109","date":"07/03/2026","care_unit":"Advising","service_course":"General Advising","comment":"","organizer":"<hi-link href=\"#\">Whitten, Jack</hi-link>","report_filed":"Not Yet"},{"id":"row-110","date":"06/26/2026","care_unit":"Advising","service_course":"Academic Planning","comment":"James Wyatt: Is there anything I should bring?","organizer":"<hi-link href=\"#\">Whitten, Jack</hi-link>","report_filed":"Not Yet"},{"id":"row-111","date":"06/19/2026","care_unit":"Advising","service_course":"Academic Planning","comment":"","organizer":"<hi-link href=\"#\">Whitten, Jack</hi-link>","report_filed":"Not Yet"},{"id":"row-112","date":"06/19/2026","care_unit":"Advising","service_course":"Academic Planning","comment":"This is why James is here","organizer":"<hi-link href=\"#\">Whitten, Jack</hi-link>","report_filed":"<hi-button aesthetic=\"primary\" size=\"small\">Details</hi-button>"},{"id":"row-113","date":"06/19/2026","care_unit":"Financial Aid","service_course":"Applying for Financial Aid, Emergency Tuition Grant","comment":"","organizer":"<hi-link href=\"#\">Gonzalez, Joseph</hi-link>","report_filed":"<hi-button aesthetic=\"primary\" size=\"small\">Details</hi-button>"},{"id":"row-114","date":"05/15/2026","care_unit":"Tutoring","service_course":"Intro to Biology","comment":"","organizer":"<hi-link href=\"#\">Whitmore, Jack</hi-link>","report_filed":"Not Yet"},{"id":"row-115","date":"05/12/2026","care_unit":"Financial Aid","service_course":"Applying for Financial Aid","comment":"","organizer":"<hi-link href=\"#\">Gonzalez, Joseph</hi-link>","report_filed":"Not Yet"},{"id":"row-116","date":"05/08/2026","care_unit":"Advising","service_course":"Applying for Financial Aid","comment":"","organizer":"<hi-link href=\"#\">Whitten, Jack</hi-link>","report_filed":"<hi-button aesthetic=\"primary\" size=\"small\">Details</hi-button>"},{"id":"row-117","date":"05/07/2026","care_unit":"Advising","service_course":"Academic Planning","comment":"","organizer":"<hi-link href=\"#\">Williams, Jack</hi-link>","report_filed":"Not Yet"}]'></vi-grid>
                   </div>
                   <p class="clr-gray_80-txt text-sz-s mt-4">Showing items 1-10 of 18</p>
                 </section>
@@ -2484,156 +1342,7 @@
                   <h2 class="mb-6">Email And Text Message Communications</h2>
                   <hi-button aesthetic="primary" class="mb-6">+ Send Message</hi-button>
                   <div scroll-x="auto">
-                    <table kind="compact">
-                      <thead>
-                        <tr>
-                          <th><hi-checkbox aria-label="Select all conversations"></hi-checkbox></th>
-                          <th class="text-uppercase">Status</th>
-                          <th class="text-uppercase">Date Sent</th>
-                          <th class="text-uppercase">Sender</th>
-                          <th class="text-uppercase">Recipient</th>
-                          <th class="text-uppercase">Topic</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><hi-checkbox></hi-checkbox></td>
-                          <td>Unread</td>
-                          <td>07/02/2026, 11:15 AM ET</td>
-                          <td>Whitten, Jack</td>
-                          <td>Wyatt, James</td>
-                          <td><hi-link href="#">[Appointment Reminder] General Advising @ 07/03/2026 11:15am - 12:00pm ET</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox></hi-checkbox></td>
-                          <td>Unread</td>
-                          <td>07/01/2026, 11:54 AM ET</td>
-                          <td>Whitten, Jack</td>
-                          <td>Wyatt, James</td>
-                          <td><hi-link href="#">[Appointment Notification] General Advising @ Jul 03 2026 11:15am - 12:00pm ET</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox></hi-checkbox></td>
-                          <td>Unread</td>
-                          <td>06/26/2026, 11:50 AM ET</td>
-                          <td>Reply, No</td>
-                          <td>Wyatt, James</td>
-                          <td><hi-link href="#">Please provide feedback on your recent appointment:&hellip;</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox></hi-checkbox></td>
-                          <td>Unread</td>
-                          <td>06/26/2026, 11:50 AM ET</td>
-                          <td>Reply, No</td>
-                          <td>Wyatt, James</td>
-                          <td><hi-link href="#">James, Give feedback about your recent appointment</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox></hi-checkbox></td>
-                          <td>Unread</td>
-                          <td>06/25/2026, 11:00 AM ET</td>
-                          <td>Whitten, Jack</td>
-                          <td>Wyatt, James</td>
-                          <td><hi-link href="#">[Appointment Reminder] Academic Planning @ 06/26/2026 11:00am - 11:45am ET</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox></hi-checkbox></td>
-                          <td>Unread</td>
-                          <td>06/22/2026, 11:01 AM ET</td>
-                          <td>Whitten, Jack</td>
-                          <td>Wyatt, James</td>
-                          <td><hi-link href="#">Please Meet With Me ASAP</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox></hi-checkbox></td>
-                          <td>Unread</td>
-                          <td>06/19/2026, 2:15 PM ET</td>
-                          <td>Reply, No</td>
-                          <td>Wyatt, James</td>
-                          <td><hi-link href="#">Please provide feedback on your recent appointment:&hellip;</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox></hi-checkbox></td>
-                          <td>Unread</td>
-                          <td>06/19/2026, 2:15 PM ET</td>
-                          <td>Reply, No</td>
-                          <td>Wyatt, James</td>
-                          <td><hi-link href="#">James, Give feedback about your recent appointment</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox></hi-checkbox></td>
-                          <td>Unread</td>
-                          <td>06/19/2026, 12:50 PM ET</td>
-                          <td>Reply, No</td>
-                          <td>Wyatt, James</td>
-                          <td><hi-link href="#">Please provide feedback on your recent appointment:&hellip;</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox></hi-checkbox></td>
-                          <td>Unread</td>
-                          <td>06/19/2026, 12:50 PM ET</td>
-                          <td>Reply, No</td>
-                          <td>Wyatt, James</td>
-                          <td><hi-link href="#">James, Give feedback about your recent appointment</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox></hi-checkbox></td>
-                          <td>Unread</td>
-                          <td>06/19/2026, 11:50 AM ET</td>
-                          <td>Reply, No</td>
-                          <td>Wyatt, James</td>
-                          <td><hi-link href="#">Please provide feedback on your recent appointment:&hellip;</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox></hi-checkbox></td>
-                          <td>Unread</td>
-                          <td>06/19/2026, 11:50 AM ET</td>
-                          <td>Reply, No</td>
-                          <td>Wyatt, James</td>
-                          <td><hi-link href="#">James, Give feedback about your recent appointment</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox></hi-checkbox></td>
-                          <td>Unread</td>
-                          <td>06/19/2026, 8:50 AM ET</td>
-                          <td>Whitten, Jack</td>
-                          <td>Wyatt, James</td>
-                          <td><hi-link href="#">[Appointment Reminder] Academic Planning @ 06/19/2026 12:00pm - 12:45pm ET</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox></hi-checkbox></td>
-                          <td>Unread</td>
-                          <td>06/19/2026, 8:49 AM ET</td>
-                          <td>Wyatt, James</td>
-                          <td>Whitten, Jack</td>
-                          <td><hi-link href="#">James Wyatt was added to the first available waiting list for Academic Planning</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox></hi-checkbox></td>
-                          <td>Unread</td>
-                          <td>06/19/2026, 8:49 AM ET</td>
-                          <td>Wyatt, James</td>
-                          <td>Wheeler, Jack</td>
-                          <td><hi-link href="#">James Wyatt was added to the first available waiting list for Academic Planning</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox></hi-checkbox></td>
-                          <td>Unread</td>
-                          <td>06/19/2026, 8:49 AM ET</td>
-                          <td>Wyatt, James</td>
-                          <td>Whitten, Jack</td>
-                          <td><hi-link href="#">James Wyatt was added to the first available waiting list for Academic Planning</hi-link></td>
-                        </tr>
-                        <tr>
-                          <td><hi-checkbox></hi-checkbox></td>
-                          <td>Unread</td>
-                          <td>06/19/2026, 8:48 AM ET</td>
-                          <td>Whitten, Jack</td>
-                          <td>Wyatt, James</td>
-                          <td><hi-link href="#">[Appointment Notification] Academic Planning @ Jun 19 2026 12:00pm - 12:45pm ET</hi-link></td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <vi-grid id="grid-136" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":true,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"status":{"title":"Status","render_type":"html"},"date_sent":{"title":"Date Sent","render_type":"html"},"sender":{"title":"Sender","render_type":"html"},"recipient":{"title":"Recipient","render_type":"html"},"topic":{"title":"Topic","render_type":"html"}}}' input='[{"id":"row-119","status":"Unread","date_sent":"07/02/2026, 11:15 AM ET","sender":"Whitten, Jack","recipient":"Wyatt, James","topic":"<hi-link href=\"#\">[Appointment Reminder] General Advising @ 07/03/2026 11:15am - 12:00pm ET</hi-link>"},{"id":"row-120","status":"Unread","date_sent":"07/01/2026, 11:54 AM ET","sender":"Whitten, Jack","recipient":"Wyatt, James","topic":"<hi-link href=\"#\">[Appointment Notification] General Advising @ Jul 03 2026 11:15am - 12:00pm ET</hi-link>"},{"id":"row-121","status":"Unread","date_sent":"06/26/2026, 11:50 AM ET","sender":"Reply, No","recipient":"Wyatt, James","topic":"<hi-link href=\"#\">Please provide feedback on your recent appointment:…</hi-link>"},{"id":"row-122","status":"Unread","date_sent":"06/26/2026, 11:50 AM ET","sender":"Reply, No","recipient":"Wyatt, James","topic":"<hi-link href=\"#\">James, Give feedback about your recent appointment</hi-link>"},{"id":"row-123","status":"Unread","date_sent":"06/25/2026, 11:00 AM ET","sender":"Whitten, Jack","recipient":"Wyatt, James","topic":"<hi-link href=\"#\">[Appointment Reminder] Academic Planning @ 06/26/2026 11:00am - 11:45am ET</hi-link>"},{"id":"row-124","status":"Unread","date_sent":"06/22/2026, 11:01 AM ET","sender":"Whitten, Jack","recipient":"Wyatt, James","topic":"<hi-link href=\"#\">Please Meet With Me ASAP</hi-link>"},{"id":"row-125","status":"Unread","date_sent":"06/19/2026, 2:15 PM ET","sender":"Reply, No","recipient":"Wyatt, James","topic":"<hi-link href=\"#\">Please provide feedback on your recent appointment:…</hi-link>"},{"id":"row-126","status":"Unread","date_sent":"06/19/2026, 2:15 PM ET","sender":"Reply, No","recipient":"Wyatt, James","topic":"<hi-link href=\"#\">James, Give feedback about your recent appointment</hi-link>"},{"id":"row-127","status":"Unread","date_sent":"06/19/2026, 12:50 PM ET","sender":"Reply, No","recipient":"Wyatt, James","topic":"<hi-link href=\"#\">Please provide feedback on your recent appointment:…</hi-link>"},{"id":"row-128","status":"Unread","date_sent":"06/19/2026, 12:50 PM ET","sender":"Reply, No","recipient":"Wyatt, James","topic":"<hi-link href=\"#\">James, Give feedback about your recent appointment</hi-link>"},{"id":"row-129","status":"Unread","date_sent":"06/19/2026, 11:50 AM ET","sender":"Reply, No","recipient":"Wyatt, James","topic":"<hi-link href=\"#\">Please provide feedback on your recent appointment:…</hi-link>"},{"id":"row-130","status":"Unread","date_sent":"06/19/2026, 11:50 AM ET","sender":"Reply, No","recipient":"Wyatt, James","topic":"<hi-link href=\"#\">James, Give feedback about your recent appointment</hi-link>"},{"id":"row-131","status":"Unread","date_sent":"06/19/2026, 8:50 AM ET","sender":"Whitten, Jack","recipient":"Wyatt, James","topic":"<hi-link href=\"#\">[Appointment Reminder] Academic Planning @ 06/19/2026 12:00pm - 12:45pm ET</hi-link>"},{"id":"row-132","status":"Unread","date_sent":"06/19/2026, 8:49 AM ET","sender":"Wyatt, James","recipient":"Whitten, Jack","topic":"<hi-link href=\"#\">James Wyatt was added to the first available waiting list for Academic Planning</hi-link>"},{"id":"row-133","status":"Unread","date_sent":"06/19/2026, 8:49 AM ET","sender":"Wyatt, James","recipient":"Wheeler, Jack","topic":"<hi-link href=\"#\">James Wyatt was added to the first available waiting list for Academic Planning</hi-link>"},{"id":"row-134","status":"Unread","date_sent":"06/19/2026, 8:49 AM ET","sender":"Wyatt, James","recipient":"Whitten, Jack","topic":"<hi-link href=\"#\">James Wyatt was added to the first available waiting list for Academic Planning</hi-link>"},{"id":"row-135","status":"Unread","date_sent":"06/19/2026, 8:48 AM ET","sender":"Whitten, Jack","recipient":"Wyatt, James","topic":"<hi-link href=\"#\">[Appointment Notification] Academic Planning @ Jun 19 2026 12:00pm - 12:45pm ET</hi-link>"}]'></vi-grid>
                   </div>
                 </section>
               </hi-case>
@@ -2644,46 +1353,7 @@
                   <h2 class="mb-6">Staff Tasks Related To James</h2>
                   <hi-button aesthetic="primary" class="mb-6">+ Add Task</hi-button>
                   <div scroll-x="auto">
-                    <table kind="compact">
-                  <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-4">
-                    <hi-search aria-label="Search in Results" placeholder="Search in Results" hidden-result-message hidden-status-message style="width:20rem;"></hi-search>
-                    <hi-button aesthetic="icon" size="small" layout="icon"><hi-icon kind="filter" size="small"></hi-icon></hi-button>
-                  </div>
-                        <thead>
-                          <tr>
-                            <th><hi-checkbox aria-label="Select all tasks"></hi-checkbox></th>
-                            <th></th>
-                            <th class="text-uppercase">Title</th>
-                            <th class="text-uppercase">Assigned To</th>
-                            <th class="text-uppercase">Related Person Email</th>
-                            <th class="text-uppercase">Due Date</th>
-                            <th class="text-uppercase">Status</th>
-                            <th class="text-uppercase">Priority</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td><hi-checkbox></hi-checkbox></td>
-                            <td class="clr-gray_80-txt">&#9776;</td>
-                            <td><hi-link href="#">Send James Grant Application</hi-link></td>
-                            <td>Whitten, Jack</td>
-                            <td>woodley84@eab.com</td>
-                            <td>04/16/2026</td>
-                            <td>Open</td>
-                            <td>High</td>
-                          </tr>
-                          <tr>
-                            <td><hi-checkbox></hi-checkbox></td>
-                            <td class="clr-gray_80-txt">&#9776;</td>
-                            <td><hi-link href="#">Remind James about internship op&hellip;</hi-link></td>
-                            <td>Whitten, Jack</td>
-                            <td>woodley84@eab.com</td>
-                            <td>05/22/2026</td>
-                            <td>Open</td>
-                            <td>Medium</td>
-                          </tr>
-                        </tbody>
-                    </table>
+                    <vi-grid id="grid-139" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":true,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"col0":{"title":"","render_type":"html"},"title":{"title":"Title","render_type":"html"},"assigned_to":{"title":"Assigned To","render_type":"html"},"related_person_email":{"title":"Related Person Email","render_type":"html"},"due_date":{"title":"Due Date","render_type":"html"},"status":{"title":"Status","render_type":"html"},"priority":{"title":"Priority","render_type":"html"}}}' input='[{"id":"row-137","col0":"☰","title":"<hi-link href=\"#\">Send James Grant Application</hi-link>","assigned_to":"Whitten, Jack","related_person_email":"woodley84@eab.com","due_date":"04/16/2026","status":"Open","priority":"High"},{"id":"row-138","col0":"☰","title":"<hi-link href=\"#\">Remind James about internship op…</hi-link>","assigned_to":"Whitten, Jack","related_person_email":"woodley84@eab.com","due_date":"05/22/2026","status":"Open","priority":"Medium"}]'></vi-grid>
                   </div>
                   <p class="clr-gray_80-txt text-sz-s mt-4">1-2 of 2</p>
                 </section>
@@ -2699,7 +1369,7 @@
       <section x-area="region" x-region="right" class="pl-8 pr-8 pb-8">
         <hi-switch id="sidebar-view" value="staff-home">
           <hi-case id="sidebar-staff-home" value="staff-home">
-            <section x-area="stack" style="position: relative;">
+            <section x-area="stack">
               <hi-image
                 src="assets/eab-logo.png"
                 alt="EAB"
@@ -2739,7 +1409,7 @@
           </hi-case>
 
           <hi-case id="sidebar-james-wyatt" value="james-wyatt" hidden>
-            <section x-area="stack" style="position: relative;">
+            <section x-area="stack">
               <hi-image
                 src="assets/eab-logo.png"
                 alt="EAB"
@@ -2804,47 +1474,29 @@
 
               <hi-tile allow-toolbar aesthetic="outline">
                 <h5 slot="title">Your Success Team</h5>
-                <div l-kind="hort" l-width-fixed l-align="center" class="mb-3">
-                  <hi-image src="https://fastly.picsum.photos/id/338/80/80.jpg" alt="Beth Allen" width="32" height="32" class="mr-3" style="border-radius: 50%;"></hi-image>
-                  <div>
-                    <p>Allen, Beth</p>
-                    <p class="clr-gray_80-txt text-sz-s">Advisor</p>
-                  </div>
+                <div class="mb-3">
+                  <hi-avatar layout-inline initials="BA" full-name="Allen, Beth" label="Beth Allen"></hi-avatar>
+                  <p class="clr-gray_80-txt text-sz-s">Advisor</p>
                 </div>
-                <div l-kind="hort" l-width-fixed l-align="center" class="mb-3">
-                  <hi-image src="https://fastly.picsum.photos/id/1027/80/80.jpg" alt="Annette Brock" width="32" height="32" class="mr-3" style="border-radius: 50%;"></hi-image>
-                  <div>
-                    <p>Brock, Annette</p>
-                    <p class="clr-gray_80-txt text-sz-s">Advisor</p>
-                  </div>
+                <div class="mb-3">
+                  <hi-avatar layout-inline initials="AB" full-name="Brock, Annette" label="Annette Brock"></hi-avatar>
+                  <p class="clr-gray_80-txt text-sz-s">Advisor</p>
                 </div>
-                <div l-kind="hort" l-width-fixed l-align="center" class="mb-3">
-                  <hi-image src="https://fastly.picsum.photos/id/1005/80/80.jpg" alt="Joseph Gonzalez" width="32" height="32" class="mr-3" style="border-radius: 50%;"></hi-image>
-                  <div>
-                    <p>Gonzalez, Joseph</p>
-                    <p class="clr-gray_80-txt text-sz-s">Advisor</p>
-                  </div>
+                <div class="mb-3">
+                  <hi-avatar layout-inline initials="JG" full-name="Gonzalez, Joseph" label="Joseph Gonzalez"></hi-avatar>
+                  <p class="clr-gray_80-txt text-sz-s">Advisor</p>
                 </div>
-                <div l-kind="hort" l-width-fixed l-align="center" class="mb-3">
-                  <hi-image src="https://fastly.picsum.photos/id/1012/80/80.jpg" alt="Lee White" width="32" height="32" class="mr-3" style="border-radius: 50%;"></hi-image>
-                  <div>
-                    <p>White, Lee</p>
-                    <p class="clr-gray_80-txt text-sz-s">Advisor</p>
-                  </div>
+                <div class="mb-3">
+                  <hi-avatar layout-inline initials="LW" full-name="White, Lee" label="Lee White"></hi-avatar>
+                  <p class="clr-gray_80-txt text-sz-s">Advisor</p>
                 </div>
-                <div l-kind="hort" l-width-fixed l-align="center" class="mb-3">
-                  <hi-image src="assets/jack-whitten-profile.png" alt="Jack Whitmore" width="32" height="32" class="mr-3" style="border-radius: 50%;"></hi-image>
-                  <div>
-                    <p>Whitmore, Jack</p>
-                    <p class="clr-gray_80-txt text-sz-s">Advisor</p>
-                  </div>
+                <div class="mb-3">
+                  <hi-avatar layout-inline image="assets/jack-whitten-profile.png" full-name="Whitmore, Jack" label="Jack Whitmore"></hi-avatar>
+                  <p class="clr-gray_80-txt text-sz-s">Advisor</p>
                 </div>
-                <div l-kind="hort" l-width-fixed l-align="center">
-                  <hi-image src="assets/jack-whitten-profile.png" alt="Jack Whitten" width="32" height="32" class="mr-3" style="border-radius: 50%;"></hi-image>
-                  <div>
-                    <p>Whitten, Jack</p>
-                    <p class="clr-gray_80-txt text-sz-s">Advisor</p>
-                  </div>
+                <div>
+                  <hi-avatar layout-inline image="assets/jack-whitten-profile.png" full-name="Whitten, Jack" label="Jack Whitten"></hi-avatar>
+                  <p class="clr-gray_80-txt text-sz-s">Advisor</p>
                 </div>
               </hi-tile>
             </section>
@@ -2891,10 +1543,50 @@
         showCase(sidebarView, "staff-home");
       }
 
-      document.querySelectorAll(".goto-wyatt-link").forEach((el) => {
-        el.addEventListener("click", (e) => {
+      // Delegate on document since some .goto-wyatt-link elements are rendered
+      // asynchronously inside vi-grid cells (render_type "html") after this
+      // script runs, so binding listeners directly to querySelectorAll results
+      // at load time would miss them.
+      document.addEventListener("click", (e) => {
+        // e.target gets retargeted to the shadow host when the actual click
+        // originated inside a shadow root (e.g. a vi-grid "html" cell), so
+        // .closest() on e.target can't see the inner .goto-wyatt-link. Walk
+        // composedPath() instead, which includes every real node the event
+        // passed through, shadow DOM or not.
+        const path = e.composedPath ? e.composedPath() : [e.target];
+        const wyattLink = path.find((n) => n.classList && n.classList.contains("goto-wyatt-link"));
+        const staffHomeLink = path.find((n) => n.classList && n.classList.contains("goto-staff-home-link"));
+        if (wyattLink) {
           e.preventDefault();
           goToJamesWyatt();
+        } else if (staffHomeLink) {
+          e.preventDefault();
+          goToStaffHome();
+        }
+      });
+
+      // Exposed for automated tooling (Playwright recording script). Clicks
+      // synthesized/simulated on hi-link elements rendered inside vi-grid's
+      // "html" cells can be intercepted by the framework's internal focus
+      // management before reaching this page's listener, so automation
+      // should trigger navigation directly rather than simulating a click.
+      window.goToJamesWyatt = goToJamesWyatt;
+      window.goToStaffHome = goToStaffHome;
+
+      // Page-title menus (Staff Home / James Wyatt) are plain headline +
+      // caret with no closed-state chrome, unlike hi-flyout's default
+      // elevated anchor styling - see the video-parity-audit visual-role
+      // override rule.
+      document.querySelectorAll(".page-title-menu-toggle").forEach((toggle) => {
+        const menu = toggle.nextElementSibling;
+        if (!menu) return;
+        toggle.addEventListener("click", () => {
+          menu.hidden = !menu.hidden;
+        });
+        document.addEventListener("click", (e) => {
+          if (!menu.hidden && !toggle.contains(e.target) && !menu.contains(e.target)) {
+            menu.hidden = true;
+          }
         });
       });
 

@@ -2,12 +2,18 @@
 /**
  * extract-changepoints.js
  *
- * Runs ffmpeg scene-change detection over a video and writes a JSON list of
- * timestamps where the on-screen content actually changed (dropdown opened,
- * tab switched, page navigated, etc). This replaces manually guessing
- * timestamps and reading full-resolution frames one at a time, which is both
- * expensive (per-image token cost) and unreliable (easy to miss a moment
- * that falls between guesses).
+ * Motion-track tool (see the video-parity-audit skill's static vs. motion
+ * tracks): runs ffmpeg scene-change detection over a video and writes a JSON
+ * list of timestamps where the on-screen content actually changed (dropdown
+ * opened, tab switched, page navigated, etc). This replaces manually
+ * guessing timestamps and reading full-resolution frames one at a time,
+ * which is both expensive (per-image token cost) and unreliable (easy to
+ * miss a moment that falls between guesses).
+ *
+ * This only finds INTERACTION moments. It cannot find static chrome/layout
+ * errors that are wrong on every single frame (a misplaced logo, wrong
+ * title styling) - nothing "changes" at those, so nothing gets flagged. Use
+ * scripts/build-region-atlas.js for that instead.
  *
  * Usage:
  *   node scripts/extract-changepoints.js <video-path> [outputJsonPath] [sceneThreshold]
