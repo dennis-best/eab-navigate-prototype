@@ -869,10 +869,26 @@
         }
       });
 
-      portalSidebar.addEventListener("value-changed", (e) => {
-        const val = e.detail?.value ?? portalSidebar.value;
+      function navigatePortalSidebar(val) {
         if (val === "home") showView("portal-home");
         else if (val === "applications") showView("applications-list");
+        else if (val === "appointments" || val === "calendar" || val === "events") {
+          showView("portal-home");
+        }
+      }
+
+      portalSidebar.addEventListener("value-changed", (e) => {
+        const val = e.detail?.value ?? portalSidebar.value;
+        navigatePortalSidebar(val);
+      });
+
+      document.getElementById("portal-sidebar-wrap").addEventListener("click", (e) => {
+        const path = e.composedPath ? e.composedPath() : [e.target];
+        const item = path.find((n) => n.tagName === "HI-ITEM" && n.hasAttribute("value"));
+        if (!item) return;
+        const val = item.getAttribute("value");
+        portalSidebar.value = val;
+        navigatePortalSidebar(val);
       });
 
       // Conditional logic: hide mailing address fields when checkbox checked
