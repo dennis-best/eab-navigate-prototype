@@ -3188,52 +3188,41 @@ Thank you!</hi-textarea>
       // match on its accessible title text instead).
       const tertiaryNav = document.querySelector("hi-navigation-tertiary");
       if (tertiaryNav) {
+        const tertiaryRoutes = {
+          "Home": () => {
+            const view = new URLSearchParams(location.search).get("view");
+            if (view === "staff-powered-alerts") goToProfessorHome();
+            else goToStaffHome();
+          },
+          "Dashboard": goToDashboard,
+          "Cases": goToCases,
+          "Campaigns & Events": goToCampaigns,
+          "Reporting": goToReports,
+          "Conversations": goToStaffHome,
+          "Calendar": goToStaffHome,
+          "To-Dos & Tasks": goToStaffHome,
+          "Advanced Search": goToStaffHome,
+          "Lists & Saved Items": goToStaffHome,
+          "Analytics": goToDashboard,
+          "Administration": goToStaffHome,
+        };
+
         tertiaryNav.addEventListener("click", (e) => {
           const path = e.composedPath ? e.composedPath() : [e.target];
-          const hit = path.find((n) => {
-            if (!n || n.nodeType !== 1) return false;
-            const label = (n.getAttribute && (n.getAttribute("aria-label") || n.getAttribute("title"))) || n.textContent || "";
-            return label.trim() === "Campaigns & Events";
-          });
-          if (hit) {
-            e.preventDefault();
-            goToCampaigns();
-          }
-          const dashHit = path.find((n) => {
-            if (!n || n.nodeType !== 1) return false;
-            const label = (n.getAttribute && (n.getAttribute("aria-label") || n.getAttribute("title"))) || n.textContent || "";
-            return label.trim() === "Dashboard";
-          });
-          if (dashHit) {
-            e.preventDefault();
-            goToDashboard();
-          }
-          const casesHit = path.find((n) => {
-            if (!n || n.nodeType !== 1) return false;
-            const label = (n.getAttribute && (n.getAttribute("aria-label") || n.getAttribute("title"))) || n.textContent || "";
-            return label.trim() === "Cases";
-          });
-          if (casesHit) {
-            e.preventDefault();
-            goToCases();
-          }
-          const homeHit = path.find((n) => {
-            if (!n || n.nodeType !== 1) return false;
-            const label = (n.getAttribute && (n.getAttribute("aria-label") || n.getAttribute("title"))) || n.textContent || "";
-            return label.trim() === "Home";
-          });
-          if (homeHit && new URLSearchParams(location.search).get("view") === "staff-powered-alerts") {
-            e.preventDefault();
-            goToProfessorHome();
-          }
-          const reportingHit = path.find((n) => {
-            if (!n || n.nodeType !== 1) return false;
-            const label = (n.getAttribute && (n.getAttribute("aria-label") || n.getAttribute("title"))) || n.textContent || "";
-            return label.trim() === "Reporting";
-          });
-          if (reportingHit) {
-            e.preventDefault();
-            goToReports();
+          for (const [label, handler] of Object.entries(tertiaryRoutes)) {
+            const hit = path.find((n) => {
+              if (!n || n.nodeType !== 1) return false;
+              const nodeLabel =
+                (n.getAttribute && (n.getAttribute("aria-label") || n.getAttribute("title"))) ||
+                n.textContent ||
+                "";
+              return nodeLabel.trim() === label;
+            });
+            if (hit) {
+              e.preventDefault();
+              handler();
+              break;
+            }
           }
         });
       }
