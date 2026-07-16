@@ -1,0 +1,22 @@
+{
+  "demo": "demos/student-onboarding.html?login=pulse-check",
+  "viewport": { "width": 1600, "height": 1050 },
+  "output": "videos/student-alerts/prototype-student.webm",
+  "actions": [
+    { "at": 0, "type": "log", "message": "Navigate360 login screen loaded for James" },
+    { "at": 6, "type": "evaluate", "expression": "document.getElementById('app-main-james-login').style.display = 'none'; document.getElementById('app-nav-left-james').style.display = ''; document.getElementById('app-main-james-pulse-check').style.display = ''", "message": "Login, land immediately on Quick Check In 3 (Pulse Check), replacing the home page" },
+    { "at": 10, "type": "dispatchClick", "selector": "hi-tab[for=\"pulse-check-question-1\"]", "message": "Begin survey, advance to question 1" },
+    { "at": 16, "type": "dispatchClick", "selector": "hi-tab[for=\"pulse-check-question-2\"]", "message": "Answer Neutral, advance to question 2" },
+    { "at": 21, "type": "dispatchClick", "selector": "hi-tab[for=\"pulse-check-question-3\"]", "message": "Answer Neutral, advance to question 3" },
+    { "at": 26, "type": "evaluate", "expression": "document.getElementById('app-main-james-pulse-check').style.display = 'none'; document.getElementById('app-main-james-home').style.display = ''", "message": "Answer Neutral, submit, survey complete, reveal Woodley/James home" },
+    { "at": 30, "type": "log", "message": "Hey James home page with Announcements visible" },
+    { "at": 36, "type": "evaluate", "expression": "document.getElementById('app-main-james-home').style.display = 'none'; document.getElementById('app-main-james-surveys').style.display = ''", "message": "Click Surveys in the sidebar to see the completed Quick Check In 3 survey" },
+    { "at": 44, "type": "log", "message": "Survey Home: heading at top under Go back, completed survey card below" },
+    { "at": 50, "type": "evaluate", "expression": "document.getElementById('app-main-james-surveys').style.display = 'none'; document.getElementById('app-main-james-home').style.display = ''; document.getElementById('get-help-dialog').setAttribute('opened','')", "message": "Leave Surveys, click Help - the drawer opens, same session, no user switch" },
+    { "at": 58, "type": "evaluate", "expression": "document.getElementById('i-need-support-dialog').setAttribute('opened','')", "message": "Click I Need Support inside Self Alert Help" },
+    { "at": 66, "type": "log", "message": "I Need Support form: reason, class, and comments filled" },
+    { "at": 72, "type": "evaluate", "expression": "document.getElementById('i-need-support-dialog').removeAttribute('opened'); document.getElementById('get-help-dialog').removeAttribute('opened'); document.getElementById('app-main-james-home').style.display = 'none'; document.getElementById('app-main-james-support').style.display = ''", "message": "Submit, close drawer, open Documents > I Need Support history list" },
+    { "at": 80, "type": "log", "message": "I Need Support: previous self-alert submissions listed" },
+    { "at": 88, "type": "log", "message": "End of student-side walkthrough" }
+  ]
+}

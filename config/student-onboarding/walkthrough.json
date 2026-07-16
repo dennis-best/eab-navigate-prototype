@@ -1,0 +1,14 @@
+{
+  "demo": "demos/student-onboarding.html",
+  "viewport": { "width": 1600, "height": 1050 },
+  "output": "videos/student-onboarding/prototype.webm",
+  "actions": [
+    { "at": 0, "type": "log", "message": "Intake Survey - step 1 (situation) loaded" },
+    { "at": 30, "type": "dispatchClick", "selector": "hi-tab[for=\"intake-step-2\"]", "message": "Advance to step 2 (interests)" },
+    { "at": 42, "type": "dispatchClick", "selector": "hi-tab[for=\"intake-step-3\"]", "message": "Advance to step 3 (work hours)" },
+    { "at": 50, "type": "dispatchClick", "selector": "hi-tab[for=\"intake-step-4\"]", "message": "Advance to step 4 (configurable page)" },
+    { "at": 57, "type": "evaluate", "expression": "document.getElementById('intake-survey-dialog').removeAttribute('opened'); document.getElementById('app-nav-left').style.display = ''; document.getElementById('app-main-account').style.display = ''", "message": "Close survey, reveal sidebar and Account page" },
+    { "at": 61, "type": "log", "message": "Account page with Retake Intake Survey link visible" },
+    { "at": 80, "type": "log", "message": "End of walkthrough" }
+  ]
+}

@@ -24,3 +24,7 @@ videos/**/*.webm
 .cursor/eab-demo-builder/
 .cursor/skills/
 .cursor/commands/demo-*.md
+
+# EAB Demo Builder (auto-managed, do not edit by hand)
+.cursor/eab-demo-builder/node_modules/
+.cursor/skills/demo-build/

@@ -12,6 +12,13 @@
       content="initial-scale=1, user-scalable=no, width=device-width, viewport-fit=cover"
     />
 
+    <style id="hip-fouc-guard">
+      body:not([x-hif="initialized"]) main#app,
+      body:not([x-hif="initialized"]) yi-view-footer,
+      body:not([x-hif="initialized"]) .iface-index__page { visibility: hidden; }
+    </style>
+    <link rel="stylesheet" href="../interface.css" />
+
     <script
       src="https://cdn.dev.eab.com/hif/latest/index.js"
       auto-start
@@ -83,6 +90,12 @@
     }
     .top-nav__quick-search {
       flex: 1;
+    }
+    .right-controls-navigation {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5em;
+      margin-left: 0.5em;
     }
     .right-controls-navigation {
       display: inline-flex;
@@ -184,7 +197,7 @@
           <hi-button aesthetic="icon" size="large-x" layout="icon">
             <hi-icon kind="question_circle" size="large-x" inherit-color></hi-icon>
           </hi-button>
-          <hi-button aesthetic="icon" size="large-x" layout="icon">
+          <hi-button aesthetic="icon" size="large-x" layout="icon" id="open-staff-assistant-btn" aria-label="Staff Assistant">
             <hi-icon kind="spatial_audio_off" size="large-x" inherit-color></hi-icon>
           </hi-button>
           <hi-flyout size="large" aesthetic="ghost" label="Navigate360 Apps" alignment="left">
@@ -210,7 +223,7 @@
                   <hi-icon kind="expand_more" size="small" class="ml-2"></hi-icon>
                 </div>
                 <div class="page-title-menu" hidden>
-                  <hi-link href="#">Professor Home</hi-link>
+                  <hi-link href="#" class="goto-professor-home-link">Professor Home</hi-link>
                 </div>
               </div>
             </div>
@@ -279,7 +292,7 @@
                   <div class="mb-6" scroll-x="auto">
                     <hi-button aesthetic="link">Actions</hi-button>
 
-                    <vi-grid id="grid-21" class="" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":true,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"name":{"title":"Name","render_type":"html"},"id":{"title":"ID","render_type":"html"},"student_list":{"title":"Student List","render_type":"html"},"cumulative_gpa":{"title":"Cumulative GPA","render_type":"html"},"predicted_concern":{"title":"Predicted Concern","render_type":"html"},"category":{"title":"Category","render_type":"html"}}}' input='[{"id":"87650214","name":"<hi-link href=\"#\">Adam, Michael</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student,\n                            Full-Time, Pre-enrollment risk, Study group member"},{"id":"14538206","name":"<hi-link href=\"#\">Aguila, Peggy</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student,\n                            Full-Time, Pre-enrollment risk, Study group member"},{"id":"46780179","name":"<hi-link href=\"#\">Bennett, Sofia</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student, Full-Time, Pre-enrollment risk, Study group member"},{"id":"57526752","name":"<hi-link href=\"#\">Castillo, Noah</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student, Full-Time, Good Academic Standing"},{"id":"89332232","name":"<hi-link href=\"#\">Delgado, Isabella</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Financial Aid, Full-Time, Study group member"},{"id":"98243062","name":"<hi-link href=\"#\">Estrada, Ethan</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"First generation student, Part-Time, Pre-enrollment risk"},{"id":"69341220","name":"<hi-link href=\"#\">Farrow, Mia</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Good Academic Standing, Full-Time"},{"id":"17231592","name":"<hi-link href=\"#\">Gutierrez, Lucas</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Financial Aid, First generation student, Full-Time, Study group member"},{"id":"26925441","name":"<hi-link href=\"#\">Hensley, Emma</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Pre-enrollment risk, Part-Time"},{"id":"59211901","name":"<hi-link href=\"#\">Ibarra, Mason</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Full-Time, Good Academic Standing"},{"id":"11530347","name":"<hi-link href=\"#\">Jacobs, Olivia</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student, Full-Time, Pre-enrollment risk, Study group member"},{"id":"62351044","name":"<hi-link href=\"#\">Kowalski, Logan</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student, Full-Time, Good Academic Standing"},{"id":"80553011","name":"<hi-link href=\"#\">Lindqvist, Ella</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Financial Aid, Full-Time, Study group member"},{"id":"94413093","name":"<hi-link href=\"#\">Mercado, Caleb</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"First generation student, Part-Time, Pre-enrollment risk"},{"id":"85869960","name":"<hi-link href=\"#\">Nakamura, Zoe</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Good Academic Standing, Full-Time"},{"id":"52636644","name":"<hi-link href=\"#\">Ortega, Elijah</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Financial Aid, First generation student, Full-Time, Study group member"},{"id":"70205099","name":"<hi-link href=\"#\">Patel, Chloe</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Pre-enrollment risk, Part-Time"},{"id":"37041436","name":"<hi-link href=\"#\">Quintana, Aiden</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Full-Time, Good Academic Standing"},{"id":"33463338","name":"<hi-link href=\"#\">Reyes, Grace</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student, Full-Time, Pre-enrollment risk, Study group member"},{"id":"11261486","name":"<hi-link href=\"#\">Suarez, Hunter</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student, Full-Time, Good Academic Standing"}]'></vi-grid>
+                    <vi-grid id="grid-21" class="" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":true,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"name":{"title":"Name","render_type":"html"},"id":{"title":"ID","render_type":"html"},"student_list":{"title":"Student List","render_type":"html"},"cumulative_gpa":{"title":"Cumulative GPA","render_type":"html"},"predicted_concern":{"title":"Predicted Concern","render_type":"html"},"category":{"title":"Category","render_type":"html"}}}' input='[{"id":"87650214","name":"<hi-link href=\"#\" class=\"goto-adams-link\">Adam, Michael</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student,\n                            Full-Time, Pre-enrollment risk, Study group member"},{"id":"14538206","name":"<hi-link href=\"#\">Aguila, Peggy</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student,\n                            Full-Time, Pre-enrollment risk, Study group member"},{"id":"46780179","name":"<hi-link href=\"#\">Bennett, Sofia</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student, Full-Time, Pre-enrollment risk, Study group member"},{"id":"57526752","name":"<hi-link href=\"#\">Castillo, Noah</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student, Full-Time, Good Academic Standing"},{"id":"89332232","name":"<hi-link href=\"#\">Delgado, Isabella</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Financial Aid, Full-Time, Study group member"},{"id":"98243062","name":"<hi-link href=\"#\">Estrada, Ethan</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"First generation student, Part-Time, Pre-enrollment risk"},{"id":"69341220","name":"<hi-link href=\"#\">Farrow, Mia</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Good Academic Standing, Full-Time"},{"id":"17231592","name":"<hi-link href=\"#\">Gutierrez, Lucas</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Financial Aid, First generation student, Full-Time, Study group member"},{"id":"26925441","name":"<hi-link href=\"#\">Hensley, Emma</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Pre-enrollment risk, Part-Time"},{"id":"59211901","name":"<hi-link href=\"#\">Ibarra, Mason</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Full-Time, Good Academic Standing"},{"id":"11530347","name":"<hi-link href=\"#\">Jacobs, Olivia</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student, Full-Time, Pre-enrollment risk, Study group member"},{"id":"62351044","name":"<hi-link href=\"#\">Kowalski, Logan</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student, Full-Time, Good Academic Standing"},{"id":"80553011","name":"<hi-link href=\"#\">Lindqvist, Ella</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Financial Aid, Full-Time, Study group member"},{"id":"94413093","name":"<hi-link href=\"#\">Mercado, Caleb</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"First generation student, Part-Time, Pre-enrollment risk"},{"id":"85869960","name":"<hi-link href=\"#\">Nakamura, Zoe</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Good Academic Standing, Full-Time"},{"id":"52636644","name":"<hi-link href=\"#\">Ortega, Elijah</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Financial Aid, First generation student, Full-Time, Study group member"},{"id":"70205099","name":"<hi-link href=\"#\">Patel, Chloe</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Pre-enrollment risk, Part-Time"},{"id":"37041436","name":"<hi-link href=\"#\">Quintana, Aiden</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Full-Time, Good Academic Standing"},{"id":"33463338","name":"<hi-link href=\"#\">Reyes, Grace</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student, Full-Time, Pre-enrollment risk, Study group member"},{"id":"11261486","name":"<hi-link href=\"#\">Suarez, Hunter</hi-link>","student_list":"","cumulative_gpa":"","predicted_concern":"","category":"Completed probation requirement, Financial Aid, First generation student, Full-Time, Good Academic Standing"}]'></vi-grid>
                   </div>
 
                   <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mt-6">
@@ -307,7 +320,7 @@
                   </div>
 
                   <div scroll-x="auto" class="mb-8">
-                    <vi-grid id="grid-22" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":true,"table_sort":true,"table_filter":false,"table_pagination":false},"messages":{"state_empty":{"title":"","description":"This user has no upcoming appointments."}}}' type='{"fields":{"date_time":{"title":"Date/Time","render_type":"html"},"attendee":{"title":"Attendee","render_type":"html"},"service":{"title":"Service","render_type":"html"},"comment":{"title":"Comment","render_type":"html"},"meeting_type":{"title":"Meeting Type","render_type":"html"},"report_filed":{"title":"Report Filed?","render_type":"html"},"details":{"title":"Details","render_type":"html"},"pre_appt_questions":{"title":"Pre Appt Questions","render_type":"html"}}}' input='[]'></vi-grid>
+                    <vi-grid id="grid-22" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":true,"table_sort":true,"table_filter":false,"table_pagination":false},"messages":{"state_empty":{"title":"","description":"This user has no upcoming appointments."}}}' type='{"fields":{"date_time":{"title":"Date/Time","render_type":"html"},"attendee":{"title":"Attendee","render_type":"html"},"service":{"title":"Service","render_type":"html"},"comment":{"title":"Comment","render_type":"html"},"meeting_type":{"title":"Meeting Type","render_type":"html"},"report_filed":{"title":"Report Filed?","render_type":"html"},"details":{"title":"Details","render_type":"html"},"pre_appt_questions":{"title":"Pre Appt Questions","render_type":"html"}}}' input='[{"id":"upcoming-1","date_time":"07/14/2026<br/>10:30am - 11:15am ET<br/>(45m)","attendee":"<hi-link href=\"#\" class=\"goto-adams-link\">Adam, Michael</hi-link>","service":"Math Lab","comment":"","meeting_type":"In-person","report_filed":"Not Yet","details":"<hi-link href=\"#\">Details</hi-link>","pre_appt_questions":"N/A"},{"id":"upcoming-2","date_time":"07/14/2026<br/>1:30pm - 2:15pm ET<br/>(45m)","attendee":"<hi-link href=\"#\" class=\"goto-adams-link\">Adam, Michael</hi-link>","service":"Course-based Tutoring","comment":"","meeting_type":"In-person","report_filed":"Not Yet","details":"<hi-link href=\"#\">Details</hi-link>","pre_appt_questions":"N/A"}]'></vi-grid>
                   </div>
 
                   <h2 class="mb-6">Reporting</h2>
@@ -372,7 +385,7 @@
                             "course": "N/A",
                             "comment": "",
                             "attendee": "<hi-link href=\"#\">Aguila, Peggy</hi-link>",
-                            "report_filed": "Not Yet",
+                            "report_filed": "<hi-button aesthetic=\"primary\" size=\"small\" class=\"goto-appt-summary-link\">Report Details</hi-button>",
                             "details": "<hi-link href=\"#\">Details</hi-link>",
                             "pre_appt_questions": "N/A"
                           },
@@ -395,7 +408,7 @@
                             "service": "Campus Tour",
                             "course": "N/A",
                             "comment": "",
-                            "attendee": "<hi-link href=\"#\">Adam, Michael</hi-link>",
+                            "attendee": "<hi-link href=\"#\" class=\"goto-adams-link\">Adam, Michael</hi-link>",
                             "report_filed": "<hi-button aesthetic=\"primary\" size=\"small\">Report Details</hi-button>",
                             "details": "<hi-link href=\"#\">Details</hi-link>",
                             "pre_appt_questions": "N/A"
@@ -556,7 +569,7 @@
             <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
               <div class="page-title-menu-wrap">
                 <div class="page-title-flyout-anchor page-title-menu-toggle">
-                  <hi-title heading="James Wyatt" level="1"></hi-title>
+                  <hi-title id="student-profile-title" heading="James Wyatt" level="1"></hi-title>
                   <hi-icon kind="expand_more" size="small" class="ml-2"></hi-icon>
                 </div>
                 <div class="page-title-menu" hidden>
@@ -589,14 +602,14 @@
                 <section x-area="zone">
                   <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
                     <h5 slot="title">Student Summary</h5>
-                    <div l-kind="hort" l-wrap l-width-fixed l-gutter class="mb-4">
+                    <div l-kind="hort" l-wrap l-width-fixed l-gutter class="mb-4" id="student-summary-metrics-row1">
                       <vi-metric header="Course Grade D/F" value="3" aesthetic="boxed" style="flex: 1 1 9rem;"></vi-metric>
                       <vi-metric header="Repeated Courses" value="1" aesthetic="boxed" style="flex: 1 1 9rem;"></vi-metric>
                       <vi-metric header="Withdrawn Courses" value="0" aesthetic="boxed" style="flex: 1 1 9rem;"></vi-metric>
                       <vi-metric header="Missed Success Markers" value="2" aesthetic="boxed" style="flex: 1 1 9rem;"></vi-metric>
                       <vi-metric header="Cumulative GPA" value="2.64" aesthetic="boxed" style="flex: 1 1 9rem;"></vi-metric>
                     </div>
-                    <div l-kind="hort" l-wrap l-width-fixed l-gutter>
+                    <div l-kind="hort" l-wrap l-width-fixed l-gutter id="student-summary-metrics-row2">
                       <vi-metric header="Total Credits Earned" value="39.00" aesthetic="boxed" style="flex: 1 1 12rem;"></vi-metric>
                       <vi-metric header="Credit Completion % at this Institution" value="72%" aesthetic="boxed" style="flex: 1 1 12rem;"></vi-metric>
                       <vi-metric header="Predicted Concern" value="Unpredicted" aesthetic="boxed" style="flex: 1 1 12rem;"></vi-metric>
@@ -605,8 +618,8 @@
 
                   <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
                     <h5 slot="title">Overview</h5>
-                    <div l-kind="hort" l-wrap l-width-fixed>
-                      <div style="width: 33%;">
+                    <div l-kind="hort" l-wrap l-width-fixed id="student-overview-details">
+                      <div style="width: 33%;" id="student-overview-major">
                         <p>Biology<br />Bachelor of Science<br />College of Sciences</p>
                       </div>
                       <div style="width: 33%;">
@@ -628,9 +641,9 @@
                     </div>
                   </hi-tile>
 
-                  <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
+                  <hi-tile allow-toolbar aesthetic="outline" class="mb-6" id="student-goals-tile">
                     <h5 slot="title">Goals &amp; Interests (supplied by the student)</h5>
-                    <div l-kind="hort" l-wrap l-width-fixed>
+                    <div l-kind="hort" l-wrap l-width-fixed id="student-goals-content">
                       <div style="width: 50%;">
                         <p class="clr-gray_80-txt text-sz-s">Favorite Majors</p>
                         <p class="mb-2">Anthropology<br />Sociology</p>
@@ -929,6 +942,52 @@
                         }
                       ]'>
                     </vi-list>
+                  </hi-tile>
+
+                  <!--
+                    Deviation disclosure: the source video's "View As" dropdown
+                    swaps the whole History panel to a different filtered
+                    table (e.g. "Student Initiated Alerts For James") without
+                    a documented live-binding pattern for hi-dropdown driving
+                    hi-switch in this static prototype. Reproduced as a
+                    separate hi-tile, hidden by default and revealed by
+                    config/student-alerts/walkthrough.json to match the
+                    recorded timing.
+                  -->
+                  <hi-tile allow-toolbar aesthetic="outline" class="mt-6" id="jw-student-initiated-alerts" style="display: none;">
+                    <h5 slot="title">Student Initiated Alerts For James</h5>
+                    <hi-input-group class="mb-6" style="width: 14rem;">
+                      <hi-label for="jw-sia-view-as">View As</hi-label>
+                      <hi-dropdown kind="value" id="jw-sia-view-as">
+                        <hi-select aesthetic="dropdown" mode="value" value="student-initiated-alerts">
+                          <hi-option value="student-initiated-alerts">Student Initiated Alerts for James</hi-option>
+                        </hi-select>
+                      </hi-dropdown>
+                    </hi-input-group>
+                    <div class="table-container">
+                      <vi-grid
+                        id="grid-jw-sia"
+                        settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false}}'
+                        type='{"fields":{"issue_date":{"title":"Issue Date","render_type":"html"},"alert_reasons":{"title":"Alert Reasons","render_type":"html"},"initiated_by":{"title":"Initiated By","render_type":"html"},"comments":{"title":"Comments","render_type":"html"},"cases":{"title":"Cases","render_type":"html"},"courses":{"title":"Courses","render_type":"html"}}}'
+                        input='[
+                          {"id":"sia-1","issue_date":"06/18/2026","alert_reasons":"I am seeking on-campus employment","initiated_by":"I Need Support","comments":"Looking for a part-time job on-campus","cases":"<hi-link href=\"#\">1 Open Case</hi-link>","courses":""},
+                          {"id":"sia-2","issue_date":"05/07/2026","alert_reasons":"I need help with classes","initiated_by":"I Need Support","comments":"","cases":"<hi-link href=\"#\">0 Open Cases</hi-link>","courses":"PSY-201-C4 Behavioral Change"},
+                          {"id":"sia-3","issue_date":"10/08/2025","alert_reasons":"Request Withdrawal","initiated_by":"I Need Support","comments":"I'd love additional aid","cases":"<hi-link href=\"#\">1 Open Case</hi-link>","courses":""},
+                          {"id":"sia-4","issue_date":"10/08/2025","alert_reasons":"I need help paying for school","initiated_by":"I Need Support","comments":"I'd love additional aid!","cases":"<hi-link href=\"#\">1 Open Case</hi-link>","courses":""},
+                          {"id":"sia-5","issue_date":"09/11/2025","alert_reasons":"I need help paying for school","initiated_by":"I Need Support","comments":"I need additional financial aid","cases":"<hi-link href=\"#\">1 Open Case</hi-link>","courses":""},
+                          {"id":"sia-6","issue_date":"09/04/2025","alert_reasons":"Career Services","initiated_by":"I Need Support","comments":"","cases":"<hi-link href=\"#\">1 Open Case</hi-link>","courses":""},
+                          {"id":"sia-7","issue_date":"08/05/2025","alert_reasons":"Request Withdrawal","initiated_by":"I Need Support","comments":"","cases":"<hi-link href=\"#\">1 Open Case</hi-link>","courses":""},
+                          {"id":"sia-8","issue_date":"06/02/2025","alert_reasons":"Request Withdrawal","initiated_by":"I Need Support","comments":"I just don't like the classes I'm taking","cases":"<hi-link href=\"#\">1 Open Case</hi-link>","courses":""},
+                          {"id":"sia-9","issue_date":"05/30/2025","alert_reasons":"Request Withdrawal","initiated_by":"I Need Support","comments":"I just don't like the classes I'm taking","cases":"<hi-link href=\"#\">1 Open Case</hi-link>","courses":""},
+                          {"id":"sia-10","issue_date":"03/31/2025","alert_reasons":"I need help paying for school","initiated_by":"I Need Support","comments":"I'm worried about paying for books next term","cases":"<hi-link href=\"#\">0 Open Cases</hi-link>","courses":""},
+                          {"id":"sia-11","issue_date":"10/29/2024","alert_reasons":"I need help paying for school","initiated_by":"I Need Support","comments":"","cases":"<hi-link href=\"#\">1 Open Case</hi-link>","courses":""},
+                          {"id":"sia-12","issue_date":"06/21/2024","alert_reasons":"I need help paying for school","initiated_by":"I Need Support","comments":"My scholarship is running out.","cases":"<hi-link href=\"#\">1 Open Case</hi-link>","courses":""},
+                          {"id":"sia-13","issue_date":"06/21/2024","alert_reasons":"I need help paying for school","initiated_by":"I Need Support","comments":"My scholarship is expiring.","cases":"<hi-link href=\"#\">1 Open Case</hi-link>","courses":""},
+                          {"id":"sia-14","issue_date":"06/21/2024","alert_reasons":"I need support with something other than school","initiated_by":"I Need Support","comments":"Can a counselor contact me?","cases":"<hi-link href=\"#\">1 Open Case</hi-link>","courses":"8.01-1 Physics I"}
+                        ]'
+                      ></vi-grid>
+                    </div>
+                    <p class="clr-gray_80-txt text-sz-s mt-4">Showing items 1-14 of 14</p>
                   </hi-tile>
                 </section>
               </hi-case>
@@ -1360,6 +1419,958 @@
               </hi-case>
             </hi-switch>
           </hi-case>
+
+          <!-- ======================================================== -->
+          <!-- CAMPAIGNS & EVENTS -->
+          <!-- ======================================================== -->
+          <hi-case id="campaigns" value="campaigns" hidden>
+            <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
+              <hi-title heading="Campaigns &amp; Events" level="1"></hi-title>
+            </div>
+
+            <div l-kind="hort" l-wrap l-gap="6">
+              <hi-tile allow-toolbar aesthetic="outline" style="width: 49%;" class="mb-6">
+                <h5 slot="title">Student Campaigns</h5>
+                <p class="clr-gray_80-txt mb-4">
+                  Student Campaigns are campaigns that can be sent directly to the students to complete a
+                  specific action or to be notified at different times.
+                </p>
+
+                <h4 class="mb-2"><hi-link href="#">Appointment Campaigns</hi-link></h4>
+                <p class="clr-gray_80-txt mb-2">
+                  Allows staff to reach out to specific student populations and encourage them to schedule
+                  appointments. Appointment Campaigns are best deployed by staff members seeking to
+                  encourage students to meet with them for advising or other services.
+                </p>
+                <hi-button aesthetic="secondary" size="small" class="mb-6"><hi-icon kind="plus" size="small" class="mr-1"></hi-icon>Add New</hi-button>
+
+                <h4 class="mb-2"><hi-link href="#">Messaging Campaigns</hi-link></h4>
+                <p class="clr-gray_80-txt mb-2">
+                  Email or text a group of students on specified dates about certain things they may need
+                  to do or attend.
+                </p>
+                <hi-button aesthetic="secondary" size="small" class="mb-6 goto-messaging-campaign-wizard-link"><hi-icon kind="plus" size="small" class="mr-1"></hi-icon>Add New</hi-button>
+                <p class="clr-gray_80-txt mb-2">
+                  Allows staff to reach out to specific student populations and encourage them to enroll in
+                  a specific term. Enrollment Campaigns are best deployed by staff members seeking to
+                  encourage students to enroll in an upcoming term.
+                </p>
+                <hi-button aesthetic="secondary" size="small" class="mb-6 goto-enrollment-campaigns-link"><hi-icon kind="plus" size="small" class="mr-1"></hi-icon>Add New</hi-button>
+
+                <h4 class="mb-2"><hi-link href="#">Survey Campaigns</hi-link></h4>
+                <p class="clr-gray_80-txt mb-2">
+                  Send out surveys for students to fill out and keep track of their progress in answering
+                  the survey.
+                </p>
+                <hi-button aesthetic="secondary" size="small"><hi-icon kind="plus" size="small" class="mr-1"></hi-icon>Add New</hi-button>
+              </hi-tile>
+
+              <hi-tile allow-toolbar aesthetic="outline" style="width: 49%;" class="mb-6">
+                <h5 slot="title">Staff Campaigns</h5>
+                <p class="clr-gray_80-txt mb-4">
+                  Staff Campaigns are campaigns that can be sent directly to Staff users to complete a
+                  specific action and track outcomes for each campaign.
+                </p>
+
+                <h4 class="mb-2"><hi-link href="#">Progress Report Campaigns</hi-link></h4>
+                <p class="clr-gray_80-txt mb-2">
+                  Progress Report Campaigns identify potential barriers to student success through
+                  instructor feedback. Progress Report Campaigns are initiated by staff in order to collect
+                  information from instructors.
+                </p>
+                <hi-button aesthetic="secondary" size="small" class="mb-6"><hi-icon kind="plus" size="small" class="mr-1"></hi-icon>Add New</hi-button>
+
+                <h4 class="mb-2"><hi-link href="#">Enrollment Census Campaigns</hi-link></h4>
+                <p class="clr-gray_80-txt mb-2">
+                  Enrollment Censuses let you monitor student attendance patterns, including which
+                  students attended class and the date of their last attendance.
+                </p>
+                <hi-button aesthetic="secondary" size="small" class="mb-6"><hi-icon kind="plus" size="small" class="mr-1"></hi-icon>Add New</hi-button>
+
+                <h4 class="mb-2"><hi-link href="#">Travel Letters</hi-link></h4>
+                <p class="clr-gray_80-txt mb-2">
+                  Travel Letters notify professors about course meetings students will miss due to travel
+                  for activities such as sporting events, on-campus mentoring groups, and/or student
+                  government trips or meetings.
+                </p>
+                <hi-button aesthetic="secondary" size="small"><hi-icon kind="plus" size="small" class="mr-1"></hi-icon>Add New</hi-button>
+              </hi-tile>
+            </div>
+          </hi-case>
+
+          <!-- ================= ENROLLMENT CAMPAIGNS (LIST) ================= -->
+          <hi-case id="enrollment-campaigns" value="enrollment-campaigns" hidden>
+            <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-2">
+              <hi-title heading="Enrollment Campaigns" level="1"></hi-title>
+            </div>
+            <p class="mb-6"><hi-link href="#" class="goto-campaigns-link">View All Campaign Types</hi-link></p>
+
+            <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-4">
+              <div l-kind="hort" l-width-fixed l-align="center">
+                <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center; margin-right: 1.5rem;">
+                  <hi-label for="enrollment-campaigns-term" class="mr-2">Filter by term:</hi-label>
+                  <hi-dropdown kind="value" id="enrollment-campaigns-term">
+                    <hi-select aesthetic="dropdown" mode="value" value="spring-2026">
+                      <hi-option value="spring-2026">Spring 2026 (Default Term)</hi-option>
+                      <hi-option value="summer-2026">Summer 2026</hi-option>
+                    </hi-select>
+                  </hi-dropdown>
+                </hi-input-group>
+              </div>
+              <hi-button aesthetic="primary" class="goto-campaign-wizard-link"><hi-icon kind="plus" size="small" class="mr-1"></hi-icon>Add New</hi-button>
+            </div>
+            <div l-kind="hort" l-width-fixed l-justify="end" class="mb-4">
+              <hi-input-group layout-mode="input-label" style="display: inline-flex; width: auto; align-items: center;">
+                <hi-checkbox checked id="enrollment-campaigns-mine"></hi-checkbox>
+                <hi-label for="enrollment-campaigns-mine" class="ml-1">View only my campaigns</hi-label>
+              </hi-input-group>
+            </div>
+
+            <table kind="compact">
+              <thead>
+                <tr>
+                  <th class="text-uppercase">Name</th>
+                  <th class="text-uppercase">Status</th>
+                  <th class="text-uppercase">Students</th>
+                  <th class="text-uppercase">Stats</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <hi-link href="#" class="goto-campaign-detail-link">First Gen Fall 2026 Re-enrollment</hi-link>
+                    <br /><span class="clr-gray_80-txt text-sz-s">05/12/2026 - 08/01/2026 &middot; Your Campaign</span>
+                  </td>
+                  <td><hi-badge theme="success">Active</hi-badge></td>
+                  <td>90</td>
+                  <td>Enrolled Rate 0%</td>
+                </tr>
+              </tbody>
+            </table>
+          </hi-case>
+
+          <!-- ================= ENROLLMENT CAMPAIGN WIZARD ================= -->
+          <hi-case id="campaign-wizard" value="campaign-wizard" hidden>
+            <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
+              <hi-title heading="Enrollment Campaign: Summer III Enrollment" level="1"></hi-title>
+            </div>
+
+            <hi-step-group id="campaign-wizard-steps" class="mb-8" stretched>
+              <hi-step for="campaign-step-define" selected completed>Define Campaign</hi-step>
+              <hi-step for="campaign-step-recipients" completed>Verify Recipients</hi-step>
+              <hi-step for="campaign-step-nudges" completed>Compose Nudges</hi-step>
+              <hi-step for="campaign-step-verify">Verify &amp; Start</hi-step>
+            </hi-step-group>
+
+            <div l-kind="hort" l-gap="4">
+              <div style="width: 70%;">
+
+                <hi-switch id="campaign-wizard-panels" value="campaign-step-define">
+                  <!-- STEP 1: DEFINE CAMPAIGN -->
+                  <hi-case id="campaign-step-define" value="campaign-step-define">
+                    <h4 class="mb-6">Campaign Objective</h4>
+                    <hi-form class="mb-8">
+                      <div l-kind="hort" l-wrap l-gap="6" class="mb-6">
+                        <hi-input-group style="flex: 1 1 45%;">
+                          <hi-label for="campaign-name">Campaign Name</hi-label>
+                          <hi-input id="campaign-name" value="Summer III Enrollment"></hi-input>
+                        </hi-input-group>
+                        <hi-input-group style="flex: 1 1 45%;">
+                          <hi-label for="campaign-term">Desired Enrollment Term</hi-label>
+                          <hi-dropdown kind="value" id="campaign-term">
+                            <hi-select aesthetic="dropdown" mode="value" value="summer-2026">
+                              <hi-option value="summer-2026">Summer 2026</hi-option>
+                              <hi-option value="fall-2026">Fall 2026</hi-option>
+                            </hi-select>
+                          </hi-dropdown>
+                        </hi-input-group>
+                      </div>
+                      <div l-kind="hort" l-wrap l-gap="6">
+                        <hi-input-group style="flex: 1 1 45%;">
+                          <hi-label for="campaign-tracking-url">Tracking URL</hi-label>
+                          <hi-input id="campaign-tracking-url" value="https://www.eab.com"></hi-input>
+                        </hi-input-group>
+                        <hi-input-group style="flex: 1 1 45%;">
+                          <hi-label for="campaign-tracking-url-display">Tracking URL Display Value</hi-label>
+                          <hi-input id="campaign-tracking-url-display" value="Register for Summer"></hi-input>
+                        </hi-input-group>
+                      </div>
+                    </hi-form>
+
+                    <h4 class="mb-2">Campaign Timing</h4>
+                    <p class="clr-gray_80-txt mb-6">Your campaign will automatically begin on the date defined below.</p>
+                    <hi-form>
+                      <div l-kind="hort" l-wrap l-gap="6">
+                        <hi-input-group style="flex: 1 1 45%;">
+                          <hi-label for="campaign-launch-date">Campaign Launch Date</hi-label>
+                          <hi-input id="campaign-launch-date" value="July 13, 2026"></hi-input>
+                        </hi-input-group>
+                        <hi-input-group style="flex: 1 1 45%;">
+                          <hi-label for="campaign-end-date">Campaign End Date</hi-label>
+                          <hi-input id="campaign-end-date" value="July 27, 2026"></hi-input>
+                        </hi-input-group>
+                      </div>
+                    </hi-form>
+
+                    <div l-kind="hort" l-width-fixed l-justify="end" class="mt-8">
+                      <hi-button aesthetic="primary" class="goto-campaign-step-recipients-link">Continue</hi-button>
+                    </div>
+                  </hi-case>
+
+                  <!-- STEP 2: VERIFY RECIPIENTS -->
+                  <hi-case id="campaign-step-recipients" value="campaign-step-recipients" hidden>
+                    <h4 class="mb-6">Review Recipients in Campaign</h4>
+                    <table kind="compact" class="mb-6">
+                      <thead>
+                        <tr>
+                          <th><hi-checkbox aria-label="Select all recipients"></hi-checkbox></th>
+                          <th class="text-uppercase">Name</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr><td><hi-checkbox aria-label="Select Bratcher, James"></hi-checkbox></td><td>Bratcher, James</td></tr>
+                        <tr><td><hi-checkbox aria-label="Select Briggs, James"></hi-checkbox></td><td>Briggs, James</td></tr>
+                        <tr><td><hi-checkbox aria-label="Select Brinton, Jesus"></hi-checkbox></td><td>Brinton, Jesus</td></tr>
+                        <tr><td><hi-checkbox aria-label="Select Brison, Jeanie"></hi-checkbox></td><td>Brison, Jeanie</td></tr>
+                        <tr><td><hi-checkbox aria-label="Select Brooks, Jeremy"></hi-checkbox></td><td>Brooks, Jeremy</td></tr>
+                      </tbody>
+                    </table>
+                    <hi-button aesthetic="secondary" size="small" class="mb-6">Add More Students</hi-button>
+
+                    <div l-kind="hort" l-width-fixed l-justify="between" class="mt-8">
+                      <hi-button aesthetic="secondary" class="goto-campaign-step-define-link">Back</hi-button>
+                      <hi-button aesthetic="primary" class="goto-campaign-step-nudges-link">Continue</hi-button>
+                    </div>
+                  </hi-case>
+
+                  <!-- STEP 3: COMPOSE NUDGES -->
+                  <hi-case id="campaign-step-nudges" value="campaign-step-nudges" hidden>
+                    <hi-switch id="campaign-nudges-panels" value="nudges-summary">
+                      <hi-case id="nudges-summary" value="nudges-summary">
+                        <h4 class="mb-2">Nudges</h4>
+                        <p class="clr-gray_80-txt mb-4">
+                          What would you like to say to your recipients? Set up your outreach and follow-up
+                          messages. Follow-up messages will only be sent to students in the campaign who
+                          have not completed the objective.
+                        </p>
+                        <hi-button aesthetic="secondary" size="small" class="mb-6"><hi-icon kind="plus" size="small" class="mr-1"></hi-icon>Add Nudge</hi-button>
+
+                        <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
+                          <h5 slot="title">Welcome Message</h5>
+                          <p class="mb-1"><strong>Send Date:</strong> 07/13/2026</p>
+                          <p class="mb-1"><strong>Email Subject:</strong> Register for Summer 2026</p>
+                          <p class="mb-2"><strong>Email Message:</strong> Enroll Today Hi {student_first_name}, Summer&hellip;</p>
+                          <hi-button aesthetic="icon" size="small" layout="icon" class="goto-nudge-compose-link"><hi-icon kind="edit" size="small"></hi-icon></hi-button>
+                        </hi-tile>
+
+                        <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
+                          <h5 slot="title">Relative Date Nudges</h5>
+                          <p class="mb-1"><strong>Send Date:</strong> +4 Days</p>
+                          <p class="mb-1"><strong>SMS Nudge</strong></p>
+                          <p class="mb-2"><strong>SMS Message:</strong> Noticed you're not signed up for summer. There&rsquo;s&hellip;</p>
+                          <hi-button aesthetic="icon" size="small" layout="icon" class="goto-nudge-compose-link"><hi-icon kind="edit" size="small"></hi-icon></hi-button>
+                        </hi-tile>
+
+                        <hi-tile allow-toolbar aesthetic="outline">
+                          <h5 slot="title">Success Message (Optional)</h5>
+                          <p class="clr-gray_80-txt mb-4">
+                            What would you like to say to your recipients if they complete your objective?
+                            This message will be sent 1 day after the recipients complete the objective. The
+                            success message is for communication purposes only and will not be included in
+                            campaign metrics.
+                          </p>
+                          <hi-button aesthetic="secondary" size="small">Add Success Message</hi-button>
+                        </hi-tile>
+
+                        <div l-kind="hort" l-width-fixed l-justify="between" class="mt-8">
+                          <hi-button aesthetic="secondary" class="goto-campaign-step-recipients-link">Back</hi-button>
+                          <hi-button aesthetic="primary" class="goto-campaign-step-verify-link">Continue</hi-button>
+                        </div>
+                      </hi-case>
+
+                      <!-- NUDGE COMPOSER SUB-VIEW -->
+                      <hi-case id="nudge-compose" value="nudge-compose" hidden>
+                        <hi-tab-group id="nudge-type-tabs" for="nudge-type-panels" class="mb-6">
+                          <hi-tab for="nudge-type-email" selected>Email</hi-tab>
+                          <hi-tab for="nudge-type-print">Print</hi-tab>
+                          <hi-tab for="nudge-type-sms">SMS</hi-tab>
+                        </hi-tab-group>
+                        <h5 class="mb-6">Add Welcome Message</h5>
+
+                        <hi-switch id="nudge-type-panels" value="nudge-type-email">
+                          <hi-case id="nudge-type-email" value="nudge-type-email">
+                            <div l-kind="hort" l-gap="6">
+                              <div style="width: 49%;">
+                                <h5 class="mb-4">Compose Email</h5>
+                                <hi-input-group class="mb-4">
+                                  <hi-label for="nudge-email-subject">Subject</hi-label>
+                                  <hi-input id="nudge-email-subject" value="Register for Summer 2026"></hi-input>
+                                </hi-input-group>
+                                <hi-input-group class="mb-4">
+                                  <hi-label for="nudge-email-body">Message</hi-label>
+                                  <hi-textarea id="nudge-email-body" rows="6">Enroll Today
+
+Hi {Student_first_name},
+
+Summer is great time to get ahead on credits. Sign up for summer! {tracking_hyperlink}
+
+Thank you!</hi-textarea>
+                                </hi-input-group>
+                              </div>
+                              <div style="width: 49%;">
+                                <h5 class="mb-4">Preview Email</h5>
+                                <hi-tile aesthetic="outline">
+                                  <h5 slot="title">Register for Summer 2026</h5>
+                                  <h5 class="mb-2">Enroll Today</h5>
+                                  <p class="mb-1">Hi {{ Student First Name }},</p>
+                                  <p class="mb-1">Summer is great time to get ahead on credits. Sign up for summer! <hi-link href="#">Register for Summer</hi-link></p>
+                                  <p>Thank you!</p>
+                                </hi-tile>
+                              </div>
+                            </div>
+                          </hi-case>
+                          <hi-case id="nudge-type-print" value="nudge-type-print" hidden>
+                            <p class="clr-gray_80-txt">No print nudge configured.</p>
+                          </hi-case>
+                          <hi-case id="nudge-type-sms" value="nudge-type-sms" hidden>
+                            <div l-kind="hort" l-gap="6">
+                              <div style="width: 49%;">
+                                <h5 class="mb-4">Compose SMS</h5>
+                                <hi-input-group class="mb-4">
+                                  <hi-label for="nudge-sms-body">Message</hi-label>
+                                  <hi-textarea id="nudge-sms-body" rows="6">Noticed you're not signed up for summer. There's still time - register now: {tracking_hyperlink}</hi-textarea>
+                                </hi-input-group>
+                              </div>
+                              <div style="width: 49%;">
+                                <h5 class="mb-4">Preview SMS</h5>
+                                <hi-tile aesthetic="outline">
+                                  <p>Noticed you're not signed up for summer. There's still time - register now: <hi-link href="#">Register for Summer</hi-link></p>
+                                </hi-tile>
+                              </div>
+                            </div>
+                          </hi-case>
+                        </hi-switch>
+
+                        <div l-kind="hort" l-width-fixed l-justify="between" class="mt-8">
+                          <hi-button aesthetic="secondary" class="goto-nudges-summary-link">Cancel</hi-button>
+                          <hi-button aesthetic="primary" class="goto-nudges-summary-link">Save Welcome Message</hi-button>
+                        </div>
+                      </hi-case>
+                    </hi-switch>
+                  </hi-case>
+
+                  <!-- STEP 4: VERIFY & START -->
+                  <hi-case id="campaign-step-verify" value="campaign-step-verify" hidden>
+                    <h4 class="mb-6">Confirm &amp; Send</h4>
+                    <div class="mb-6 pa-4" style="border: 1px solid var(--hi-clr--warning_40, #f5c26b); border-radius: var(--hi-radius--m, 4px); background: var(--hi-clr--warning_10, #fef8ec);">
+                      <p><strong>Please note:</strong> Any students in this campaign who are already enrolled in Summer 2026 and have not been sent an email will be removed from the campaign when you click "Start Campaign".</p>
+                    </div>
+
+                    <h4 class="mb-4">Campaign Summary</h4>
+                    <div l-kind="hort" l-wrap l-gap="8" class="mb-6">
+                      <div style="flex: 1 1 100%;">
+                        <p class="mb-1"><strong>Name:</strong> Summer III Enrollment</p>
+                        <p class="mb-1"><strong>Tracking URL:</strong> https://www.eab.com</p>
+                        <p class="mb-4"><strong>Tracking URL Text:</strong> Register for Summer</p>
+                      </div>
+                      <div style="flex: 1 1 100%;">
+                        <p class="mb-4"><strong>Recipients:</strong> 5 students</p>
+                      </div>
+                      <div style="flex: 1 1 100%;">
+                        <p class="mb-1"><strong>Welcome Message</strong></p>
+                        <p class="mb-1">Send Date: Day added</p>
+                        <p class="mb-1">Subject: Register for Summer 2026</p>
+                        <p class="mb-1">Sender Name: Jack Whitmore</p>
+                        <p class="mb-4">No-Reply / Reply-To: jwhitmore@woodley.edu</p>
+                      </div>
+                      <div style="flex: 1 1 100%;">
+                        <p class="mb-1"><strong>Relative Nudge</strong></p>
+                        <p>Send Date: +4 Days &middot; SMS</p>
+                      </div>
+                    </div>
+
+                    <div l-kind="hort" l-width-fixed l-justify="between" class="mt-8">
+                      <hi-button aesthetic="secondary" class="goto-campaign-step-nudges-link">Back</hi-button>
+                      <hi-button aesthetic="primary" class="goto-enrollment-campaigns-link">Start Campaign</hi-button>
+                    </div>
+                  </hi-case>
+                </hi-switch>
+                <hi-binding source="campaign-wizard-steps" sink="campaign-wizard-panels"></hi-binding>
+              </div>
+
+              <div style="width: 26%;">
+                <hi-tile allow-toolbar aesthetic="outline">
+                  <h5 slot="title">Campaign Details</h5>
+                  <p class="mb-1"><strong>Objective:</strong> Enroll for Summer 2026</p>
+                  <p class="mb-4 clr-gray_80-txt text-sz-s">By Mon 07/27/2026</p>
+                  <p class="mb-1"><strong>Recipients</strong></p>
+                  <p class="mb-4">5</p>
+                  <p class="mb-1"><strong>Welcome Message</strong></p>
+                  <p class="mb-4">Sent on day added</p>
+                  <p class="mb-1"><strong>Relative Nudges</strong></p>
+                  <p class="mb-4">+4 days after added &middot; SMS</p>
+                  <p class="mb-1"><strong>Campaign Ends</strong></p>
+                  <p>Mon 07/27/2026</p>
+                </hi-tile>
+              </div>
+            </div>
+          </hi-case>
+
+          <!-- ================= ENROLLMENT CAMPAIGN DETAIL ================= -->
+          <hi-case id="campaign-detail" value="campaign-detail" hidden>
+            <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
+              <hi-title heading="Enrollment Campaign: First Gen Fall 2026 Re-enrollment" level="1"></hi-title>
+            </div>
+
+            <div l-kind="hort" l-gap="8">
+              <div style="width: 74%;">
+                <div l-kind="hort" l-gap="6" class="mb-6">
+                  <hi-tile aesthetic="outline" class="text-center" style="width: 12rem;">
+                    <p class="clr-gray_80-txt text-uppercase text-sz-s mb-2">Students in Campaign</p>
+                    <h2>90</h2>
+                  </hi-tile>
+                  <hi-tile aesthetic="outline" class="text-center" style="width: 12rem;">
+                    <p class="clr-gray_80-txt text-uppercase text-sz-s mb-2">Students Enrolled</p>
+                    <h2>0%</h2>
+                    <p class="clr-gray_80-txt text-sz-s">0 Students</p>
+                  </hi-tile>
+                </div>
+
+                <hi-tile allow-toolbar aesthetic="outline">
+                  <h5 slot="title">Nudge Metrics</h5>
+                  <p class="clr-gray_80-txt">
+                    No nudges have been sent for this campaign yet, only nudges that have been sent will
+                    have metrics displayed.
+                  </p>
+                </hi-tile>
+              </div>
+
+              <div style="width: 24%;">
+                <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
+                  <h5 slot="title">Options</h5>
+                  <p class="mb-2"><hi-link href="#">Edit Campaign Details</hi-link></p>
+                  <p class="mb-2"><hi-link href="#">Copy Campaign</hi-link></p>
+                  <p class="mb-2"><hi-link href="#">Export Students Enrolled</hi-link></p>
+                  <p><hi-link href="#">Export Students Not Enrolled</hi-link></p>
+                </hi-tile>
+                <hi-tile allow-toolbar aesthetic="outline">
+                  <h5 slot="title">Campaign Information</h5>
+                  <p class="mb-1"><strong>Term</strong></p>
+                  <p class="mb-4">Spring 2026</p>
+                  <p class="mb-1"><strong>Tracking URL</strong></p>
+                  <p class="mb-4">https://www.woodley.edu/reenroll</p>
+                  <p class="mb-1"><strong>Tracking URL Text</strong></p>
+                  <p class="mb-4">Click Here to Register!</p>
+                  <p class="mb-1"><strong>End Date</strong></p>
+                  <p>08/01/2026</p>
+                </hi-tile>
+              </div>
+            </div>
+
+            <div l-kind="hort" l-width-fixed l-justify="start" class="mt-8">
+              <hi-button aesthetic="secondary" class="goto-enrollment-campaigns-link">Back to Enrollment Campaigns</hi-button>
+            </div>
+          </hi-case>
+
+          </hi-case>
+
+          <!-- ======================= PROFESSOR HOME (Staff Powered Alerts) ======================= -->
+          <hi-case id="professor-home" value="professor-home" hidden>
+            <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
+              <div class="page-title-menu-wrap">
+                <div class="page-title-flyout-anchor page-title-menu-toggle">
+                  <hi-title heading="Professor Home" level="1"></hi-title>
+                  <hi-icon kind="expand_more" size="small" class="ml-2"></hi-icon>
+                </div>
+                <div class="page-title-menu" hidden>
+                  <hi-link href="#" class="goto-staff-home-link">Staff Home</hi-link>
+                </div>
+              </div>
+            </div>
+
+            <hi-tile aesthetic="outline" class="mb-6" style="background: #fff8e1; border-color: #f9a825;">
+              <p class="mb-2"><strong>Jack, please respond to the following progress report request(s):</strong></p>
+              <p class="mb-4">Jack Whitmore would like you to complete 5 progress report(s) by Sunday, August 30, 2026.</p>
+              <hi-button aesthetic="secondary" size="small" class="goto-progress-report-link">Fill Out Progress Reports</hi-button>
+            </hi-tile>
+
+            <h2 class="mb-6">Courses</h2>
+            <hi-form class="mb-6">
+              <hi-input-group style="width: 14rem;">
+                <hi-label for="professor-term">Term</hi-label>
+                <hi-combobox id="professor-term" value="spring-2026" input='[{"title":"Spring 2026 (Default Term)","value":"spring-2026"}]'></hi-combobox>
+              </hi-input-group>
+            </hi-form>
+            <div scroll-x="auto" class="mb-8">
+              <vi-grid id="professor-courses-grid" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"course":{"title":"Course","render_type":"html"},"days_times":{"title":"Days/Times","render_type":"html"},"dates_location":{"title":"Dates/Location","render_type":"html"},"links":{"title":"","render_type":"html"}}}' input='[{"id":"course-1","course":"(PSY-101) Introduction to Psychology","days_times":"MWF 10:00am - 10:50am ET","dates_location":"04/13/2026 - 07/31/2026<br/>Psychology Hall","links":"<hi-link href=\"#\" class=\"goto-progress-report-link\">Progress Reports</hi-link>"}]'></vi-grid>
+            </div>
+
+            <h2 class="mb-6">Students In My Courses</h2>
+            <hi-button aesthetic="link" class="mb-4">Actions</hi-button>
+            <div scroll-x="auto" class="mb-8">
+              <vi-grid id="professor-students-grid" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":true,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"index":{"title":"Index","render_type":"html"},"name":{"title":"Student Name","render_type":"html"},"category":{"title":"Category","render_type":"html"},"courses":{"title":"Course(s)","render_type":"html"}}}' input='[{"id":"ps-1","index":"1","name":"<hi-link href=\"#\">Baydal, James</hi-link>","category":"Completed probation requirement, ESOL, Financial Aid, First generation student, Full-Time, Pell-Eligible, Pre-enrollment risk","courses":"PSY-101-Psy101_Spring_2026_1"}]'></vi-grid>
+            </div>
+
+            <h2 class="mb-6">Alerts I Have Issued</h2>
+            <div scroll-x="auto">
+              <vi-grid id="professor-alerts-grid" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"issue_date":{"title":"Issue Date","render_type":"html"},"student":{"title":"Student","render_type":"html"},"alert_reasons":{"title":"Alert Reasons","render_type":"html"},"comments":{"title":"Comments","render_type":"html"},"cases":{"title":"Cases","render_type":"html"}}}' input='[{"id":"pa-1","issue_date":"07/13/2026","student":"Baydal, James","alert_reasons":"Excessive Absences","comments":"Concerned about absences","cases":"<hi-link href=\"#\" class=\"goto-case-detail-link\">1 Open Case</hi-link>"},{"id":"pa-2","issue_date":"06/15/2026","student":"Bell, Carrie","alert_reasons":"Positive: Great Participation","comments":"Excellent class engagement","cases":"0 Open Cases"}]'></vi-grid>
+            </div>
+          </hi-case>
+
+          <!-- ======================= PROGRESS REPORT (Staff Powered Alerts) ======================= -->
+          <hi-case id="progress-report" value="progress-report" hidden>
+            <hi-title heading="Student Feedback" level="1" class="mb-6"></hi-title>
+            <hi-tile aesthetic="outline" class="mb-6" style="background: #e8f5e9; border-color: #43a047;">
+              Your information is secure. Security measures allow your school to adhere to government
+              rules and regulations concerning FERPA and overall student privacy. Thank you!
+            </hi-tile>
+            <p class="mb-6">
+              Professor Whitmore, a progress report has been requested for
+              <strong>PSY-101-Psy101_Spring_2026_1 Introduction To Psychology</strong>.
+              Please assess each student below.
+            </p>
+            <div scroll-x="auto" class="mb-6">
+              <vi-grid id="progress-report-grid" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":false,"table_filter":false,"table_pagination":false}}' type='{"fields":{"student":{"title":"Student Name","render_type":"html"},"below_expectations":{"title":"Performing Below Expectations?","render_type":"html"},"reasons":{"title":"Reason(s) for Performing Below Expectations?","render_type":"html"},"absences":{"title":"Number of Absences","render_type":"html"},"current_grade":{"title":"Current Grade","render_type":"html"},"lms_score":{"title":"LMS Current Course Score","render_type":"html"},"lms_grade":{"title":"LMS Current Course Grade","render_type":"html"},"comments":{"title":"Additional Comments","render_type":"html"}}}' input='[{"id":"pr-1","student":"Baydal, James<br/><span class=\"clr-gray_80-txt text-sz-s\">Student ID: 82640593</span>","below_expectations":"No","reasons":"","absences":"","current_grade":"","lms_score":"N/A","lms_grade":"N/A","comments":""},{"id":"pr-2","student":"Beamer, James<br/><span class=\"clr-gray_80-txt text-sz-s\">Student ID: 56728014</span>","below_expectations":"No","reasons":"","absences":"","current_grade":"","lms_score":"N/A","lms_grade":"N/A","comments":""},{"id":"pr-3","student":"Behr, Glenn<br/><span class=\"clr-gray_80-txt text-sz-s\">Student ID: 69028743</span>","below_expectations":"No","reasons":"","absences":"","current_grade":"","lms_score":"N/A","lms_grade":"N/A","comments":""},{"id":"pr-4","student":"Bell, Carrie<br/><span class=\"clr-gray_80-txt text-sz-s\">Student ID: 05768329</span>","below_expectations":"No","reasons":"","absences":"","current_grade":"","lms_score":"N/A","lms_grade":"N/A","comments":""},{"id":"pr-5","student":"Benedix, James<br/><span class=\"clr-gray_80-txt text-sz-s\">Student ID: 09743265</span>","below_expectations":"Yes","reasons":"Excessive Absences","absences":"3","current_grade":"C","lms_score":"N/A","lms_grade":"N/A","comments":"Concerned about absences"}]'></vi-grid>
+            </div>
+            <hi-button aesthetic="primary" class="goto-progress-report-success-link mb-4">Submit Progress Reports for Completed Students</hi-button>
+            <p class="clr-gray_80-txt text-sz-s mb-6">Submit only the students you have marked. You can return later to complete the rest.</p>
+            <hi-button aesthetic="secondary" class="goto-professor-home-link">Back to Professor Home</hi-button>
+          </hi-case>
+
+          <hi-case id="progress-report-success" value="progress-report-success" hidden>
+            <hi-title heading="Student Feedback" level="1" class="mb-6"></hi-title>
+            <hi-tile aesthetic="outline" class="mb-6" style="background: #e8f5e9; border-color: #43a047;">
+              Your information is secure. Security measures allow your school to adhere to government
+              rules and regulations concerning FERPA and overall student privacy. Thank you!
+            </hi-tile>
+            <hi-tile aesthetic="outline" class="mb-6">
+              <p class="mb-4"><strong>You completed your Student Feedback; the progress reports are being saved.</strong></p>
+              <p class="mb-4">Saving the progress reports can take up to a few minutes. You will receive a follow-up email if there were any errors saving the progress reports.</p>
+              <p>If you have any remaining progress reports to complete, you can return to the progress report page from the banner link on your home page.</p>
+            </hi-tile>
+            <hi-button aesthetic="primary" class="goto-staff-home-link">Go Home</hi-button>
+          </hi-case>
+
+          <!-- ======================= CASES LIST (Staff Powered Alerts) ======================= -->
+          <hi-case id="cases" value="cases" hidden>
+            <hi-title heading="Cases" level="1" class="mb-4"></hi-title>
+            <p class="clr-gray_80-txt text-sz-s mb-6">Showing a maximum of 50,000 cases. Refine your search to narrow results.</p>
+
+            <hi-form class="mb-6">
+              <hi-button aesthetic="link" class="mb-4">Switch to Advanced Filters</hi-button>
+              <div l-kind="hort" l-wrap l-width-fixed l-gutter>
+                <hi-input-group style="width: 12rem;">
+                  <hi-label for="cases-status">Status</hi-label>
+                  <hi-combobox id="cases-status" value="active" input='[{"title":"All Active Cases","value":"active"},{"title":"Closed Cases","value":"closed"}]'></hi-combobox>
+                </hi-input-group>
+                <hi-input-group style="width: 12rem;">
+                  <hi-label for="cases-care-unit">Care Unit</hi-label>
+                  <hi-combobox id="cases-care-unit" value="all" input='[{"title":"All","value":"all"}]'></hi-combobox>
+                </hi-input-group>
+                <hi-input-group style="width: 12rem;">
+                  <hi-label for="cases-student">Student</hi-label>
+                  <hi-combobox id="cases-student" value="anyone" input='[{"title":"Anyone","value":"anyone"}]'></hi-combobox>
+                </hi-input-group>
+                <hi-input-group style="width: 12rem;">
+                  <hi-label for="cases-opened-by">Opened By</hi-label>
+                  <hi-combobox id="cases-opened-by" value="anyone" input='[{"title":"Anyone","value":"anyone"}]'></hi-combobox>
+                </hi-input-group>
+              </div>
+              <div l-kind="hort" l-width-fixed l-align="center" class="mt-4">
+                <hi-button aesthetic="primary" size="small">Apply Filters</hi-button>
+                <hi-button aesthetic="secondary" size="small" class="ml-4">Reset Filters</hi-button>
+              </div>
+            </hi-form>
+
+            <hi-search placeholder="Search in Results" hidden-result-message hidden-status-message class="mb-4"></hi-search>
+            <div scroll-x="auto">
+              <vi-grid id="cases-list-grid" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":true,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"case_id":{"title":"Case ID","render_type":"html"},"student_name":{"title":"Student Name","render_type":"html"},"care_unit":{"title":"Care Unit","render_type":"html"},"alert_reasons":{"title":"Alert Reasons","render_type":"html"},"opened_by":{"title":"Opened By","render_type":"html"},"opened_at":{"title":"Opened At Date","render_type":"html"},"updated_by":{"title":"Updated By","render_type":"html"},"updated_at":{"title":"Updated At Date","render_type":"html"}}}' input='[{"id":"case-514","case_id":"<hi-link href=\"#\" class=\"goto-case-detail-link\">514</hi-link>","student_name":"James Baydal","care_unit":"","alert_reasons":"Needs Tutoring","opened_by":"Jack Whitmore","opened_at":"07/13/2026","updated_by":"Jack Whitmore","updated_at":"07/13/2026"},{"id":"case-513","case_id":"<hi-link href=\"#\" class=\"goto-case-513-link\">513</hi-link>","student_name":"James Baydal","care_unit":"","alert_reasons":"Excessive Absences","opened_by":"Jack Whitmore","opened_at":"07/13/2026","updated_by":"Jack Whitmore","updated_at":"07/13/2026"},{"id":"case-512","case_id":"<hi-link href=\"#\">512</hi-link>","student_name":"Michael Adam","care_unit":"","alert_reasons":"Concern for D or F","opened_by":"Jack Whitmore","opened_at":"07/13/2026","updated_by":"Jack Whitmore","updated_at":"07/13/2026"},{"id":"case-511","case_id":"<hi-link href=\"#\">511</hi-link>","student_name":"James Wyatt","care_unit":"","alert_reasons":"Needs Tutoring","opened_by":"Jack Whitten","opened_at":"07/01/2026","updated_by":"Jack Whitten","updated_at":"07/01/2026"},{"id":"case-510","case_id":"<hi-link href=\"#\">510</hi-link>","student_name":"Michael Adam","care_unit":"Residence Life","alert_reasons":"Noise Complaint","opened_by":"Whitten, Jack","opened_at":"06/19/2026","updated_by":"50180, Support","updated_at":"07/10/2026"}]'></vi-grid>
+            </div>
+            <p class="clr-gray_80-txt text-sz-s mt-4">1-100 of 498</p>
+          </hi-case>
+
+          <!-- ======================= CASE DETAIL (Staff Powered Alerts) ======================= -->
+          <hi-case id="case-detail" value="case-detail" hidden>
+            <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
+              <hi-title heading="Manage Case 514 for James Baydal" level="1"></hi-title>
+            </div>
+            <div l-kind="hort" l-width-fixed l-align="center" class="mb-6">
+              <hi-button aesthetic="secondary" size="small">Quick Actions</hi-button>
+              <hi-button aesthetic="secondary" size="small" class="ml-4">Follow</hi-button>
+              <span class="ml-4 clr-gray_80-txt text-sz-s">Followers (1)</span>
+              <hi-button aesthetic="link" class="ml-4 goto-cases-link">Back to Cases</hi-button>
+            </div>
+
+            <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
+              <h5 slot="title">Case Summary</h5>
+              <div l-kind="hort" l-wrap l-width-fixed class="mb-4">
+                <div style="width: 50%;">
+                  <p class="clr-gray_80-txt text-sz-s">Care Unit</p>
+                  <p class="mb-2">--</p>
+                  <p class="clr-gray_80-txt text-sz-s">Reason</p>
+                  <p class="mb-2">Needs Tutoring</p>
+                  <p class="clr-gray_80-txt text-sz-s">Class</p>
+                  <p>PSY-101-Psy101_Spring_2026_1 Introduction to Psychology</p>
+                </div>
+                <div style="width: 50%;">
+                  <p class="clr-gray_80-txt text-sz-s">Opened by</p>
+                  <p class="mb-2">Jack Whitmore at 07/13/2026 11:20am ET</p>
+                  <p class="clr-gray_80-txt text-sz-s">Last Modified by</p>
+                  <p>Jack Whitmore at 07/13/2026 11:23am ET</p>
+                </div>
+              </div>
+              <div l-kind="hort" l-wrap l-width-fixed l-gutter>
+                <vi-metric header="Owner" value="-" aesthetic="boxed" style="flex: 1 1 8rem;"></vi-metric>
+                <vi-metric header="Assignees" value="Jack Whitmore" aesthetic="boxed" style="flex: 1 1 8rem;"></vi-metric>
+                <vi-metric header="Case Status" value="Open" aesthetic="boxed" style="flex: 1 1 8rem;"></vi-metric>
+                <vi-metric header="Days Since Last Activity" value="0" aesthetic="boxed" style="flex: 1 1 8rem;"></vi-metric>
+                <vi-metric header="Total Days Open" value="0" aesthetic="boxed" style="flex: 1 1 8rem;"></vi-metric>
+              </div>
+              <hi-button aesthetic="secondary" size="small" class="mt-4 goto-edit-case-link">Edit Details</hi-button>
+            </hi-tile>
+
+            <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
+              <h5 slot="title">Case Activity</h5>
+              <p class="clr-gray_80-txt text-sz-s mb-4">Search by activity type (for example, &ldquo;comment&rdquo;, &ldquo;link&rdquo;, or &ldquo;assign&rdquo;) to filter the entries shown.</p>
+              <hi-button aesthetic="secondary" size="small" class="mb-4">+ Add Comment</hi-button>
+              <hi-search placeholder="Search Case Activity" hidden-result-message hidden-status-message class="mb-4"></hi-search>
+              <vi-list
+                mode="item"
+                input='[
+                  {"id":"act-1","title":"Jack Whitmore assigned case to Jack Whitmore","description":"<p class=\"text-sz-s clr-gray_80-txt\">07/13/2026 11:23am ET</p>"},
+                  {"id":"act-2","title":"Jack Whitmore linked 1 case to this case","description":"<p class=\"text-sz-s clr-gray_80-txt\">07/13/2026 11:23am ET</p>"},
+                  {"id":"act-3","title":"Jack Whitmore uploaded 1 document (Notes_Baydal.docx)","description":"<p class=\"text-sz-s clr-gray_80-txt\">07/13/2026 11:22am ET</p>"},
+                  {"id":"act-4","title":"Jack Whitmore opened the case with this comment: Due to excessive absences may be falling behind.","description":"<p class=\"text-sz-s clr-gray_80-txt\">07/13/2026 11:20am ET</p>"},
+                  {"id":"act-5","title":"Jack Whitmore opened case","description":"<p class=\"text-sz-s clr-gray_80-txt\">07/13/2026 11:20am ET</p>"}
+                ]'
+              ></vi-list>
+            </hi-tile>
+
+            <hi-tile allow-toolbar aesthetic="outline">
+              <h5 slot="title">Linked Cases</h5>
+              <p><hi-link href="#" class="goto-case-513-link">Case 513 - James Baydal (Excessive Absences)</hi-link></p>
+            </hi-tile>
+          </hi-case>
+
+            </hi-tile>
+          </hi-case>
+
+          <!-- ======================= REPORTS (AI Automated Alerts) ======================= -->
+          <hi-case id="reports" value="reports" hidden>
+            <hi-title heading="Reports" level="1" class="mb-6"></hi-title>
+            <hi-tab-group class="mb-6">
+              <hi-tab>My Saved Reports</hi-tab>
+              <hi-tab selected>Standard Reports</hi-tab>
+              <hi-tab>My Report Automations</hi-tab>
+            </hi-tab-group>
+            <p class="mb-4"><hi-link href="#" class="goto-automations-link">Go to My Report Automations</hi-link></p>
+
+            <hi-tile aesthetic="outline" class="mb-6">
+              <h5 slot="title">Report Finder</h5>
+              <p class="mb-4">Use AI to find the right report and filters for your question.</p>
+              <hi-button aesthetic="secondary" size="small" id="open-report-finder-btn">+ Report Finder</hi-button>
+            </hi-tile>
+
+            <hi-search placeholder="Search in Results" hidden-result-message hidden-status-message class="mb-4"></hi-search>
+            <div scroll-x="auto">
+              <vi-grid id="standard-reports-grid" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"report":{"title":"Report","render_type":"html"},"category":{"title":"Category","render_type":"html"}}}' input='[{"id":"rpt-1","report":"AI Agent Campaign Conversations Report","category":"AI Agent Campaigns"},{"id":"rpt-2","report":"Appointment Feedback Metrics","category":"Appointment Questions"},{"id":"rpt-3","report":"<hi-link href=\"#\" class=\"goto-students-report-link\">Students Report</hi-link>","category":"Students"},{"id":"rpt-4","report":"Appointment Campaigns Report","category":"Appointment/Visits Reports"}]'></vi-grid>
+            </div>
+          </hi-case>
+
+          <hi-case id="students-report" value="students-report" hidden>
+            <hi-title heading="Students Report" level="1" class="mb-4"></hi-title>
+            <p class="mb-6"><hi-link href="#" class="goto-reports-link">Back to Reports</hi-link></p>
+
+            <h3 class="mb-4">Data Filters</h3>
+            <hi-tile aesthetic="outline" class="mb-6">
+              <p class="mb-2"><strong>Categories</strong> contains any <strong>Full-Time</strong></p>
+              <p class="mb-2"><strong>Term Credit Hours</strong> in Spring 2026 <strong>less than</strong> 15</p>
+              <p><strong>Enrollment Terms</strong> contains any <strong>SPRING 2026</strong></p>
+            </hi-tile>
+
+            <div l-kind="hort" l-width-fixed l-align="center" class="mb-6">
+              <hi-button aesthetic="primary" size="small">Run Report</hi-button>
+              <hi-button aesthetic="secondary" size="small" class="ml-4" id="open-save-report-btn">Save Report</hi-button>
+            </div>
+
+            <yi-view-state kind="icon" icon="feedback" description="No students match these filters in this environment."></yi-view-state>
+          </hi-case>
+
+          <!-- ======================= MESSAGING CAMPAIGN WIZARD (AI Automated Alerts) ======================= -->
+          <hi-case id="messaging-campaign-wizard" value="messaging-campaign-wizard" hidden>
+            <hi-title heading="Messaging Campaign: FT Low Credit Spring 2026" level="1" class="mb-6"></hi-title>
+
+            <hi-step-group id="messaging-wizard-steps" class="mb-8" stretched>
+              <hi-step for="msg-step-define" selected completed>Define Campaign</hi-step>
+              <hi-step for="msg-step-recipients" completed>Select Recipients</hi-step>
+              <hi-step for="msg-step-outreach" completed>Configure Outreach</hi-step>
+              <hi-step for="msg-step-verify">Verify &amp; Start</hi-step>
+            </hi-step-group>
+
+            <hi-switch id="messaging-wizard-panels" value="msg-step-define">
+              <hi-case id="msg-step-define" value="msg-step-define">
+                <h4 class="mb-6">Campaign Information</h4>
+                <hi-form class="mb-8">
+                  <hi-input-group class="mb-4">
+                    <hi-label for="msg-campaign-name">Campaign Name</hi-label>
+                    <hi-input id="msg-campaign-name" value="FT Low Credit Spring 2026"></hi-input>
+                  </hi-input-group>
+                  <hi-input-group class="mb-4">
+                    <hi-label for="msg-launch-date">Campaign Launch Date</hi-label>
+                    <hi-input id="msg-launch-date" value="July 13, 2026"></hi-input>
+                  </hi-input-group>
+                </hi-form>
+                <hi-button aesthetic="primary" class="goto-msg-step-recipients-link">Continue</hi-button>
+              </hi-case>
+
+              <hi-case id="msg-step-recipients" value="msg-step-recipients" hidden>
+                <h4 class="mb-4">Select Recipients</h4>
+                <p class="clr-gray_80-txt mb-6">Recipients will be added via automation from the saved report. Leave blank for now.</p>
+                <yi-view-state kind="icon" icon="feedback" description="No manual recipients selected — automation will populate this campaign."></yi-view-state>
+                <hi-button aesthetic="primary" class="mt-6 goto-msg-step-outreach-link">Continue</hi-button>
+              </hi-case>
+
+              <hi-case id="msg-step-outreach" value="msg-step-outreach" hidden>
+                <h4 class="mb-4">Configure Outreach</h4>
+                <hi-tile aesthetic="outline" class="mb-6">
+                  <h5 slot="title">AI Campaign Agent</h5>
+                  <hi-input-group layout-mode="input-label" class="mb-4">
+                    <hi-checkbox id="enable-ai-agent" checked></hi-checkbox>
+                    <hi-label for="enable-ai-agent">Enable AI Campaign Agent</hi-label>
+                  </hi-input-group>
+                  <hi-input-group class="mb-4">
+                    <hi-label for="campaign-goals">Campaign Goals</hi-label>
+                    <hi-textarea id="campaign-goals" name="goals">Reach full-time students with fewer than 15 credits and offer support to stay on track for graduation.</hi-textarea>
+                  </hi-input-group>
+                  <hi-input-group class="mb-4">
+                    <hi-label for="campaign-rules">Additional Information and Rules</hi-label>
+                    <hi-textarea id="campaign-rules" name="rules">Be supportive and concise. Do not promise financial aid.</hi-textarea>
+                  </hi-input-group>
+                  <hi-input-group layout-mode="input-label" class="mb-2">
+                    <hi-checkbox id="allow-responses" checked></hi-checkbox>
+                    <hi-label for="allow-responses">Allow responses and personalized nudges</hi-label>
+                  </hi-input-group>
+                </hi-tile>
+
+                <h4 class="mb-4">Nudges</h4>
+                <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
+                  <h5 slot="title">Welcome Message</h5>
+                  <p class="mb-1"><strong>Send Date:</strong> 07/13/2026</p>
+                  <p class="mb-1"><strong>SMS Nudge</strong></p>
+                  <p class="mb-2"><strong>SMS Message:</strong> Hi {$student_first_name}, we saw your course load is on the lighter side&hellip;</p>
+                  <hi-button aesthetic="icon" size="small" layout="icon" class="goto-messaging-nudge-sms-link"><hi-icon kind="edit" size="small"></hi-icon></hi-button>
+                </hi-tile>
+                <hi-button aesthetic="primary" class="goto-msg-step-verify-link">Continue</hi-button>
+              </hi-case>
+
+              <hi-case id="msg-step-verify" value="msg-step-verify" hidden>
+                <h4 class="mb-4">Verify &amp; Start</h4>
+                <p class="mb-4">You do not have any recipients yet. That is expected — this campaign will be populated by automation.</p>
+                <hi-tile aesthetic="outline" class="mb-6">
+                  <p class="mb-2"><strong>Name:</strong> FT Low Credit Spring 2026</p>
+                  <p class="mb-2"><strong>Launch Date:</strong> July 13, 2026</p>
+                  <p class="mb-2"><strong>AI Campaign Agent:</strong> Enabled</p>
+                  <p><strong>Welcome Message:</strong> SMS on day added</p>
+                </hi-tile>
+                <hi-button aesthetic="primary" class="goto-messaging-campaign-summary-link">Launch Campaign</hi-button>
+              </hi-case>
+            </hi-switch>
+          </hi-case>
+
+          <hi-case id="messaging-nudge-sms" value="messaging-nudge-sms" hidden>
+            <hi-title heading="Messaging Campaign: FT Low Credit Spring 2026" level="1" class="mb-6"></hi-title>
+            <hi-tab-group class="mb-6">
+              <hi-tab>Email</hi-tab>
+              <hi-tab>Print</hi-tab>
+              <hi-tab selected>SMS</hi-tab>
+            </hi-tab-group>
+            <div l-kind="hort" l-gap="6">
+              <div style="width: 49%;">
+                <h5 class="mb-4">Compose SMS</h5>
+                <hi-input-group class="mb-4">
+                  <hi-label for="msg-sms-template">Apply a Template</hi-label>
+                  <hi-combobox id="msg-sms-template" value="" input='[{"title":"--","value":""}]'></hi-combobox>
+                </hi-input-group>
+                <hi-input-group>
+                  <hi-label for="msg-sms-body">Message</hi-label>
+                  <hi-textarea id="msg-sms-body" rows="6">Hi {$student_first_name}, we saw your course load is on the lighter side this term and want to be sure you are on track. If you have questions or need support, we are here to help.</hi-textarea>
+                </hi-input-group>
+                <hi-button aesthetic="link" size="small" class="mt-2">Enhance with AI</hi-button>
+              </div>
+              <div style="width: 49%;">
+                <h5 class="mb-4">Preview SMS</h5>
+                <hi-tile aesthetic="outline">
+                  <p>Hi {Student First Name}, we saw your course load is on the lighter side this term and want to be sure you are on track. If you have questions or need support, we are here to help.</p>
+                </hi-tile>
+              </div>
+            </div>
+            <hi-button aesthetic="primary" class="mt-6 goto-msg-step-outreach-link">Save Welcome Message</hi-button>
+          </hi-case>
+
+          <hi-case id="messaging-campaign-summary" value="messaging-campaign-summary" hidden>
+            <hi-title heading="Messaging Campaign: FT Low Credit Spring 2026 Details" level="1" class="mb-6"></hi-title>
+            <div l-kind="hort" l-wrap l-width-fixed l-gutter class="mb-6">
+              <hi-tile aesthetic="outline" class="text-center mb-6" style="width: 12rem;">
+                <p class="clr-gray_80-txt text-uppercase text-sz-s mb-2">Students in Campaign</p>
+                <h2>0</h2>
+              </hi-tile>
+              <hi-tile aesthetic="outline" class="mb-6" style="width: 49%;">
+                <h5 slot="title">AI Campaign Agent Activity</h5>
+                <div l-kind="hort" l-wrap l-gutter>
+                  <vi-metric header="AI Emails" value="0" aesthetic="boxed" style="flex: 1 1 8rem;"></vi-metric>
+                  <vi-metric header="AI SMS Messages" value="0" aesthetic="boxed" style="flex: 1 1 8rem;"></vi-metric>
+                  <vi-metric header="Student Email Replies" value="0" aesthetic="boxed" style="flex: 1 1 8rem;"></vi-metric>
+                  <vi-metric header="Student SMS Replies" value="0" aesthetic="boxed" style="flex: 1 1 8rem;"></vi-metric>
+                </div>
+              </hi-tile>
+            </div>
+            <hi-tile allow-toolbar aesthetic="outline" class="mb-6">
+              <h5 slot="title">Nudge Metrics</h5>
+              <p class="clr-gray_80-txt">No nudges have been sent for this campaign yet; only nudges that have been sent will have metrics displayed.</p>
+            </hi-tile>
+            <p><hi-link href="#" class="goto-messaging-campaign-summary-active-link">View example campaign with data</hi-link></p>
+          </hi-case>
+
+          <hi-case id="messaging-campaign-summary-active" value="messaging-campaign-summary-active" hidden>
+            <hi-title heading="Messaging Campaign: Low LMS Engagement - Spring 2026 Details" level="1" class="mb-6"></hi-title>
+            <div l-kind="hort" l-wrap l-width-fixed l-gutter class="mb-6">
+              <hi-tile aesthetic="outline" class="text-center mb-6" style="width: 12rem;">
+                <p class="clr-gray_80-txt text-uppercase text-sz-s mb-2">Students in Campaign</p>
+                <h2>209</h2>
+              </hi-tile>
+              <hi-tile allow-toolbar aesthetic="outline" class="mb-6" style="width: 60%;">
+                <h5 slot="title">Nudge Metrics — Welcome Message</h5>
+                <p class="mb-2"><strong>Nudge Type:</strong> Email</p>
+                <p class="mb-2"><strong>Subject:</strong> Falling Behind? We&rsquo;re here to help!</p>
+                <p class="mb-2"><strong>Emails Sent:</strong> 209</p>
+                <p class="mb-2"><strong>Emails Opened:</strong> 0</p>
+                <p><strong>Click-to-open-rate:</strong> 0%</p>
+              </hi-tile>
+            </div>
+            <hi-tile allow-toolbar aesthetic="outline">
+              <h5 slot="title">AI Campaign Agent Activity</h5>
+              <p class="clr-gray_80-txt">Goals met: 0 &middot; Outreach in progress</p>
+            </hi-tile>
+          </hi-case>
+
+          <hi-case id="automations" value="automations" hidden>
+            <hi-title heading="Reports" level="1" class="mb-6"></hi-title>
+            <hi-tab-group class="mb-6">
+              <hi-tab>My Saved Reports</hi-tab>
+              <hi-tab>Standard Reports</hi-tab>
+              <hi-tab selected>My Report Automations</hi-tab>
+            </hi-tab-group>
+            <hi-button aesthetic="primary" class="mb-6 goto-new-automation-link"><hi-icon kind="plus" size="small" class="mr-1"></hi-icon>New Automation</hi-button>
+            <div scroll-x="auto">
+              <vi-grid id="automations-grid" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"name":{"title":"Automation Name","render_type":"html"},"status":{"title":"Status","render_type":"html"},"schedule":{"title":"Schedule","render_type":"html"}}}' input='[{"id":"auto-1","name":"<hi-link href=\"#\" class=\"goto-automation-detail-link\">FT Less than 15 Spr26</hi-link>","status":"Inactive","schedule":"Daily at 8:00 AM ET"}]'></vi-grid>
+            </div>
+          </hi-case>
+
+          <hi-case id="new-automation" value="new-automation" hidden>
+            <hi-title heading="New Automation Configuration" level="1" class="mb-4"></hi-title>
+            <p class="mb-6">Activating this automation will run a saved report on a schedule and apply actions to users who newly match the criteria.</p>
+            <hi-form>
+              <hi-input-group class="mb-4">
+                <hi-label for="automation-name">Automation Name</hi-label>
+                <hi-input id="automation-name" value="FT Less than 15 Spr26"></hi-input>
+              </hi-input-group>
+              <hi-input-group layout-mode="input-label" class="mb-6">
+                <hi-checkbox id="automation-active" checked></hi-checkbox>
+                <hi-label for="automation-active">Automation is active</hi-label>
+              </hi-input-group>
+              <h4 class="mb-4">Automation Configuration</h4>
+              <hi-input-group class="mb-4">
+                <hi-label for="automation-if">IF&hellip; users match the criteria in this saved search or report</hi-label>
+                <hi-combobox id="automation-if" value="ft-less-15" input='[{"title":"FT Less than 15 Spr26","value":"ft-less-15"}]'></hi-combobox>
+              </hi-input-group>
+              <hi-input-group class="mb-4">
+                <hi-label for="automation-then">THEN&hellip; take this action</hi-label>
+                <hi-combobox id="automation-then" value="add-to-campaign" input='[{"title":"Add to Message Campaign","value":"add-to-campaign"}]'></hi-combobox>
+              </hi-input-group>
+              <hi-input-group class="mb-4">
+                <hi-label for="automation-campaign">Select Campaign</hi-label>
+                <hi-combobox id="automation-campaign" value="ft-low-credit" input='[{"title":"FT Low Credit Spring 2026 (Start Date: 07/13/2026)","value":"ft-low-credit"}]'></hi-combobox>
+              </hi-input-group>
+              <hi-input-group layout-mode="input-label" class="mb-4">
+                <hi-checkbox id="automation-omit-initial"></hi-checkbox>
+                <hi-label for="automation-omit-initial">Omit initial matches</hi-label>
+              </hi-input-group>
+              <hi-input-group class="mb-4">
+                <hi-label for="automation-frequency">Frequency</hi-label>
+                <hi-combobox id="automation-frequency" value="daily" input='[{"title":"Daily","value":"daily"},{"title":"Weekly","value":"weekly"},{"title":"Monthly","value":"monthly"}]'></hi-combobox>
+              </hi-input-group>
+            </hi-form>
+            <hi-button aesthetic="primary" class="goto-automation-detail-link">Save Automation</hi-button>
+          </hi-case>
+
+          <hi-case id="automation-detail" value="automation-detail" hidden>
+            <hi-title heading="Automation: FT Less than 15 Spr26" level="1" class="mb-4"></hi-title>
+            <p class="mb-6"><hi-badge theme="neutral">Inactive</hi-badge></p>
+            <div l-kind="hort" l-wrap l-width-fixed l-gutter>
+              <hi-tile allow-toolbar aesthetic="outline" class="mb-6" style="width: 60%;">
+                <h5 slot="title">Automation Results</h5>
+                <yi-view-state kind="icon" icon="feedback" description="Once people are added to the automation, results will populate here."></yi-view-state>
+              </hi-tile>
+              <hi-tile allow-toolbar aesthetic="outline" class="mb-6" style="width: 35%;">
+                <h5 slot="title">Summary</h5>
+                <p class="mb-2"><strong>Report:</strong> FT Less than 15 Spr26</p>
+                <p class="mb-2"><strong>Action:</strong> Add to FT Low Credit Spring 2026</p>
+                <p><strong>Schedule:</strong> Daily at 8:00 AM ET</p>
+              </hi-tile>
+            </div>
+          </hi-case>
+
+          <!-- ======================= DASHBOARD (Advisor 101) ======================= -->
+          <hi-case id="dashboard" value="dashboard" hidden>
+            <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
+              <hi-title heading="My Dashboard" level="1"></hi-title>
+            </div>
+            <p class="mb-8">
+              On this page, find summary information about your activity in Navigate360 and the
+              activity of your assigned students.
+            </p>
+
+            <div l-kind="hort" l-wrap l-width-fixed l-gutter>
+              <hi-tile allow-toolbar aesthetic="outline" class="mb-6" style="width: 49%;">
+                <h5 slot="title">My Students</h5>
+                <yi-view-state kind="icon" icon="feedback" description="Loading student summary…"></yi-view-state>
+              </hi-tile>
+
+              <hi-tile allow-toolbar aesthetic="outline" class="mb-6" style="width: 49%;">
+                <h5 slot="title">My Assigned Students Activity Feed</h5>
+                <hi-search placeholder="Search in Results" hidden-result-message hidden-status-message class="mb-4"></hi-search>
+                <vi-list
+                  mode="item"
+                  input='[
+                    {"id":"dash-1","title":"Michael Adam appointment with Jack Whitten","sub_title":"Academic Planning","description":"<p class=\"text-sz-s clr-gray_80-txt\">3:45 PM ET on 07/14/2026</p>"},
+                    {"id":"dash-2","title":"Peggy Aguila appointment with Jack Whitten","sub_title":"Academic Planning","description":"<p class=\"text-sz-s clr-gray_80-txt\">3:45 PM ET on 07/14/2026</p>"},
+                    {"id":"dash-3","title":"James Alexander appointment with Jack Whitten","sub_title":"Academic Planning","description":"<p class=\"text-sz-s clr-gray_80-txt\">3:45 PM ET on 07/14/2026</p>"}
+                  ]'
+                ></vi-list>
+                <p class="clr-gray_80-txt text-sz-s mt-4">1-100 of 649</p>
+              </hi-tile>
+
+              <hi-tile allow-toolbar aesthetic="outline" class="mb-6" style="width: 49%;">
+                <h5 slot="title">My Appointment Summaries Pending</h5>
+                <p class="mb-2"><hi-link href="#" class="goto-staff-home-link">1 summary pending for Peggy Aguila</hi-link></p>
+                <p><hi-link href="#" class="goto-appt-summary-link">Open appointment summary</hi-link></p>
+              </hi-tile>
+
+              <hi-tile allow-toolbar aesthetic="outline" class="mb-6" style="width: 49%;">
+                <h5 slot="title">My Active Appointment Campaigns</h5>
+                <p><hi-link href="#">Dalhousie Study Coach Appointments</hi-link></p>
+                <p class="clr-gray_80-txt text-sz-s">06/29/2026 - 07/31/2026</p>
+              </hi-tile>
+
+              <hi-tile allow-toolbar aesthetic="outline" class="mb-6" style="width: 49%;">
+                <h5 slot="title">Upcoming Appointments</h5>
+                <p class="clr-gray_80-txt text-sz-s mb-4">No appointments today</p>
+                <p class="mb-1"><hi-link href="#" class="goto-adams-link">Adam, Michael</hi-link> &mdash; Math Lab</p>
+                <p class="clr-gray_80-txt text-sz-s mb-4">07/14/2026, 10:30am - 11:15am ET</p>
+                <hi-button aesthetic="secondary" size="small" class="goto-appt-summary-link">Take Action</hi-button>
+              </hi-tile>
+            </div>
+          </hi-case>
         </hi-switch>
       </section>
 
@@ -1388,7 +2399,7 @@
               <hi-tile allow-toolbar aesthetic="outline">
                 <h5 slot="title">Actions</h5>
                 <p class="mb-4">I want to...</p>
-                <p class="mb-2"><hi-link href="#">Issue an Alert</hi-link></p>
+                <p class="mb-2"><hi-link href="#" class="goto-issue-alert-link">Issue an Alert</hi-link></p>
                 <p class="mb-2"><hi-link href="#">Create a New Student</hi-link></p>
                 <p><hi-link href="#">Upload Profile Picture</hi-link></p>
               </hi-tile>
@@ -1404,6 +2415,19 @@
                 <p class="mb-4">Campaigns&hellip;</p>
                 <p class="mb-2"><hi-link href="#">Appointment Campaigns</hi-link></p>
                 <p><hi-link href="#">Travel Letters</hi-link></p>
+              </hi-tile>
+
+              <hi-tile allow-toolbar aesthetic="outline">
+                <h5 slot="title">To-Dos</h5>
+                <p class="mb-2"><hi-link href="#">3 To-Dos assigned to you</hi-link></p>
+                <p><hi-link href="#">2 To-Dos relative to students</hi-link></p>
+              </hi-tile>
+
+              <hi-tile allow-toolbar aesthetic="outline">
+                <h5 slot="title">Upcoming Appointments</h5>
+                <p class="clr-gray_80-txt text-sz-s mb-2">Next appointment</p>
+                <p class="mb-1"><hi-link href="#">Adam, Michael</hi-link></p>
+                <p class="clr-gray_80-txt text-sz-s">07/14/2026 &middot; Math Lab</p>
               </hi-tile>
             </section>
           </hi-case>
@@ -1436,7 +2460,7 @@
                 <p class="mb-2"><hi-link href="#">Create Request for Appointment</hi-link></p>
                 <p class="mb-2"><hi-link href="#">Schedule an Appointment</hi-link></p>
                 <p class="mb-2"><hi-link href="#">Add to Student List</hi-link></p>
-                <p class="mb-2"><hi-link href="#">Issue an Alert</hi-link></p>
+                <p class="mb-2"><hi-link href="#" class="goto-issue-alert-link">Issue an Alert</hi-link></p>
                 <p class="mb-2"><hi-link href="#">Edit User Settings</hi-link></p>
                 <p class="mb-2"><hi-link href="#">Upload Profile Picture</hi-link></p>
                 <p><hi-link href="#">Impersonate User</hi-link></p>
@@ -1503,6 +2527,193 @@
           </hi-case>
         </hi-switch>
       </section>
+
+      <!-- Staff Assistant drawer (Advisor 101) -->
+      <hi-drawer id="staff-assistant-drawer" heading="Staff Assistant" direction="right">
+        <p class="clr-gray_80-txt text-sz-s mb-6">
+          Hi! I&rsquo;m an AI assistant, not a live person. By continuing, you consent to share your
+          chat info with us and authorized third parties per our
+          <hi-link href="#">Privacy Policy</hi-link> and <hi-link href="#">Terms of Use</hi-link>.
+        </p>
+        <hi-tile aesthetic="outline" class="mb-4">
+          <p class="mb-2"><strong>You</strong></p>
+          <p>Give me a summary of this student.</p>
+        </hi-tile>
+        <hi-tile aesthetic="outline" class="mb-4">
+          <p class="mb-4"><strong>Staff Assistant</strong></p>
+          <p class="mb-2"><strong>Contact Information</strong></p>
+          <p class="mb-4 text-sz-s">Email: <hi-link href="mailto:jaskrollins@woodley.eab.edu">jaskrollins@woodley.eab.edu</hi-link><br />Phone: 555-421-6753</p>
+          <p class="mb-2"><strong>Academic Information</strong></p>
+          <p class="mb-4 text-sz-s">Sophomore (Spring 2026). Categories include Financial Aid, First generation student, Pre-enrollment risk.</p>
+          <p class="mb-2"><strong>Advisors</strong></p>
+          <p class="mb-4 text-sz-s">Jack Whitten, Lee White, and others on the success team.</p>
+          <p class="mb-2"><strong>Recent Activities</strong></p>
+          <p class="text-sz-s">Regular advising sessions with Jack Whitten focusing on academic planning. Several alerts and open cases related to noise complaints and academic needs.</p>
+        </hi-tile>
+        <hi-input-group>
+          <hi-label for="staff-assistant-prompt">Ask me a question</hi-label>
+          <hi-textarea id="staff-assistant-prompt" name="prompt" placeholder="Ask me a question"></hi-textarea>
+        </hi-input-group>
+      </hi-drawer>
+
+      <!-- Appointment summary dialog (Advisor 101) -->
+      <hi-dialog id="appointment-summary-dialog" heading="Create an Appointment Summary Report" size="large">
+        <div l-kind="hort" l-wrap l-width-fixed>
+          <div style="width: 48%;">
+            <p class="mb-2"><strong>Date:</strong> 06/19/2026</p>
+            <p class="mb-2"><strong>Time:</strong> 11:15am - 12:00pm ET</p>
+            <p class="mb-4"><strong>Attendees:</strong> Jack Whitten, Peggy Aguila</p>
+            <hi-form>
+              <hi-input-group>
+                <hi-label for="appt-summary-service">Service</hi-label>
+                <hi-combobox id="appt-summary-service" value="academic-planning" input='[{"title":"Academic Planning","value":"academic-planning"}]'></hi-combobox>
+              </hi-input-group>
+              <hi-input-group>
+                <hi-label for="appt-summary-meeting-type">Meeting Type</hi-label>
+                <hi-combobox id="appt-summary-meeting-type" value="in-person" input='[{"title":"In-Person","value":"in-person"}]'></hi-combobox>
+              </hi-input-group>
+            </hi-form>
+          </div>
+          <div style="width: 48%;">
+            <h3 class="mb-4">Appointment Summary</h3>
+            <hi-tile aesthetic="outline" class="mb-4">
+              <h5 slot="title">Meeting Summary Assistant</h5>
+              <hi-tab-group class="mb-4">
+                <hi-tab selected>Transcription</hi-tab>
+                <hi-tab>Attach File</hi-tab>
+                <hi-tab>Paste Text</hi-tab>
+              </hi-tab-group>
+              <p class="mb-2"><strong>Live Audio Transcript</strong></p>
+              <hi-button aesthetic="secondary" size="small" id="start-transcription-btn" class="mb-4">Start Transcription</hi-button>
+              <p id="transcription-output" class="clr-gray_80-txt text-sz-s mb-4" hidden>
+                I am meeting with Michael, and we are having a nice conversation about upcoming courses,
+                progress against the major, and considering alternate major courses.
+              </p>
+              <hi-input-group>
+                <hi-label for="appt-additional-notes">Additional notes (optional)</hi-label>
+                <hi-textarea id="appt-additional-notes" name="notes"></hi-textarea>
+              </hi-input-group>
+              <hi-input-group class="mt-4">
+                <hi-label for="appt-summary-style">Summary style</hi-label>
+                <hi-combobox id="appt-summary-style" value="concise" input='[{"title":"Concise summary","value":"concise"},{"title":"Detailed summary","value":"detailed"}]'></hi-combobox>
+              </hi-input-group>
+              <hi-button aesthetic="primary" size="small" class="mt-4">Summarize</hi-button>
+            </hi-tile>
+            <hi-input-group>
+              <hi-label for="appt-summary-text">Summary</hi-label>
+              <hi-textarea id="appt-summary-text" name="summary">Jack met with Peggy Aguila to discuss academic planning goals for the upcoming term.</hi-textarea>
+            </hi-input-group>
+          </div>
+        </div>
+        <hi-button slot="controls" aesthetic="secondary" id="close-appt-summary-btn">Cancel</hi-button>
+        <hi-button slot="controls" aesthetic="primary">Save &amp; Mark Complete</hi-button>
+      </hi-dialog>
+
+      <!-- Transcription consent dialog (Advisor 101) -->
+      <hi-dialog id="transcription-consent-dialog" heading="Consent Required" size="small">
+        <p>
+          By proceeding, you confirm that all participants have been informed and have provided
+          consent to this meeting being transcribed in accordance with your institution&rsquo;s
+          privacy and consent policies.
+        </p>
+        <hi-button slot="controls" aesthetic="secondary" id="transcription-consent-no">No</hi-button>
+        <hi-button slot="controls" aesthetic="primary" id="transcription-consent-yes">Yes</hi-button>
+      </hi-dialog>
+
+      <!-- Issue an Alert dialog (Staff Powered Alerts) -->
+      <hi-dialog id="issue-alert-dialog" heading="Issue an Alert" size="medium">
+        <hi-form>
+          <hi-input-group>
+            <hi-label for="alert-student">Student</hi-label>
+            <hi-search id="alert-student" placeholder="Search for a student" hidden-result-message hidden-status-message value="Baydal, James"></hi-search>
+          </hi-input-group>
+          <hi-input-group>
+            <hi-label for="alert-reasons">Please select a reason</hi-label>
+            <hi-combobox id="alert-reasons" value="needs-tutoring" input='[{"title":"Needs Tutoring","value":"needs-tutoring"},{"title":"Excessive Absences","value":"excessive-absences"}]'></hi-combobox>
+          </hi-input-group>
+          <hi-input-group>
+            <hi-label for="alert-class">Is this associated with a specific class?</hi-label>
+            <hi-combobox id="alert-class" value="psy-101" input='[{"title":"Optional","value":"optional"},{"title":"PSY-101 Introduction to Psychology","value":"psy-101"}]'></hi-combobox>
+          </hi-input-group>
+          <hi-input-group>
+            <hi-label for="alert-comments">Additional Comments</hi-label>
+            <hi-textarea id="alert-comments" name="comments">Due to excessive absences, may be falling behind.</hi-textarea>
+          </hi-input-group>
+        </hi-form>
+        <hi-button slot="controls" aesthetic="secondary" id="close-issue-alert-btn">Cancel</hi-button>
+        <hi-button slot="controls" aesthetic="primary" id="submit-issue-alert-btn">Submit</hi-button>
+      </hi-dialog>
+
+      <!-- Edit Case Details drawer (Staff Powered Alerts) -->
+      <hi-drawer id="edit-case-drawer" heading="Edit Case Details" direction="right">
+        <hi-form>
+          <hi-input-group>
+            <hi-label for="case-owner">Owner</hi-label>
+            <hi-combobox id="case-owner" value="" input='[{"title":"--","value":""}]'></hi-combobox>
+          </hi-input-group>
+          <hi-input-group>
+            <hi-label for="case-assignees">Assignees</hi-label>
+            <hi-combobox id="case-assignees" value="jack-whitmore" input='[{"title":"Jack Whitmore","value":"jack-whitmore"}]'></hi-combobox>
+          </hi-input-group>
+          <hi-input-group>
+            <hi-label for="case-status">Status</hi-label>
+            <hi-combobox id="case-status" value="closed" input='[{"title":"Open","value":"open"},{"title":"Closed","value":"closed"}]'></hi-combobox>
+          </hi-input-group>
+          <hi-input-group>
+            <hi-label for="case-outcome">Outcome</hi-label>
+            <hi-combobox id="case-outcome" value="recommended-action" input='[{"title":"Student took recommended action","value":"recommended-action"}]'></hi-combobox>
+          </hi-input-group>
+          <hi-input-group layout-mode="input-label">
+            <hi-checkbox id="case-email-issuer"></hi-checkbox>
+            <hi-label for="case-email-issuer">Include Comments in Case closed email to Alert issuer</hi-label>
+          </hi-input-group>
+          <hi-input-group>
+            <hi-label for="case-close-comment">Comment</hi-label>
+            <hi-textarea id="case-close-comment" name="comment">Student attendance improved and set up tutoring.</hi-textarea>
+          </hi-input-group>
+        </hi-form>
+        <h3 class="mt-6 mb-4">Close Additional Linked Cases</h3>
+        <p class="mb-4"><hi-link href="#" class="goto-case-513-link">Case 513 - James Baydal (Status: Open)</hi-link></p>
+        <hi-button aesthetic="primary" id="save-case-details-btn">Save</hi-button>
+        <hi-button aesthetic="secondary" id="close-edit-case-btn" class="ml-4">Cancel</hi-button>
+      </hi-drawer>
+
+      <!-- Report Finder drawer (AI Automated Alerts) -->
+      <hi-drawer id="report-finder-drawer" heading="Chat with Report Finder" direction="right">
+        <p class="clr-gray_80-txt text-sz-s mb-6">
+          This application is provided by EAB and uses OpenAI as a third-party service provider.
+          Woodley College records chat transcripts.
+        </p>
+        <hi-tile aesthetic="outline" class="mb-4">
+          <p>Hello! I&rsquo;m the AI Report Finder. I can help you find the right report and filters for your needs. What data would you like to see?</p>
+        </hi-tile>
+        <hi-tile aesthetic="outline" class="mb-4">
+          <p class="mb-2"><strong>You</strong></p>
+          <p>Full time students taking fewer than 15 credits this term</p>
+        </hi-tile>
+        <hi-tile aesthetic="outline" class="mb-4">
+          <p class="mb-4"><strong>Report Finder</strong></p>
+          <p class="mb-4">I recommend the <strong>Students Report</strong> with these filters:</p>
+          <ul>
+            <li>Categories contains Full-Time</li>
+            <li>Term Credit Hours in Spring 2026 less than 15</li>
+            <li>Enrollment Terms contains SPRING 2026</li>
+          </ul>
+          <hi-button aesthetic="primary" size="small" class="goto-students-report-link">Open Students Report</hi-button>
+        </hi-tile>
+      </hi-drawer>
+
+      <!-- Save Report dialog (AI Automated Alerts) -->
+      <hi-dialog id="save-report-dialog" heading="Save Report" size="small">
+        <hi-form>
+          <hi-input-group>
+            <hi-label for="saved-report-name">Report Name</hi-label>
+            <hi-input id="saved-report-name" value="Full time less than 15 spring 26"></hi-input>
+          </hi-input-group>
+        </hi-form>
+        <hi-button slot="controls" aesthetic="secondary" id="close-save-report-btn">Cancel</hi-button>
+        <hi-button slot="controls" aesthetic="primary" id="confirm-save-report-btn">Save as New Report</hi-button>
+      </hi-dialog>
     </main>
 
     <yi-view-footer>
@@ -1514,6 +2725,52 @@
         <hi-link href="#">Download Acrobat Reader</hi-link>
       </div>
     </yi-view-footer>
+
+    <link rel="stylesheet" href="../unset.css" />
+    <link rel="stylesheet" href="../demo-menu.css" />
+    <nav class="unset demo-menu-bar" aria-label="Prototype demo controls">
+      <button type="button" class="demo-menu-bar__brand" onclick="location.href='../index.html'">
+        <img class="demo-menu-bar__logo" src="assets/shared/eab-mark-white.svg" alt="" width="28" height="28" />
+        Prototypes
+      </button>
+      <div class="demo-menu-bar__menus">
+        <div class="demo-menu">
+          <button type="button" class="demo-menu__toggle" aria-haspopup="true" aria-expanded="false">
+            Scenarios<span class="demo-menu__caret" aria-hidden="true">▴</span>
+          </button>
+          <div class="demo-menu__panel demo-menu__panel--wide" hidden>
+            <div id="scenarios-menu-list" class="scenarios-menu-list"></div>
+          </div>
+        </div>
+        <div class="demo-menu">
+          <button type="button" class="demo-menu__toggle" aria-haspopup="true" aria-expanded="false">
+            Personas<span class="demo-menu__caret" aria-hidden="true">▴</span>
+          </button>
+          <div class="demo-menu__panel" hidden>
+            <p class="demo-menu__note">Jack Whitmore (Staff) — current</p>
+          </div>
+        </div>
+        <div class="demo-menu">
+          <button type="button" class="demo-menu__toggle" aria-haspopup="true" aria-expanded="false">
+            Theme<span class="demo-menu__caret" aria-hidden="true">▴</span>
+          </button>
+          <div class="demo-menu__panel" hidden>
+            <p class="demo-menu__note">HI/P — current</p>
+            <p class="demo-menu__note demo-menu__note--muted">Classic (coming soon)</p>
+            <p class="demo-menu__note demo-menu__note--muted">Modern (coming soon)</p>
+          </div>
+        </div>
+        <div class="demo-menu">
+          <button type="button" class="demo-menu__toggle" aria-haspopup="true" aria-expanded="false">
+            Settings<span class="demo-menu__caret" aria-hidden="true">▴</span>
+          </button>
+          <div class="demo-menu__panel" hidden>
+            <button type="button" class="demo-menu__link" onclick="location.href='../index.html'">Back to Index</button>
+            <button type="button" class="demo-menu__link" onclick="location.href='help.html'">Help</button>
+          </div>
+        </div>
+      </div>
+    </nav>
 
     <script type="module">
       const mainView = document.getElementById("main-view");
@@ -1533,14 +2790,428 @@
         switchEl.setAttribute("value", targetValue);
       }
 
+      const studentProfiles = {
+        wyatt: {
+          title: "James Wyatt",
+          metricsRow1: [
+            ["Course Grade D/F", "3"],
+            ["Repeated Courses", "1"],
+            ["Withdrawn Courses", "0"],
+            ["Missed Success Markers", "2"],
+            ["Cumulative GPA", "2.64"],
+          ],
+          metricsRow2: [
+            ["Total Credits Earned", "39.00"],
+            ["Credit Completion % at this Institution", "72%"],
+            ["Predicted Concern", "Unpredicted"],
+          ],
+          majorHtml: "Biology<br />Bachelor of Science<br />College of Sciences",
+          studentId: "90634817",
+          alternateId: "90634817",
+          enrollment: "Spring 2026",
+          goalsHtml: `
+            <div style="width: 50%;">
+              <p class="clr-gray_80-txt text-sz-s">Favorite Majors</p>
+              <p class="mb-2">Anthropology<br />Sociology</p>
+              <p class="clr-gray_80-txt text-sz-s">Favorite Subjects</p>
+              <p>Government/Law<br />Psychology<br />Science</p>
+            </div>
+            <div style="width: 50%;">
+              <p class="clr-gray_80-txt text-sz-s">Favorite Fields</p>
+              <p class="mb-2">Environmental/Earth Science<br />Social Sciences</p>
+              <p class="clr-gray_80-txt text-sz-s">Favorite Activities</p>
+              <p class="mb-2">Being Outdoors<br />Learning about People and Cultures<br />Managing and Organizing Things</p>
+              <p class="clr-gray_80-txt text-sz-s">Favorite Resources</p>
+              <p>None</p>
+            </div>`,
+        },
+        adams: {
+          title: "Michael Adams",
+          metricsRow1: [
+            ["Course Grade D/F", "2"],
+            ["Repeated Courses", "0"],
+            ["Withdrawn Courses", "2"],
+            ["Missed Success Markers", "0"],
+            ["Cumulative GPA", "2.75"],
+          ],
+          metricsRow2: [
+            ["Total Credits Earned", "33.00"],
+            ["Credit Completion % at this Institution", "79%"],
+            ["Predicted Concern", "Unpredicted"],
+          ],
+          majorHtml: "Data Modelling<br />Bachelor of Science<br />College of Sciences",
+          studentId: "87650214",
+          alternateId: "43058870",
+          enrollment: "Spring 2025",
+          goalsHtml: `
+            <div style="width: 50%;">
+              <p class="clr-gray_80-txt text-sz-s">Favorite Majors</p>
+              <p class="mb-2">None</p>
+              <p class="clr-gray_80-txt text-sz-s">Favorite Subjects</p>
+              <p>None</p>
+            </div>
+            <div style="width: 50%;">
+              <p class="clr-gray_80-txt text-sz-s">Favorite Fields</p>
+              <p class="mb-2">None</p>
+              <p class="clr-gray_80-txt text-sz-s">Favorite Activities</p>
+              <p class="mb-2">None</p>
+              <p class="clr-gray_80-txt text-sz-s">Favorite Resources</p>
+              <p>None</p>
+            </div>`,
+        },
+      };
+
+      function applyStudentProfile(profileKey) {
+        const profile = studentProfiles[profileKey];
+        if (!profile) return;
+        const title = document.getElementById("student-profile-title");
+        if (title) title.setAttribute("heading", profile.title);
+
+        const row1 = document.getElementById("student-summary-metrics-row1");
+        if (row1) {
+          row1.innerHTML = profile.metricsRow1.map(([header, value]) =>
+            `<vi-metric header="${header}" value="${value}" aesthetic="boxed" style="flex: 1 1 9rem;"></vi-metric>`
+          ).join("");
+        }
+        const row2 = document.getElementById("student-summary-metrics-row2");
+        if (row2) {
+          row2.innerHTML = profile.metricsRow2.map(([header, value]) =>
+            `<vi-metric header="${header}" value="${value}" aesthetic="boxed" style="flex: 1 1 12rem;"></vi-metric>`
+          ).join("");
+        }
+        const major = document.getElementById("student-overview-major");
+        if (major) major.innerHTML = `<p>${profile.majorHtml}</p>`;
+        const overview = document.getElementById("student-overview-details");
+        if (overview) {
+          const idCells = overview.querySelectorAll("div")[1];
+          if (idCells) {
+            idCells.innerHTML = `
+              <p class="clr-gray_80-txt text-sz-s">Student ID</p>
+              <p class="mb-2">${profile.studentId}</p>
+              <p class="clr-gray_80-txt text-sz-s">Alternate ID</p>
+              <p class="mb-2">${profile.alternateId}</p>
+              <p class="clr-gray_80-txt text-sz-s">Classification</p>
+              <p class="mb-2">Sophomore</p>
+              <p class="clr-gray_80-txt text-sz-s">Most Recent Enrollment</p>
+              <p>${profile.enrollment}</p>`;
+          }
+        }
+        const goals = document.getElementById("student-goals-content");
+        if (goals) goals.innerHTML = profile.goalsHtml;
+      }
+
       function goToJamesWyatt() {
         showCase(mainView, "james-wyatt");
         showCase(sidebarView, "james-wyatt");
+        applyStudentProfile("wyatt");
+      }
+
+      function goToMichaelAdams() {
+        showCase(mainView, "james-wyatt");
+        showCase(sidebarView, "james-wyatt");
+        applyStudentProfile("adams");
       }
 
       function goToStaffHome() {
         showCase(mainView, "staff-home");
         showCase(sidebarView, "staff-home");
+      }
+
+      function goToDashboard() {
+        showCase(mainView, "dashboard");
+        showCase(sidebarView, "staff-home");
+      }
+
+      function goToProfessorHome() {
+        showCase(mainView, "professor-home");
+        showCase(sidebarView, "staff-home");
+      }
+
+      function goToProgressReport() {
+        showCase(mainView, "progress-report");
+        showCase(sidebarView, "staff-home");
+      }
+
+      function goToProgressReportSuccess() {
+        showCase(mainView, "progress-report-success");
+        showCase(sidebarView, "staff-home");
+      }
+
+      function goToCases() {
+        showCase(mainView, "cases");
+        showCase(sidebarView, "staff-home");
+      }
+
+      function goToCaseDetail() {
+        showCase(mainView, "case-detail");
+        showCase(sidebarView, "staff-home");
+      }
+
+      const issueAlertDialog = document.getElementById("issue-alert-dialog");
+      const editCaseDrawer = document.getElementById("edit-case-drawer");
+
+      function openIssueAlert() {
+        if (issueAlertDialog) issueAlertDialog.setAttribute("opened", "");
+      }
+      function closeIssueAlert() {
+        if (issueAlertDialog) issueAlertDialog.removeAttribute("opened");
+      }
+      function openEditCaseDrawer() {
+        if (editCaseDrawer) editCaseDrawer.setAttribute("opened", "");
+      }
+      function closeEditCaseDrawer() {
+        if (editCaseDrawer) editCaseDrawer.removeAttribute("opened");
+      }
+
+      document.getElementById("close-issue-alert-btn")?.addEventListener("click", closeIssueAlert);
+      document.getElementById("submit-issue-alert-btn")?.addEventListener("click", () => {
+        closeIssueAlert();
+        goToCases();
+      });
+      document.getElementById("close-edit-case-btn")?.addEventListener("click", closeEditCaseDrawer);
+      document.getElementById("save-case-details-btn")?.addEventListener("click", () => {
+        closeEditCaseDrawer();
+        goToCases();
+      });
+
+      const reportFinderDrawer = document.getElementById("report-finder-drawer");
+      const saveReportDialog = document.getElementById("save-report-dialog");
+
+      function openReportFinder() {
+        if (reportFinderDrawer) reportFinderDrawer.setAttribute("opened", "");
+      }
+      function openSaveReport() {
+        if (saveReportDialog) saveReportDialog.setAttribute("opened", "");
+      }
+      function closeSaveReport() {
+        if (saveReportDialog) saveReportDialog.removeAttribute("opened");
+      }
+
+      document.getElementById("open-report-finder-btn")?.addEventListener("click", openReportFinder);
+      document.getElementById("open-save-report-btn")?.addEventListener("click", openSaveReport);
+      document.getElementById("close-save-report-btn")?.addEventListener("click", closeSaveReport);
+      document.getElementById("confirm-save-report-btn")?.addEventListener("click", closeSaveReport);
+
+      function goToReports() {
+        showCase(mainView, "reports");
+        showCase(sidebarView, "staff-home");
+      }
+      function goToStudentsReport() {
+        showCase(mainView, "students-report");
+        showCase(sidebarView, "staff-home");
+        if (reportFinderDrawer) reportFinderDrawer.removeAttribute("opened");
+      }
+      function goToMessagingCampaignWizard() {
+        showCase(mainView, "messaging-campaign-wizard");
+        showCase(sidebarView, "staff-home");
+      }
+      function goToMessagingNudgeSms() {
+        showCase(mainView, "messaging-nudge-sms");
+        showCase(sidebarView, "staff-home");
+      }
+      function goToMessagingCampaignVerify() {
+        showCase(mainView, "messaging-campaign-wizard");
+        showCase(sidebarView, "staff-home");
+        if (document.getElementById("messaging-wizard-panels")) {
+          showCase(document.getElementById("messaging-wizard-panels"), "msg-step-verify");
+        }
+      }
+      function goToMessagingCampaignSummary() {
+        showCase(mainView, "messaging-campaign-summary");
+        showCase(sidebarView, "staff-home");
+      }
+      function goToMessagingCampaignSummaryActive() {
+        showCase(mainView, "messaging-campaign-summary-active");
+        showCase(sidebarView, "staff-home");
+      }
+      function goToAutomations() {
+        showCase(mainView, "automations");
+        showCase(sidebarView, "staff-home");
+      }
+      function goToNewAutomation() {
+        showCase(mainView, "new-automation");
+        showCase(sidebarView, "staff-home");
+      }
+      function goToAutomationDetail() {
+        showCase(mainView, "automation-detail");
+        showCase(sidebarView, "staff-home");
+      }
+      function goToMsgStepRecipients() {
+        showCase(mainView, "messaging-campaign-wizard");
+        showCase(document.getElementById("messaging-wizard-panels"), "msg-step-recipients");
+      }
+      function goToMsgStepOutreach() {
+        showCase(mainView, "messaging-campaign-wizard");
+        showCase(document.getElementById("messaging-wizard-panels"), "msg-step-outreach");
+      }
+
+      const staffAssistantDrawer = document.getElementById("staff-assistant-drawer");
+      const appointmentSummaryDialog = document.getElementById("appointment-summary-dialog");
+      const transcriptionConsentDialog = document.getElementById("transcription-consent-dialog");
+      const transcriptionOutput = document.getElementById("transcription-output");
+
+      function openStaffAssistant() {
+        if (staffAssistantDrawer) staffAssistantDrawer.setAttribute("opened", "");
+      }
+      function openAppointmentSummary() {
+        if (appointmentSummaryDialog) appointmentSummaryDialog.setAttribute("opened", "");
+      }
+      function closeAppointmentSummary() {
+        if (appointmentSummaryDialog) appointmentSummaryDialog.removeAttribute("opened");
+      }
+
+      document.getElementById("open-staff-assistant-btn")?.addEventListener("click", openStaffAssistant);
+      document.getElementById("close-appt-summary-btn")?.addEventListener("click", closeAppointmentSummary);
+      document.getElementById("start-transcription-btn")?.addEventListener("click", () => {
+        if (transcriptionConsentDialog) transcriptionConsentDialog.setAttribute("opened", "");
+      });
+      document.getElementById("transcription-consent-no")?.addEventListener("click", () => {
+        if (transcriptionConsentDialog) transcriptionConsentDialog.removeAttribute("opened");
+      });
+      document.getElementById("transcription-consent-yes")?.addEventListener("click", () => {
+        if (transcriptionConsentDialog) transcriptionConsentDialog.removeAttribute("opened");
+        if (transcriptionOutput) transcriptionOutput.removeAttribute("hidden");
+      });
+
+      // ---------------------------------------------------------------
+      // CAMPAIGNS & EVENTS: client-side navigation between the landing
+      // page, the enrollment campaigns list, the campaign wizard, and
+      // the campaign detail/stats page. All live inside main-view so no
+      // page reload / extra files are required, matching the pattern
+      // used for Staff Home <-> James Wyatt above.
+      // ---------------------------------------------------------------
+      const campaignWizardSteps = document.getElementById("campaign-wizard-steps");
+      const campaignWizardPanels = document.getElementById("campaign-wizard-panels");
+      const campaignNudgesPanels = document.getElementById("campaign-nudges-panels");
+
+      function goToCampaigns() {
+        showCase(mainView, "campaigns");
+      }
+      function goToEnrollmentCampaigns() {
+        showCase(mainView, "enrollment-campaigns");
+      }
+      function goToCampaignWizard() {
+        showCase(mainView, "campaign-wizard");
+        if (campaignWizardSteps) campaignWizardSteps.setAttribute("value", "campaign-step-define");
+        showCase(campaignWizardPanels, "campaign-step-define");
+        showCase(campaignNudgesPanels, "nudges-summary");
+      }
+      function goToCampaignDetail() {
+        showCase(mainView, "campaign-detail");
+      }
+      function goToCampaignStep(step) {
+        if (campaignWizardSteps) campaignWizardSteps.setAttribute("value", step);
+        showCase(campaignWizardPanels, step);
+      }
+      function goToNudgeCompose() {
+        showCase(campaignNudgesPanels, "nudge-compose");
+      }
+      function goToNudgesSummary() {
+        showCase(campaignNudgesPanels, "nudges-summary");
+      }
+
+      window.goToCampaigns = goToCampaigns;
+      window.goToEnrollmentCampaigns = goToEnrollmentCampaigns;
+      window.goToCampaignWizard = goToCampaignWizard;
+      window.goToCampaignDetail = goToCampaignDetail;
+
+      // Allow deep-linking straight into the Campaigns & Events area, e.g.
+      // navigate-app.html?view=campaigns, matching the ?login=pulse-check
+      // pattern used in student-onboarding.html for entry-state links.
+      if (new URLSearchParams(location.search).get("view") === "campaigns") {
+        goToCampaigns();
+      } else if (new URLSearchParams(location.search).get("view") === "advisor-101") {
+        goToStaffHome();
+      } else if (new URLSearchParams(location.search).get("view") === "dashboard") {
+        goToDashboard();
+      } else if (new URLSearchParams(location.search).get("view") === "staff-powered-alerts") {
+        goToProfessorHome();
+      } else if (new URLSearchParams(location.search).get("view") === "ai-automated-alerts") {
+        goToDashboard();
+      }
+
+      document.addEventListener("click", (e) => {
+        const path = e.composedPath ? e.composedPath() : [e.target];
+        const link = path.find((n) => n.classList && (
+          n.classList.contains("goto-campaigns-link") ||
+          n.classList.contains("goto-enrollment-campaigns-link") ||
+          n.classList.contains("goto-campaign-wizard-link") ||
+          n.classList.contains("goto-campaign-detail-link") ||
+          n.classList.contains("goto-nudge-compose-link") ||
+          n.classList.contains("goto-nudges-summary-link") ||
+          n.classList.contains("goto-campaign-step-define-link") ||
+          n.classList.contains("goto-campaign-step-recipients-link") ||
+          n.classList.contains("goto-campaign-step-nudges-link") ||
+          n.classList.contains("goto-campaign-step-verify-link")
+        ));
+        if (!link) return;
+        e.preventDefault();
+        if (link.classList.contains("goto-campaigns-link")) goToCampaigns();
+        else if (link.classList.contains("goto-enrollment-campaigns-link")) goToEnrollmentCampaigns();
+        else if (link.classList.contains("goto-campaign-wizard-link")) goToCampaignWizard();
+        else if (link.classList.contains("goto-campaign-detail-link")) goToCampaignDetail();
+        else if (link.classList.contains("goto-nudge-compose-link")) goToNudgeCompose();
+        else if (link.classList.contains("goto-nudges-summary-link")) goToNudgesSummary();
+        else if (link.classList.contains("goto-campaign-step-define-link")) goToCampaignStep("campaign-step-define");
+        else if (link.classList.contains("goto-campaign-step-recipients-link")) goToCampaignStep("campaign-step-recipients");
+        else if (link.classList.contains("goto-campaign-step-nudges-link")) goToCampaignStep("campaign-step-nudges");
+        else if (link.classList.contains("goto-campaign-step-verify-link")) goToCampaignStep("campaign-step-verify");
+      });
+
+      // Wire the "Campaigns & Events" item in the left icon rail (declared
+      // via hi-navigation-tertiary's navigation-actions JSON, so it renders
+      // inside that component's shadow root with no addressable id/class -
+      // match on its accessible title text instead).
+      const tertiaryNav = document.querySelector("hi-navigation-tertiary");
+      if (tertiaryNav) {
+        tertiaryNav.addEventListener("click", (e) => {
+          const path = e.composedPath ? e.composedPath() : [e.target];
+          const hit = path.find((n) => {
+            if (!n || n.nodeType !== 1) return false;
+            const label = (n.getAttribute && (n.getAttribute("aria-label") || n.getAttribute("title"))) || n.textContent || "";
+            return label.trim() === "Campaigns & Events";
+          });
+          if (hit) {
+            e.preventDefault();
+            goToCampaigns();
+          }
+          const dashHit = path.find((n) => {
+            if (!n || n.nodeType !== 1) return false;
+            const label = (n.getAttribute && (n.getAttribute("aria-label") || n.getAttribute("title"))) || n.textContent || "";
+            return label.trim() === "Dashboard";
+          });
+          if (dashHit) {
+            e.preventDefault();
+            goToDashboard();
+          }
+          const casesHit = path.find((n) => {
+            if (!n || n.nodeType !== 1) return false;
+            const label = (n.getAttribute && (n.getAttribute("aria-label") || n.getAttribute("title"))) || n.textContent || "";
+            return label.trim() === "Cases";
+          });
+          if (casesHit) {
+            e.preventDefault();
+            goToCases();
+          }
+          const homeHit = path.find((n) => {
+            if (!n || n.nodeType !== 1) return false;
+            const label = (n.getAttribute && (n.getAttribute("aria-label") || n.getAttribute("title"))) || n.textContent || "";
+            return label.trim() === "Home";
+          });
+          if (homeHit && new URLSearchParams(location.search).get("view") === "staff-powered-alerts") {
+            e.preventDefault();
+            goToProfessorHome();
+          }
+          const reportingHit = path.find((n) => {
+            if (!n || n.nodeType !== 1) return false;
+            const label = (n.getAttribute && (n.getAttribute("aria-label") || n.getAttribute("title"))) || n.textContent || "";
+            return label.trim() === "Reporting";
+          });
+          if (reportingHit) {
+            e.preventDefault();
+            goToReports();
+          }
+        });
       }
 
       // Delegate on document since some .goto-wyatt-link elements are rendered
@@ -1555,13 +3226,98 @@
         // passed through, shadow DOM or not.
         const path = e.composedPath ? e.composedPath() : [e.target];
         const wyattLink = path.find((n) => n.classList && n.classList.contains("goto-wyatt-link"));
+        const adamsLink = path.find((n) => n.classList && n.classList.contains("goto-adams-link"));
         const staffHomeLink = path.find((n) => n.classList && n.classList.contains("goto-staff-home-link"));
+        const apptSummaryLink = path.find((n) => n.classList && n.classList.contains("goto-appt-summary-link"));
+        const professorHomeLink = path.find((n) => n.classList && n.classList.contains("goto-professor-home-link"));
+        const progressReportLink = path.find((n) => n.classList && n.classList.contains("goto-progress-report-link"));
+        const progressReportSuccessLink = path.find((n) => n.classList && n.classList.contains("goto-progress-report-success-link"));
+        const casesLink = path.find((n) => n.classList && n.classList.contains("goto-cases-link"));
+        const caseDetailLink = path.find((n) => n.classList && n.classList.contains("goto-case-detail-link"));
+        const case513Link = path.find((n) => n.classList && n.classList.contains("goto-case-513-link"));
+        const issueAlertLink = path.find((n) => n.classList && n.classList.contains("goto-issue-alert-link"));
+        const editCaseLink = path.find((n) => n.classList && n.classList.contains("goto-edit-case-link"));
+        const reportsLink = path.find((n) => n.classList && n.classList.contains("goto-reports-link"));
+        const studentsReportLink = path.find((n) => n.classList && n.classList.contains("goto-students-report-link"));
+        const messagingWizardLink = path.find((n) => n.classList && n.classList.contains("goto-messaging-campaign-wizard-link"));
+        const messagingNudgeSmsLink = path.find((n) => n.classList && n.classList.contains("goto-messaging-nudge-sms-link"));
+        const msgStepRecipientsLink = path.find((n) => n.classList && n.classList.contains("goto-msg-step-recipients-link"));
+        const msgStepOutreachLink = path.find((n) => n.classList && n.classList.contains("goto-msg-step-outreach-link"));
+        const msgStepVerifyLink = path.find((n) => n.classList && n.classList.contains("goto-msg-step-verify-link"));
+        const messagingSummaryLink = path.find((n) => n.classList && n.classList.contains("goto-messaging-campaign-summary-link"));
+        const messagingSummaryActiveLink = path.find((n) => n.classList && n.classList.contains("goto-messaging-campaign-summary-active-link"));
+        const automationsLink = path.find((n) => n.classList && n.classList.contains("goto-automations-link"));
+        const newAutomationLink = path.find((n) => n.classList && n.classList.contains("goto-new-automation-link"));
+        const automationDetailLink = path.find((n) => n.classList && n.classList.contains("goto-automation-detail-link"));
         if (wyattLink) {
           e.preventDefault();
           goToJamesWyatt();
+        } else if (adamsLink) {
+          e.preventDefault();
+          goToMichaelAdams();
         } else if (staffHomeLink) {
           e.preventDefault();
           goToStaffHome();
+        } else if (apptSummaryLink) {
+          e.preventDefault();
+          openAppointmentSummary();
+        } else if (professorHomeLink) {
+          e.preventDefault();
+          goToProfessorHome();
+        } else if (progressReportLink) {
+          e.preventDefault();
+          goToProgressReport();
+        } else if (progressReportSuccessLink) {
+          e.preventDefault();
+          goToProgressReportSuccess();
+        } else if (casesLink) {
+          e.preventDefault();
+          goToCases();
+        } else if (caseDetailLink || case513Link) {
+          e.preventDefault();
+          goToCaseDetail();
+        } else if (issueAlertLink) {
+          e.preventDefault();
+          openIssueAlert();
+        } else if (editCaseLink) {
+          e.preventDefault();
+          openEditCaseDrawer();
+        } else if (reportsLink) {
+          e.preventDefault();
+          goToReports();
+        } else if (studentsReportLink) {
+          e.preventDefault();
+          goToStudentsReport();
+        } else if (messagingWizardLink) {
+          e.preventDefault();
+          goToMessagingCampaignWizard();
+        } else if (messagingNudgeSmsLink) {
+          e.preventDefault();
+          goToMessagingNudgeSms();
+        } else if (msgStepRecipientsLink) {
+          e.preventDefault();
+          goToMsgStepRecipients();
+        } else if (msgStepOutreachLink) {
+          e.preventDefault();
+          goToMsgStepOutreach();
+        } else if (msgStepVerifyLink) {
+          e.preventDefault();
+          goToMessagingCampaignVerify();
+        } else if (messagingSummaryLink) {
+          e.preventDefault();
+          goToMessagingCampaignSummary();
+        } else if (messagingSummaryActiveLink) {
+          e.preventDefault();
+          goToMessagingCampaignSummaryActive();
+        } else if (automationsLink) {
+          e.preventDefault();
+          goToAutomations();
+        } else if (newAutomationLink) {
+          e.preventDefault();
+          goToNewAutomation();
+        } else if (automationDetailLink) {
+          e.preventDefault();
+          goToAutomationDetail();
         }
       });
 
@@ -1571,13 +3327,22 @@
       // management before reaching this page's listener, so automation
       // should trigger navigation directly rather than simulating a click.
       window.goToJamesWyatt = goToJamesWyatt;
+      window.goToMichaelAdams = goToMichaelAdams;
       window.goToStaffHome = goToStaffHome;
+      window.goToDashboard = goToDashboard;
+      window.goToProfessorHome = goToProfessorHome;
+      window.goToProgressReport = goToProgressReport;
+      window.goToCases = goToCases;
+      window.goToCaseDetail = goToCaseDetail;
+      window.openIssueAlert = openIssueAlert;
+      window.goToReports = goToReports;
+      window.goToMessagingCampaignWizard = goToMessagingCampaignWizard;
+      window.goToAutomations = goToAutomations;
+      window.openAppointmentSummary = openAppointmentSummary;
 
-      // Page-title menus (Staff Home / James Wyatt) are plain headline +
-      // caret with no closed-state chrome, unlike hi-flyout's default
-      // elevated anchor styling - see the demo-build skill's visual-role
-      // override rule (EAB Demo Builder plugin).
-      document.querySelectorAll(".page-title-menu-toggle").forEach((toggle) => {
+      // Page-title menus inside the prototype (Staff Home / James Wyatt flyouts)
+      // use .page-title-menu-toggle — not the demo menu bar above.
+      document.querySelectorAll(".page-title-flyout-anchor.page-title-menu-toggle").forEach((toggle) => {
         const menu = toggle.nextElementSibling;
         if (!menu) return;
         toggle.addEventListener("click", () => {
@@ -1613,6 +3378,8 @@
         });
       }
     </script>
+    <script src="../interface.js"></script>
+    <script src="scenarios.js"></script>
     <noscript>
       <h1>Application Failure</h1>
       <p>The application cannot offer an experience because it relies on Javascript.</p>

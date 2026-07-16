@@ -1,0 +1,14 @@
+{
+  "demo": "demos/navigate-app.html",
+  "viewport": { "width": 1600, "height": 1050 },
+  "output": "videos/student-alerts/prototype-staff.webm",
+  "actions": [
+    { "at": 0, "type": "log", "message": "Staff Home loaded" },
+    { "at": 6, "type": "evaluate", "expression": "window.goToJamesWyatt()", "message": "Open James Wyatt's student profile" },
+    { "at": 12, "type": "dispatchClick", "selector": "hi-tab[for=\"jw-history\"]", "message": "Open the History tab" },
+    { "at": 18, "type": "log", "message": "James's History timeline visible" },
+    { "at": 24, "type": "evaluate", "expression": "document.getElementById('jw-student-initiated-alerts').style.display = ''", "message": "Switch View As to Student Initiated Alerts for James" },
+    { "at": 32, "type": "log", "message": "Student Initiated Alerts For James report visible" },
+    { "at": 40, "type": "log", "message": "End of staff-side walkthrough" }
+  ]
+}

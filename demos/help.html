@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Help | EAB Prototype Demos</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="EAB Global Inc." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="Help for the EAB Prototype demos" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, width=device-width, viewport-fit=cover"
+    />
+    <link rel="stylesheet" href="../interface.css" />
+  </head>
+  <body class="iface-help">
+    <main class="unset iface-help__content">
+      <h1 class="iface-help__title">Help</h1>
+      <p class="iface-help__text">
+        Open <strong>Scenarios</strong> in the menu below to pick a demo. Each
+        scenario shows a short walkthrough before you click <strong>Go!</strong>
+        to jump to that recording's starting point.
+      </p>
+      <p class="iface-help__text">
+        <strong>Personas</strong> and <strong>Theme</strong> will switch the
+        active user and visual design when additional patterns are added.
+      </p>
+      <p><a class="iface-link" href="../index.html">Back to Index</a></p>
+    </main>
+
+    <link rel="stylesheet" href="../unset.css" />
+    <style>
+      body.iface-help {
+        margin: 0;
+        font-family: var(--iface-font);
+        background: var(--iface-bg);
+        color: var(--iface-text);
+      }
+      .iface-help__content {
+        max-width: 40rem;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem 4rem;
+      }
+      .iface-help__title {
+        margin: 0 0 1rem;
+        font-size: 1.75rem;
+        font-weight: 700;
+      }
+      .iface-help__text {
+        margin: 0 0 1.5rem;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--iface-muted);
+      }
+    </style>
+    <link rel="stylesheet" href="../demo-menu.css" />
+    <nav class="unset demo-menu-bar" aria-label="Prototype demo controls">
+      <button type="button" class="demo-menu-bar__brand" onclick="location.href='../index.html'">
+        <img class="demo-menu-bar__logo" src="assets/shared/eab-mark-white.svg" alt="" width="28" height="28" />
+        Prototypes
+      </button>
+      <div class="demo-menu-bar__menus">
+        <div class="demo-menu">
+          <button type="button" class="demo-menu__toggle" aria-haspopup="true" aria-expanded="false">
+            Scenarios<span class="demo-menu__caret" aria-hidden="true">▴</span>
+          </button>
+          <div class="demo-menu__panel demo-menu__panel--wide" hidden>
+            <div id="scenarios-menu-list" class="scenarios-menu-list"></div>
+          </div>
+        </div>
+        <div class="demo-menu">
+          <button type="button" class="demo-menu__toggle" aria-haspopup="true" aria-expanded="false">
+            Personas<span class="demo-menu__caret" aria-hidden="true">▴</span>
+          </button>
+          <div class="demo-menu__panel" hidden>
+            <p class="demo-menu__note">No prototype loaded</p>
+          </div>
+        </div>
+        <div class="demo-menu">
+          <button type="button" class="demo-menu__toggle" aria-haspopup="true" aria-expanded="false">
+            Theme<span class="demo-menu__caret" aria-hidden="true">▴</span>
+          </button>
+          <div class="demo-menu__panel" hidden>
+            <p class="demo-menu__note">HI/P — current</p>
+            <p class="demo-menu__note demo-menu__note--muted">Classic (coming soon)</p>
+            <p class="demo-menu__note demo-menu__note--muted">Modern (coming soon)</p>
+          </div>
+        </div>
+        <div class="demo-menu">
+          <button type="button" class="demo-menu__toggle" aria-haspopup="true" aria-expanded="false">
+            Settings<span class="demo-menu__caret" aria-hidden="true">▴</span>
+          </button>
+          <div class="demo-menu__panel" hidden>
+            <button type="button" class="demo-menu__link" onclick="location.href='../index.html'">Back to Index</button>
+            <button type="button" class="demo-menu__link" onclick="location.href='help.html'">Help</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <script src="../interface.js"></script>
+    <script src="scenarios.js"></script>
+  </body>
+</html>

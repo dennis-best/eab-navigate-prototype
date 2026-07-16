@@ -1,0 +1,926 @@
+<!doctype html>
+<html lang="en" hip-font-size-dynamic>
+  <head>
+    <title>Application Management | Applicant Portal</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="EAB Global Inc." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="Enrollment Story 2: Application Management applicant portal prototype" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, user-scalable=no, width=device-width, viewport-fit=cover"
+    />
+
+    <style id="hip-fouc-guard">
+      body:not([x-hif="initialized"]) main#app,
+      body:not([x-hif="initialized"]) yi-view-footer,
+      body:not([x-hif="initialized"]) .iface-index__page { visibility: hidden; }
+    </style>
+    <link rel="stylesheet" href="../interface.css" />
+
+    <script
+      src="https://cdn.dev.eab.com/hif/latest/index.js"
+      auto-start
+      release="prod"
+      system-load-core
+      system-load-baseline
+      system-load-ds
+      system-load-os
+      library-stop-dragula
+      library-stop-moment
+    ></script>
+    <script>
+      $ip.flags.load([
+        ["/eip/hi-form/default-to-rest", true],
+        ["/pip/pi-ip/insert-css-after-script", true],
+        ["/eip/hi-http/enable-xss-purification-response", false],
+      ]);
+    </script>
+  </head>
+  <body x-layout-system="blueprint" x-hosting="owner">
+  <style>
+    .portal-sidebar hi-item { cursor: pointer; }
+    .portal-breadcrumb { font-size: 0.875rem; color: var(--hi-clr--gray_60, #666); margin-bottom: 0.5rem; }
+    .portal-breadcrumb hi-link { font-size: 0.875rem; }
+    .portal-page-title { font-size: 1.5rem; font-weight: var(--hi-font--weight-bold); margin-bottom: 1rem; }
+    .portal-section-title {
+      font-size: 1.125rem; font-weight: var(--hi-font--weight-bold);
+      border-bottom: 1px solid var(--hi-clr--gray_30, #d5d5d5);
+      padding-bottom: 0.5rem; margin-bottom: 1rem;
+    }
+    .hub-section-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.75rem 0; border-bottom: 1px solid var(--hi-clr--gray_20, #eee);
+    }
+    .hub-section-row:last-child { border-bottom: none; }
+    .hub-section-status { font-size: 0.875rem; color: var(--hi-clr--gray_60, #666); white-space: nowrap; }
+    .app-meta { font-size: 0.875rem; color: var(--hi-clr--gray_60, #666); margin-top: 0.25rem; }
+    .app-status-badge { font-size: 0.75rem; text-transform: uppercase; }
+    .upload-dropzone {
+      border: 2px dashed var(--hi-clr--gray_30, #d5d5d5);
+      border-radius: var(--hi-radius--m, 4px);
+      padding: 2rem; text-align: center; color: var(--hi-clr--gray_60, #666);
+      background: var(--hi-clr--gray_10, #f5f5f5); margin-top: 0.5rem;
+    }
+    .external-page {
+      min-height: 100vh; background: var(--hi-clr--gray_10, #f0f0f0);
+      display: flex; flex-direction: column; align-items: center; padding: 3rem 1.5rem;
+    }
+    .external-card {
+      background: #fff; border: 1px solid var(--hi-clr--gray_30, #d5d5d5);
+      border-radius: var(--hi-radius--m, 4px); padding: 2rem; max-width: 640px; width: 100%;
+    }
+    .institution-logo { display: block; width: 10rem; margin: 0 auto 1.5rem; }
+    .info-row { display: flex; gap: 1rem; margin-bottom: 0.5rem; }
+    .info-row dt { font-weight: var(--hi-font--weight-bold); min-width: 12rem; }
+    .info-row dd { margin: 0; }
+    .optional-alert {
+      border: 1px solid var(--hi-clr--blue-3, #4a90d9);
+      background: var(--hi-clr--blue-1, #e8f0fa);
+      padding: 1rem; border-radius: var(--hi-radius--m, 4px); margin-bottom: 1.5rem;
+    }
+    #portal-sidebar-wrap[hidden] { display: none; }
+    #portal-chrome[hidden] { display: none; }
+    #portal-main-wrap.portal-main--full { width: 100%; max-width: none; }
+
+    /* Applicant Portal chrome (Enrollment Story 2 part 2): unobstructed
+       header when not impersonating — ~10% brand-color tint, branded
+       stripes, institution bar, then Applicant Portal title row. */
+    #portal-shell { display: flex; flex-direction: column; min-height: 100vh; }
+    .portal-brand-stripes { display: flex; flex-direction: column; }
+    .portal-brand-stripes__blue { height: 4px; background: #3d6bad; }
+    .portal-brand-stripes__accent { height: 3px; background: #c9a86c; }
+    .portal-institution-bar {
+      background: #e8e8e8; color: #555; font-size: 0.75rem;
+      letter-spacing: 0.08em; text-transform: uppercase; padding: 0.35rem 1rem;
+    }
+    .portal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      background: #e8f0f7; padding: 0.75rem 1.5rem;
+      border-bottom: 1px solid #d5dde8;
+    }
+    .portal-header__left { display: flex; align-items: center; gap: 0.75rem; }
+    .portal-header__logo { height: 2.5rem; width: auto; }
+    .portal-header__title {
+      font-size: 1.125rem; font-weight: var(--hi-font--weight-bold);
+      color: #2c5282;
+    }
+    .portal-header__right {
+      display: flex; align-items: center; gap: 1rem; color: #2c5282;
+    }
+    .portal-body { display: flex; flex: 1; min-height: 0; }
+    #portal-sidebar-wrap {
+      width: 180px; flex-shrink: 0; background: #f0f4f8;
+      border-right: 1px solid #d5dde8; padding: 1rem 0;
+    }
+    .portal-sidebar hi-item[selected] {
+      border-left: 3px solid #3d6bad;
+      background: #e2eaf3;
+    }
+    #portal-main-wrap {
+      flex: 1; padding: 1.5rem 2rem 2rem; background: #fff;
+      overflow: auto;
+    }
+    .portal-panel {
+      border: 1px solid var(--hi-clr--gray_30, #d5d5d5);
+      border-radius: var(--hi-radius--m, 4px);
+      padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;
+    }
+    .portal-panel__head {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1rem;
+    }
+    .portal-panel__title {
+      font-size: 1.125rem; font-weight: var(--hi-font--weight-bold);
+    }
+    .portal-app-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 0.75rem 0; border-bottom: 1px solid var(--hi-clr--gray_20, #eee);
+    }
+    .portal-app-row:last-child { border-bottom: none; }
+    .portal-app-row__status {
+      font-size: 0.75rem; color: var(--hi-clr--gray_60, #666);
+      text-transform: uppercase; white-space: nowrap;
+    }
+    #portal-shell.portal-shell--external .portal-body { display: block; }
+    #portal-shell.portal-shell--external #portal-main-wrap {
+      padding: 0; background: transparent;
+    }
+  </style>
+
+    <main id="app" x-area="screen" x-hosting="screen">
+      <div id="portal-shell">
+        <div id="portal-chrome">
+          <div class="portal-brand-stripes" aria-hidden="true">
+            <span class="portal-brand-stripes__blue"></span>
+            <span class="portal-brand-stripes__accent"></span>
+          </div>
+          <div class="portal-institution-bar">Woodley University</div>
+          <header class="portal-header">
+            <div class="portal-header__left">
+              <img src="assets/student-onboarding/whitehurst-logo.png" alt="Woodley University" class="portal-header__logo" />
+              <span class="portal-header__title">Applicant Portal</span>
+            </div>
+            <div class="portal-header__right">
+              <hi-icon glyph="accessibility" size="medium"></hi-icon>
+              <hi-icon glyph="more_vert" size="medium"></hi-icon>
+              <hi-avatar initials="KC" label="Katy Chew" size="small"></hi-avatar>
+            </div>
+          </header>
+        </div>
+
+        <div class="portal-body">
+      <section id="portal-sidebar-wrap" class="pa-2">
+        <hi-list fit-width id="portal-sidebar" class="portal-sidebar" value="home">
+          <hi-item value="home"><hi-icon glyph="home" size="medium" theme="blue" class="mr-2"></hi-icon>Home</hi-item>
+          <hi-item value="applications"><hi-icon glyph="description" size="medium" theme="blue" class="mr-2"></hi-icon>Applications</hi-item>
+          <hi-item value="appointments"><hi-icon glyph="person" size="medium" theme="magenta" class="mr-2"></hi-icon>Appointments</hi-item>
+          <hi-item value="calendar"><hi-icon glyph="calendar" size="medium" theme="magenta" class="mr-2"></hi-icon>Calendar</hi-item>
+          <hi-item value="events"><hi-icon glyph="list" size="medium" class="mr-2"></hi-icon>Events</hi-item>
+        </hi-list>
+      </section>
+
+      <section id="portal-main-wrap">
+        <hi-switch id="portal-view">
+
+          <!-- ============================================================ -->
+          <!-- PORTAL HOME                                                  -->
+          <!-- ============================================================ -->
+          <hi-case id="portal-home" value="portal-home">
+            <p class="portal-page-title">Welcome, Katy</p>
+            <p class="mb-6">Thank you for your interest in applying to our institution. You can start and manage your application in this portal (From CSAT Call).</p>
+
+            <div class="portal-panel">
+              <div class="portal-panel__head">
+                <span class="portal-panel__title">My Active Applications</span>
+                <hi-link class="goto-applications-list-link" style="font-size:0.875rem;">
+                  <hi-icon glyph="visibility" size="small" class="mr-1"></hi-icon>View All
+                </hi-link>
+              </div>
+              <hi-button aesthetic="primary" class="mb-4">+ Start New Application</hi-button>
+              <div class="portal-app-row">
+                <div>
+                  <p><hi-link class="goto-submitted-summer-link">Summer 2026 Application</hi-link></p>
+                  <p class="app-meta">Updated 06/11/2026 11:31 AM ET &nbsp; Submitted 06/10/2026 6:28 PM ET &nbsp; Due 06/30/2026 11:59 PM ET</p>
+                </div>
+                <span class="portal-app-row__status">Reviewed</span>
+              </div>
+              <div class="portal-app-row">
+                <div>
+                  <p><hi-link class="goto-application-hub-link">Demo - General Application - Woodley University</hi-link></p>
+                  <p class="app-meta">Updated 07/14/2026 1:36 AM ET</p>
+                </div>
+              </div>
+              <div class="portal-app-row">
+                <div>
+                  <p><hi-link class="goto-application-hub-link">General Application - Woodley University</hi-link></p>
+                  <p class="app-meta">Updated 06/02/2026 2:19 PM ET</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="portal-panel">
+              <div class="portal-panel__head">
+                <span class="portal-panel__title">My Upcoming Appointments</span>
+                <hi-link style="font-size:0.875rem;">
+                  <hi-icon glyph="visibility" size="small" class="mr-1"></hi-icon>View All
+                </hi-link>
+              </div>
+              <hi-button aesthetic="secondary" class="mb-4">+ Schedule Appointment</hi-button>
+              <p class="clr-gray_60-txt">You have no upcoming appointments at this time.</p>
+            </div>
+          </hi-case>
+
+          <!-- ============================================================ -->
+          <!-- APPLICATIONS LIST                                            -->
+          <!-- ============================================================ -->
+          <hi-case id="applications-list" value="applications-list" hidden>
+            <nav class="portal-breadcrumb" aria-label="Breadcrumb">
+              <hi-link class="goto-portal-home-link">Home</hi-link> &gt; Applications
+            </nav>
+            <p class="portal-page-title">My Applications</p>
+            <hi-button aesthetic="primary" class="mb-6">+ Start New Application</hi-button>
+            <div class="mb-4">
+              <p><hi-link class="goto-application-hub-link">Demo - General Application - Woodley University</hi-link></p>
+              <p class="app-meta">Updated 07/14/2026 1:36 AM ET</p>
+            </div>
+            <div class="mb-4">
+              <p><hi-link class="goto-submitted-summer-link">Summer 2026 Application</hi-link>
+                <hi-badge value="Reviewed" theme="green" class="app-status-badge ml-2"></hi-badge>
+              </p>
+              <p class="app-meta">Updated 06/11/2026 11:31 AM ET &nbsp; Submitted 06/10/2026 6:28 PM ET &nbsp; Due 06/30/2026 11:59 PM ET</p>
+            </div>
+            <div class="mb-4">
+              <p><hi-link class="goto-application-hub-link">General Application - Woodley University</hi-link></p>
+              <p class="app-meta">Updated 06/02/2026 2:19 PM ET</p>
+            </div>
+          </hi-case>
+
+          <!-- ============================================================ -->
+          <!-- APPLICATION HUB (hub-and-spoke section list)                 -->
+          <!-- ============================================================ -->
+          <hi-case id="application-hub" value="application-hub" hidden>
+            <nav class="portal-breadcrumb" aria-label="Breadcrumb">
+              <hi-link class="goto-portal-home-link">Home</hi-link> &gt;
+              <hi-link class="goto-applications-list-link">Applications</hi-link> &gt;
+              Demo - General Application - Woodley University
+            </nav>
+            <p class="portal-page-title">Demo - General Application - Woodley University</p>
+            <p class="mb-6">You must complete all required fields in each section before submitting your application.</p>
+
+            <yi-card>
+              <div class="hub-section-row">
+                <hi-link class="goto-personal-background-link">Personal Background</hi-link>
+                <span class="hub-section-status">Missing Required Items</span>
+              </div>
+              <div class="hub-section-row">
+                <hi-link class="goto-section-stub-link" data-section="Family/Guardian Information">Family/Guardian Information</hi-link>
+                <span class="hub-section-status">Not Started</span>
+              </div>
+              <div class="hub-section-row">
+                <hi-link class="goto-section-stub-link" data-section="Education History">Education History</hi-link>
+                <span class="hub-section-status">Not Started</span>
+              </div>
+              <div class="hub-section-row">
+                <hi-link class="goto-section-stub-link" data-section="Program Information">Program Information</hi-link>
+                <span class="hub-section-status">Not Started</span>
+              </div>
+              <div class="hub-section-row">
+                <hi-link class="goto-section-stub-link" data-section="Test Scores">Test Scores</hi-link>
+                <span class="hub-section-status">Not Started</span>
+              </div>
+              <div class="hub-section-row">
+                <hi-link class="goto-section-stub-link" data-section="Extracurricular Activities and Awards/Distinctions">Extracurricular Activities and Awards/Distinctions</hi-link>
+                <span class="hub-section-status">Not Started</span>
+              </div>
+              <div class="hub-section-row">
+                <hi-link class="goto-section-stub-link" data-section="Essay">Essay</hi-link>
+                <span class="hub-section-status" id="hub-status-essay">Not Started</span>
+              </div>
+              <div class="hub-section-row">
+                <hi-link class="goto-section-stub-link" data-section="Supplemental Questions">Supplemental Questions</hi-link>
+                <span class="hub-section-status">Not Started</span>
+              </div>
+              <div class="hub-section-row">
+                <hi-link class="goto-section-stub-link" data-section="Fee Waiver">Fee Waiver</hi-link>
+                <span class="hub-section-status">Not Started</span>
+              </div>
+              <div class="hub-section-row">
+                <hi-link class="goto-section-stub-link" data-section="Military/Veteran Information">Military/Veteran Information</hi-link>
+                <span class="hub-section-status">Not Started</span>
+              </div>
+              <div class="hub-section-row">
+                <hi-link class="goto-section-stub-link" data-section="Agreements">Agreements</hi-link>
+                <span class="hub-section-status">Not Started</span>
+              </div>
+              <div class="hub-section-row">
+                <hi-link class="goto-documents-link">Documents</hi-link>
+                <span class="hub-section-status" id="hub-status-documents">Not Started</span>
+              </div>
+              <div class="hub-section-row">
+                <hi-link class="goto-todos-link">To-Dos</hi-link>
+                <span class="hub-section-status">Not Started</span>
+              </div>
+              <div class="hub-section-row">
+                <hi-link class="goto-recommendations-link">Recommendation Letters</hi-link>
+                <span class="hub-section-status" id="hub-status-recommendations">Not Started</span>
+              </div>
+            </yi-card>
+
+            <div class="mt-6">
+              <hi-button aesthetic="primary" class="goto-review-submit-link mr-4">Review &amp; Submit</hi-button>
+              <hi-link class="goto-applications-list-link">Back to Applications</hi-link>
+            </div>
+          </hi-case>
+
+          <!-- ============================================================ -->
+          <!-- PERSONAL BACKGROUND (configured form + conditional logic)      -->
+          <!-- ============================================================ -->
+          <hi-case id="personal-background" value="personal-background" hidden>
+            <nav class="portal-breadcrumb" aria-label="Breadcrumb">
+              <hi-link class="goto-portal-home-link">Home</hi-link> &gt;
+              <hi-link class="goto-applications-list-link">Applications</hi-link> &gt;
+              <hi-link class="goto-application-hub-link">Demo - General Application - Woodley University</hi-link> &gt;
+              Personal Background
+            </nav>
+            <p class="portal-page-title">Demo - General Application - Woodley University</p>
+            <p class="portal-section-title">Personal Background</p>
+            <p class="mb-4 portal-section-title" style="font-size:1rem;border:none;padding:0;">Personal Information</p>
+
+            <hi-form>
+              <hi-input-group>
+                <hi-label for="pb-first">First Name</hi-label>
+                <hi-input id="pb-first" name="firstName" value="Katy"></hi-input>
+              </hi-input-group>
+              <hi-input-group>
+                <hi-label for="pb-last">Last Name</hi-label>
+                <hi-input id="pb-last" name="lastName" value="Chew"></hi-input>
+              </hi-input-group>
+              <hi-input-group>
+                <hi-label for="pb-email">Primary Email</hi-label>
+                <hi-input id="pb-email" name="email" value="kchew@eab.com" disabled></hi-input>
+              </hi-input-group>
+              <hi-input-group>
+                <hi-checkbox id="pb-ok-email" value="ok-email" checked></hi-checkbox>
+                <hi-label for="pb-ok-email">OK to Email</hi-label>
+              </hi-input-group>
+              <hi-input-group>
+                <hi-label for="pb-dob">Date of Birth</hi-label>
+                <hi-input id="pb-dob" name="dob" value="01/15/2000"></hi-input>
+              </hi-input-group>
+              <hi-input-group>
+                <hi-label for="pb-salutation">Salutation</hi-label>
+                <hi-dropdown id="pb-salutation" mode="value">
+                  <hi-select name="salutation">
+                    <hi-option value=""></hi-option>
+                    <hi-option value="mr">Mr.</hi-option>
+                    <hi-option value="ms">Ms.</hi-option>
+                  </hi-select>
+                </hi-dropdown>
+              </hi-input-group>
+              <hi-input-group>
+                <hi-label for="pb-suffix">Suffix</hi-label>
+                <hi-dropdown id="pb-suffix" mode="value">
+                  <hi-select name="suffix">
+                    <hi-option value=""></hi-option>
+                    <hi-option value="jr">Jr.</hi-option>
+                    <hi-option value="sr">Sr.</hi-option>
+                  </hi-select>
+                </hi-dropdown>
+              </hi-input-group>
+              <hi-input-group>
+                <hi-label for="pb-middle">Middle Name</hi-label>
+                <hi-input id="pb-middle" name="middleName"></hi-input>
+              </hi-input-group>
+              <hi-input-group>
+                <hi-label for="pb-legal-first">Legal First Name</hi-label>
+                <hi-input id="pb-legal-first" name="legalFirstName"></hi-input>
+              </hi-input-group>
+              <hi-input-group>
+                <hi-label for="pb-former-first">Former First Name</hi-label>
+                <hi-input id="pb-former-first" name="formerFirstName"></hi-input>
+              </hi-input-group>
+              <hi-input-group>
+                <hi-label for="pb-former-last">Former Last Name</hi-label>
+                <hi-input id="pb-former-last" name="formerLastName"></hi-input>
+              </hi-input-group>
+
+              <p class="portal-section-title mt-6" style="font-size:1rem;">Mailing Address</p>
+              <hi-input-group>
+                <hi-checkbox id="pb-same-address" value="same-address"></hi-checkbox>
+                <hi-label for="pb-same-address">Same permanent mailing address</hi-label>
+              </hi-input-group>
+              <div id="pb-mailing-fields">
+                <hi-input-group>
+                  <hi-label for="pb-street">Street Address</hi-label>
+                  <hi-input id="pb-street" name="street"></hi-input>
+                </hi-input-group>
+                <hi-input-group>
+                  <hi-label for="pb-city">City</hi-label>
+                  <hi-input id="pb-city" name="city"></hi-input>
+                </hi-input-group>
+                <hi-input-group>
+                  <hi-label for="pb-state">State</hi-label>
+                  <hi-input id="pb-state" name="state"></hi-input>
+                </hi-input-group>
+                <hi-input-group>
+                  <hi-label for="pb-zip">ZIP Code</hi-label>
+                  <hi-input id="pb-zip" name="zip"></hi-input>
+                </hi-input-group>
+              </div>
+
+              <hi-button type="button" slot="controls" aesthetic="secondary" class="goto-application-hub-link mr-2">Cancel</hi-button>
+              <hi-button type="submit" slot="controls" aesthetic="primary">Save</hi-button>
+            </hi-form>
+          </hi-case>
+
+          <!-- ============================================================ -->
+          <!-- GENERIC CONFIGURED FORM STUB                                 -->
+          <!-- ============================================================ -->
+          <hi-case id="section-stub" value="section-stub" hidden>
+            <nav class="portal-breadcrumb" aria-label="Breadcrumb">
+              <hi-link class="goto-portal-home-link">Home</hi-link> &gt;
+              <hi-link class="goto-applications-list-link">Applications</hi-link> &gt;
+              <hi-link class="goto-application-hub-link">Demo - General Application - Woodley University</hi-link> &gt;
+              <span id="section-stub-crumb">Section</span>
+            </nav>
+            <p class="portal-page-title">Demo - General Application - Woodley University</p>
+            <p class="portal-section-title" id="section-stub-title">Section</p>
+            <hi-form>
+              <hi-input-group>
+                <hi-label for="stub-field">Example Field</hi-label>
+                <hi-input id="stub-field" name="example"></hi-input>
+              </hi-input-group>
+              <hi-button type="button" slot="controls" aesthetic="secondary" class="goto-application-hub-link mr-2">Cancel</hi-button>
+              <hi-button type="submit" slot="controls" aesthetic="primary">Save</hi-button>
+            </hi-form>
+          </hi-case>
+
+          <!-- ============================================================ -->
+          <!-- DOCUMENTS                                                    -->
+          <!-- ============================================================ -->
+          <hi-case id="documents" value="documents" hidden>
+            <nav class="portal-breadcrumb" aria-label="Breadcrumb">
+              <hi-link class="goto-portal-home-link">Home</hi-link> &gt;
+              <hi-link class="goto-applications-list-link">Applications</hi-link> &gt;
+              <hi-link class="goto-application-hub-link">Demo - General Application - Woodley University</hi-link> &gt;
+              Documents
+            </nav>
+            <p class="portal-page-title">Demo - General Application - Woodley University</p>
+
+            <yi-card>
+              <p class="portal-section-title">Documents <span class="clr-gray_60-txt" style="font-weight:normal;">Incomplete</span></p>
+
+              <p class="mb-1"><strong>ID</strong> <span class="clr-red-txt">*</span></p>
+              <p class="app-meta mb-2">Due Date: - | Created By: System</p>
+              <p class="mb-2">Submit a valid ID to determine in-state or out-of-state tuition.</p>
+              <hi-file name="id-document"></hi-file>
+              <p class="upload-dropzone mt-2">Drag a file here or click to browse. Any existing file will be replaced.</p>
+
+              <p class="mb-1 mt-6"><strong>SAT / ACT test scoires</strong> <span class="clr-red-txt">*</span></p>
+              <p class="app-meta mb-2">Due Date: - | Created By: System</p>
+              <hi-file name="test-scores"></hi-file>
+              <p class="upload-dropzone mt-2">Drag a file here or click to browse. Any existing file will be replaced.</p>
+
+              <div class="mt-6">
+                <hi-button aesthetic="primary" class="mr-4">Save Documents</hi-button>
+                <hi-link class="goto-application-hub-link">Back to Pages</hi-link>
+              </div>
+            </yi-card>
+          </hi-case>
+
+          <!-- ============================================================ -->
+          <!-- TO-DOS                                                       -->
+          <!-- ============================================================ -->
+          <hi-case id="todos" value="todos" hidden>
+            <nav class="portal-breadcrumb" aria-label="Breadcrumb">
+              <hi-link class="goto-portal-home-link">Home</hi-link> &gt;
+              <hi-link class="goto-applications-list-link">Applications</hi-link> &gt;
+              <hi-link class="goto-application-hub-link">Demo - General Application - Woodley University</hi-link> &gt;
+              To-Dos
+            </nav>
+            <p class="portal-page-title">Demo - General Application - Woodley University</p>
+            <p class="portal-section-title">To-Dos</p>
+
+            <yi-card>
+              <p class="mb-4"><hi-link id="open-todo-drawer-link">Finish Financial Aid Documents</hi-link></p>
+              <p class="app-meta mb-6">Due Date: - | Created By: System</p>
+              <p class="mb-4"><hi-link>Submit Letters of Recommendation</hi-link></p>
+              <p class="app-meta mb-6">Due Date: - | Created By: System</p>
+              <hi-link class="goto-application-hub-link">Back to Pages</hi-link>
+            </yi-card>
+          </hi-case>
+
+          <!-- ============================================================ -->
+          <!-- RECOMMENDATION LETTERS                                       -->
+          <!-- ============================================================ -->
+          <hi-case id="recommendations" value="recommendations" hidden>
+            <nav class="portal-breadcrumb" aria-label="Breadcrumb">
+              <hi-link class="goto-portal-home-link">Home</hi-link> &gt;
+              <hi-link class="goto-applications-list-link">Applications</hi-link> &gt;
+              <hi-link class="goto-application-hub-link">Demo - General Application - Woodley University</hi-link> &gt;
+              Recommendation Letters
+            </nav>
+            <p class="portal-page-title">Demo - General Application - Woodley University</p>
+            <p class="portal-section-title">Recommendation Letters</p>
+
+            <yi-card>
+              <div class="mb-6">
+                <p><strong>Letter of Recommendation - 1</strong></p>
+                <p class="app-meta">Due Date for Recommender: - | Created By: System</p>
+                <p class="app-meta">Recommendation Letter Type: Counselor Reference</p>
+                <p class="app-meta">Recommender: Katy Chew</p>
+                <p class="mt-2"><hi-badge value="Requested" theme="blue" id="rec-status-1"></hi-badge></p>
+              </div>
+              <div class="mb-6">
+                <p><strong>Letter of Recommendation - 2</strong></p>
+                <p class="app-meta">Due Date for Recommender: - | Created By: System</p>
+                <p class="app-meta">Recommendation Letter Type: Teacher Reference</p>
+                <p class="app-meta">Recommender: Katy Chew</p>
+                <p class="mt-2"><hi-badge value="Requested" theme="blue" id="rec-status-2"></hi-badge>
+                  <hi-link class="goto-recommender-claim-link ml-4" style="font-size:0.875rem;">View recommender flow</hi-link>
+                </p>
+              </div>
+              <hi-link class="goto-application-hub-link">Back to Pages</hi-link>
+            </yi-card>
+          </hi-case>
+
+          <!-- ============================================================ -->
+          <!-- REVIEW & SUBMIT                                              -->
+          <!-- ============================================================ -->
+          <hi-case id="review-submit" value="review-submit" hidden>
+            <nav class="portal-breadcrumb" aria-label="Breadcrumb">
+              <hi-link class="goto-portal-home-link">Home</hi-link> &gt;
+              <hi-link class="goto-applications-list-link">Applications</hi-link> &gt;
+              Demo - General Application - Woodley University &gt; Review &amp; Submit
+            </nav>
+            <p class="portal-page-title">Demo - General Application - Woodley University</p>
+            <p class="portal-section-title">Review &amp; Submit</p>
+            <p class="mb-4">Review your application summary below. Missing required fields are highlighted.</p>
+
+            <yi-card class="mb-4">
+              <p><strong>Personal Background</strong> &mdash; <span class="clr-red-txt">Missing Required Items</span></p>
+              <p class="mt-4"><strong>Documents</strong> &mdash; Incomplete</p>
+              <p class="mt-4"><strong>Recommendation Letters</strong> &mdash; <span id="review-rec-status">Requested</span></p>
+            </yi-card>
+
+            <hi-button aesthetic="primary" id="open-payment-dialog-btn">Review &amp; Submit</hi-button>
+            <hi-link class="goto-application-hub-link ml-4">Back to Pages</hi-link>
+          </hi-case>
+
+          <!-- ============================================================ -->
+          <!-- SUBMITTED APPLICATION (Summer 2026 read-only)                -->
+          <!-- ============================================================ -->
+          <hi-case id="submitted-summer" value="submitted-summer" hidden>
+            <nav class="portal-breadcrumb" aria-label="Breadcrumb">
+              <hi-link class="goto-portal-home-link">Home</hi-link> &gt;
+              <hi-link class="goto-applications-list-link">Applications</hi-link> &gt;
+              Summer 2026 Application
+            </nav>
+            <p class="portal-page-title">Summer 2026 Application</p>
+            <hi-badge value="Reviewed" theme="green" class="mb-4"></hi-badge>
+            <p class="mb-4">This is a read-only view of your submitted application.</p>
+
+            <div class="optional-alert mb-6">
+              <strong>You Have Optional Items Remaining</strong>
+              <p class="mt-2"><hi-link class="goto-documents-link">Edit Documents</hi-link></p>
+            </div>
+
+            <p class="app-meta mb-6">Submitted 06/10/2026 6:28 PM ET &nbsp; Updated 06/11/2026 11:31 AM ET</p>
+
+            <p class="portal-section-title">The Basics</p>
+            <yi-card class="mb-6">
+              <p class="mb-2"><strong>Personal Information</strong></p>
+              <p>Name: Katy Chew</p>
+              <p>Date of Birth: 01/15/2000</p>
+              <p>Primary Email: kchew@eab.com</p>
+            </yi-card>
+
+            <p class="portal-section-title">Prior Education</p>
+            <yi-card>
+              <p><strong>High School Education</strong></p>
+              <p class="app-meta mt-2">Woodley High School &mdash; Graduated 2018</p>
+            </yi-card>
+          </hi-case>
+
+          <!-- ============================================================ -->
+          <!-- RECOMMENDER CLAIM (external, no login)                       -->
+          <!-- ============================================================ -->
+          <hi-case id="recommender-claim" value="recommender-claim" hidden>
+            <div class="external-page">
+              <div class="external-card">
+                <img src="assets/student-onboarding/whitehurst-logo.png" alt="Woodley University" class="institution-logo" />
+                <p class="text-center mb-2">Woodley University</p>
+                <p class="portal-page-title text-center">Recommendation Letter Request</p>
+
+                <p class="portal-section-title">Applicant Information</p>
+                <dl>
+                  <div class="info-row"><dt>Applicant</dt><dd>Katy Chew</dd></div>
+                  <div class="info-row"><dt>Applying To</dt><dd>Woodley University</dd></div>
+                  <div class="info-row"><dt>Application Name</dt><dd>Demo - General Application - Woodley University</dd></div>
+                  <div class="info-row"><dt>Recommendation Letter Type</dt><dd>Teacher Reference</dd></div>
+                  <div class="info-row"><dt>Requested On</dt><dd>07/14/2026</dd></div>
+                  <div class="info-row"><dt>Due Date for Recommender</dt><dd>-</dd></div>
+                </dl>
+
+                <p class="portal-section-title mt-6">Message from Applicant</p>
+                <p>Please complete this recommendation for me.</p>
+
+                <div class="mt-6">
+                  <hi-button aesthetic="primary" class="goto-recommender-form-link mr-4">Accept</hi-button>
+                  <hi-button aesthetic="secondary">Decline</hi-button>
+                </div>
+              </div>
+            </div>
+          </hi-case>
+
+          <!-- ============================================================ -->
+          <!-- RECOMMENDER FORM                                             -->
+          <!-- ============================================================ -->
+          <hi-case id="recommender-form" value="recommender-form" hidden>
+            <div class="external-page">
+              <div class="external-card">
+                <p class="portal-page-title">Recommendation Letter Request</p>
+
+                <hi-form>
+                  <hi-input-group>
+                    <hi-label for="rec-suffix">Suffix</hi-label>
+                    <hi-dropdown id="rec-suffix" mode="value">
+                      <hi-select name="suffix">
+                        <hi-option value=""></hi-option>
+                        <hi-option value="phd">Ph.D.</hi-option>
+                      </hi-select>
+                    </hi-dropdown>
+                  </hi-input-group>
+                  <hi-input-group>
+                    <hi-label for="rec-employer">Employer Name</hi-label>
+                    <hi-input id="rec-employer" name="employer"></hi-input>
+                  </hi-input-group>
+                  <hi-input-group>
+                    <hi-label for="rec-title">Employment Title</hi-label>
+                    <hi-input id="rec-title" name="title"></hi-input>
+                  </hi-input-group>
+                  <hi-input-group>
+                    <hi-label for="rec-phone">Primary Phone</hi-label>
+                    <hi-input id="rec-phone" name="phone"></hi-input>
+                  </hi-input-group>
+
+                  <p class="portal-section-title mt-4">Recommendation Letter</p>
+                  <p class="mb-4">Select how you would like to submit your recommendation letter.</p>
+                  <hi-radio-group name="submit-method" value="paste">
+                    <hi-radio value="upload"></hi-radio>
+                    <hi-label>Upload</hi-label>
+                    <hi-radio value="paste" checked></hi-radio>
+                    <hi-label>Type or Copy/Paste</hi-label>
+                  </hi-radio-group>
+                  <hi-input-group class="mt-4">
+                    <hi-label for="rec-letter">Recommendation</hi-label>
+                    <hi-textarea id="rec-letter" name="letter" value="Highly recommend."></hi-textarea>
+                  </hi-input-group>
+
+                  <hi-button type="submit" slot="controls" aesthetic="primary" id="submit-recommendation-btn">Submit</hi-button>
+                </hi-form>
+              </div>
+            </div>
+          </hi-case>
+
+        </hi-switch>
+      </section>
+
+      <!-- To-Do detail drawer -->
+      <hi-drawer id="todo-drawer" heading="Finish Financial Aid Documents" direction="right">
+        <p class="app-meta mb-4">Due Date: -</p>
+        <p class="app-meta mb-4">Application Name: Demo - General Application - Woodley University</p>
+        <p class="mb-4"><strong>Status:</strong> Incomplete</p>
+        <p class="mb-4"><strong>Required:</strong> No</p>
+        <hi-form>
+          <hi-input-group>
+            <hi-label for="todo-reason">Completion Reason</hi-label>
+            <hi-dropdown id="todo-reason" mode="value" value="completed">
+              <hi-select name="reason">
+                <hi-option value="completed">Completed</hi-option>
+                <hi-option value="not-relevant">Not Relevant</hi-option>
+                <hi-option value="not-enough">Not Enough Information</hi-option>
+              </hi-select>
+            </hi-dropdown>
+          </hi-input-group>
+          <hi-input-group>
+            <hi-label for="todo-notes">Staff Completion Notes</hi-label>
+            <hi-textarea id="todo-notes" name="notes"></hi-textarea>
+          </hi-input-group>
+          <hi-button type="submit" slot="controls" aesthetic="primary">Save</hi-button>
+          <hi-button type="button" slot="controls" aesthetic="secondary" id="close-todo-drawer-btn">Cancel</hi-button>
+        </hi-form>
+      </hi-drawer>
+
+      <!-- Payment dialog -->
+      <hi-dialog id="payment-dialog" heading="Complete Payment" size="medium">
+        <p class="portal-section-title">Fees</p>
+        <p class="mb-4">Application Submission Fee &mdash; $50.00</p>
+
+        <p class="portal-section-title">Coupon Code</p>
+        <hi-form>
+          <hi-input-group>
+            <hi-label for="coupon">Enter coupon code</hi-label>
+            <hi-input id="coupon" name="coupon"></hi-input>
+          </hi-input-group>
+          <hi-button type="button" aesthetic="secondary">Apply</hi-button>
+        </hi-form>
+
+        <p class="portal-section-title mt-6">Checkout</p>
+        <p><strong>Total Amount Due:</strong> $50.00</p>
+
+        <hi-button slot="controls" aesthetic="secondary" id="close-payment-dialog-btn">Cancel</hi-button>
+        <hi-button slot="controls" aesthetic="primary">Submit</hi-button>
+      </hi-dialog>
+
+        </div><!-- .portal-body -->
+      </div><!-- #portal-shell -->
+    </main>
+
+    <link rel="stylesheet" href="../unset.css" />
+    <link rel="stylesheet" href="../demo-menu.css" />
+    <nav class="unset demo-menu-bar" aria-label="Prototype demo controls">
+      <button type="button" class="demo-menu-bar__brand" onclick="location.href='../index.html'">
+        <img class="demo-menu-bar__logo" src="assets/shared/eab-mark-white.svg" alt="" width="28" height="28" />
+        Prototypes
+      </button>
+      <div class="demo-menu-bar__menus">
+        <div class="demo-menu">
+          <button type="button" class="demo-menu__toggle" aria-haspopup="true" aria-expanded="false">
+            Scenarios<span class="demo-menu__caret" aria-hidden="true">▴</span>
+          </button>
+          <div class="demo-menu__panel demo-menu__panel--wide" hidden>
+            <div id="scenarios-menu-list" class="scenarios-menu-list"></div>
+          </div>
+        </div>
+        <div class="demo-menu">
+          <button type="button" class="demo-menu__toggle" aria-haspopup="true" aria-expanded="false">
+            Personas<span class="demo-menu__caret" aria-hidden="true">▴</span>
+          </button>
+          <div class="demo-menu__panel" hidden>
+            <p class="demo-menu__note">Katy Chew (Applicant) — current</p>
+          </div>
+        </div>
+        <div class="demo-menu">
+          <button type="button" class="demo-menu__toggle" aria-haspopup="true" aria-expanded="false">
+            Theme<span class="demo-menu__caret" aria-hidden="true">▴</span>
+          </button>
+          <div class="demo-menu__panel" hidden>
+            <p class="demo-menu__note">HI/P — current</p>
+            <p class="demo-menu__note demo-menu__note--muted">Classic (coming soon)</p>
+            <p class="demo-menu__note demo-menu__note--muted">Modern (coming soon)</p>
+          </div>
+        </div>
+        <div class="demo-menu">
+          <button type="button" class="demo-menu__toggle" aria-haspopup="true" aria-expanded="false">
+            Settings<span class="demo-menu__caret" aria-hidden="true">▴</span>
+          </button>
+          <div class="demo-menu__panel" hidden>
+            <button type="button" class="demo-menu__link" onclick="location.href='../index.html'">Back to Index</button>
+            <button type="button" class="demo-menu__link" onclick="location.href='help.html'">Help</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <script type="module">
+      const portalView = document.getElementById("portal-view");
+      const portalSidebar = document.getElementById("portal-sidebar");
+      const sidebarWrap = document.getElementById("portal-sidebar-wrap");
+      const mainWrap = document.getElementById("portal-main-wrap");
+      const portalChrome = document.getElementById("portal-chrome");
+      const portalShell = document.getElementById("portal-shell");
+
+      const EXTERNAL_VIEWS = new Set(["recommender-claim", "recommender-form"]);
+
+      function showCase(switchEl, targetValue) {
+        if (!switchEl) return;
+        switchEl.querySelectorAll("hi-case").forEach((c) => {
+          if (c.getAttribute("value") === targetValue) {
+            c.removeAttribute("hidden");
+          } else if (c.parentElement === switchEl) {
+            c.setAttribute("hidden", "");
+          }
+        });
+        switchEl.setAttribute("value", targetValue);
+      }
+
+      function showView(viewId) {
+        showCase(portalView, viewId);
+        if (EXTERNAL_VIEWS.has(viewId)) {
+          portalChrome.hidden = true;
+          sidebarWrap.hidden = true;
+          portalShell.classList.add("portal-shell--external");
+          mainWrap.classList.add("portal-main--full");
+        } else {
+          portalChrome.hidden = false;
+          sidebarWrap.hidden = false;
+          portalShell.classList.remove("portal-shell--external");
+          mainWrap.classList.remove("portal-main--full");
+          if (viewId === "portal-home") portalSidebar.value = "home";
+          else if (viewId.startsWith("application") || viewId === "personal-background" ||
+                   viewId === "section-stub" || viewId === "documents" || viewId === "todos" ||
+                   viewId === "recommendations" || viewId === "review-submit" ||
+                   viewId === "submitted-summer" || viewId === "applications-list") {
+            portalSidebar.value = "applications";
+          }
+        }
+      }
+
+      window.showView = showView;
+
+      document.addEventListener("click", (e) => {
+        const path = e.composedPath ? e.composedPath() : [e.target];
+        const link = path.find((n) => n.classList && (
+          n.classList.contains("goto-portal-home-link") ||
+          n.classList.contains("goto-applications-list-link") ||
+          n.classList.contains("goto-application-hub-link") ||
+          n.classList.contains("goto-personal-background-link") ||
+          n.classList.contains("goto-documents-link") ||
+          n.classList.contains("goto-todos-link") ||
+          n.classList.contains("goto-recommendations-link") ||
+          n.classList.contains("goto-review-submit-link") ||
+          n.classList.contains("goto-submitted-summer-link") ||
+          n.classList.contains("goto-recommender-claim-link") ||
+          n.classList.contains("goto-recommender-form-link") ||
+          n.classList.contains("goto-section-stub-link")
+        ));
+        if (!link) return;
+        e.preventDefault();
+
+        if (link.classList.contains("goto-portal-home-link")) showView("portal-home");
+        else if (link.classList.contains("goto-applications-list-link")) showView("applications-list");
+        else if (link.classList.contains("goto-application-hub-link")) showView("application-hub");
+        else if (link.classList.contains("goto-personal-background-link")) showView("personal-background");
+        else if (link.classList.contains("goto-documents-link")) showView("documents");
+        else if (link.classList.contains("goto-todos-link")) showView("todos");
+        else if (link.classList.contains("goto-recommendations-link")) showView("recommendations");
+        else if (link.classList.contains("goto-review-submit-link")) showView("review-submit");
+        else if (link.classList.contains("goto-submitted-summer-link")) showView("submitted-summer");
+        else if (link.classList.contains("goto-recommender-claim-link")) showView("recommender-claim");
+        else if (link.classList.contains("goto-recommender-form-link")) showView("recommender-form");
+        else if (link.classList.contains("goto-section-stub-link")) {
+          const section = link.getAttribute("data-section") || "Section";
+          document.getElementById("section-stub-title").textContent = section;
+          document.getElementById("section-stub-crumb").textContent = section;
+          showView("section-stub");
+        }
+      });
+
+      portalSidebar.addEventListener("value-changed", (e) => {
+        const val = e.detail?.value ?? portalSidebar.value;
+        if (val === "home") showView("portal-home");
+        else if (val === "applications") showView("applications-list");
+      });
+
+      // Conditional logic: hide mailing address fields when checkbox checked
+      const sameAddress = document.getElementById("pb-same-address");
+      const mailingFields = document.getElementById("pb-mailing-fields");
+      function toggleMailingFields() {
+        mailingFields.style.display = sameAddress.checked ? "none" : "";
+      }
+      sameAddress.addEventListener("change", toggleMailingFields);
+      toggleMailingFields();
+
+      // To-Do drawer
+      document.getElementById("open-todo-drawer-link").addEventListener("click", (e) => {
+        e.preventDefault();
+        document.getElementById("todo-drawer").opened = true;
+      });
+      document.getElementById("close-todo-drawer-btn").addEventListener("click", () => {
+        document.getElementById("todo-drawer").opened = false;
+      });
+
+      // Payment dialog
+      document.getElementById("open-payment-dialog-btn").addEventListener("click", () => {
+        document.getElementById("payment-dialog").opened = true;
+      });
+      document.getElementById("close-payment-dialog-btn").addEventListener("click", () => {
+        document.getElementById("payment-dialog").opened = false;
+      });
+
+      // After recommendation submitted, update statuses
+      document.getElementById("submit-recommendation-btn").addEventListener("click", (e) => {
+        e.preventDefault();
+        const badge2 = document.getElementById("rec-status-2");
+        if (badge2) badge2.value = "Complete";
+        badge2.theme = "green";
+        const hubRec = document.getElementById("hub-status-recommendations");
+        if (hubRec) hubRec.textContent = "Complete";
+        const reviewRec = document.getElementById("review-rec-status");
+        if (reviewRec) reviewRec.textContent = "Complete";
+        showView("recommendations");
+      });
+
+      // Deep-link support
+      const viewParam = new URLSearchParams(location.search).get("view");
+      if (viewParam === "hub") showView("application-hub");
+      else if (viewParam === "recommender") showView("recommender-claim");
+      else showView("portal-home");
+    </script>
+    <script src="../interface.js"></script>
+    <script src="scenarios.js"></script>
+  </body>
+</html>

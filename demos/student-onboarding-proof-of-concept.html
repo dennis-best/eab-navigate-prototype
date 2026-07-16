@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en" hip-font-size-dynamic>
+  <head>
+    <title>Student Onboarding | Proof of Concept</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="EAB Global Inc." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="Student Onboarding - side-by-side proof of concept comparing the live recording with the HI/P static prototype" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, user-scalable=no, width=device-width, viewport-fit=cover"
+    />
+
+    <script
+      src="https://cdn.dev.eab.com/hif/latest/index.js"
+      auto-start
+      release="prod"
+      system-load-core
+      system-load-baseline
+      system-load-ds
+      system-load-os
+      library-stop-dragula
+      library-stop-moment
+    ></script>
+    <script>
+      $ip.flags.load([
+        ["/eip/hi-form/default-to-rest", true],
+        ["/pip/pi-ip/insert-css-after-script", true],
+        ["/eip/hi-http/enable-xss-purification-response", false],
+      ]);
+    </script>
+    <style>
+      .poc-video-column video {
+        width: 100%;
+        display: block;
+        background: black;
+        border-radius: var(--hi-radius--m, 4px);
+      }
+    </style>
+  </head>
+  <body>
+    <main id="app" class="pa-8">
+      <div l-kind="hort" l-width-fixed l-align="center" l-justify="between" class="mb-6">
+        <hi-title heading="Student Onboarding" level="1"></hi-title>
+        <hi-button id="play-both-button" aesthetic="primary" icon="play">Play Both</hi-button>
+      </div>
+
+      <p class="clr-gray_80-txt mb-8">
+        Proof of concept comparing the original recording against the HI/P static
+        prototype. Both recordings follow the same sequence of screens and interactions, timed to
+        run in parallel.
+      </p>
+
+      <div l-kind="hort" l-wrap l-width-fixed>
+        <div class="poc-video-column" style="width: 49%;">
+          <h5 class="mb-4">Original (Live Recording)</h5>
+          <video id="original-video" preload="auto" muted playsinline controls>
+            <source src="../videos/student-onboarding/original.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="poc-video-column" style="width: 49%; margin-left: 2%;">
+          <h5 class="mb-4">HI/P Prototype (Playwright Recording)</h5>
+          <video id="prototype-video" preload="auto" muted playsinline controls>
+            <source src="../videos/student-onboarding/prototype.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+    </main>
+    <script type="module">
+      const originalVideo = document.getElementById("original-video");
+      const prototypeVideo = document.getElementById("prototype-video");
+      const playBothButton = document.getElementById("play-both-button");
+
+      // Two independent <video> elements decode/buffer at very slightly
+      // different real-time rates, so even perfectly matched source files
+      // drift apart the longer playback continues unless something keeps
+      // correcting for it. originalVideo is the "leader"; prototypeVideo is
+      // snapped back in line whenever it drifts past DRIFT_THRESHOLD_S.
+      const DRIFT_THRESHOLD_S = 0.15;
+      let syncLoopHandle = null;
+
+      function stepSync() {
+        if (originalVideo.paused || originalVideo.ended) {
+          syncLoopHandle = null;
+          return;
+        }
+        const drift = prototypeVideo.currentTime - originalVideo.currentTime;
+        if (Math.abs(drift) > DRIFT_THRESHOLD_S) {
+          prototypeVideo.currentTime = originalVideo.currentTime;
+        }
+        syncLoopHandle = requestAnimationFrame(stepSync);
+      }
+
+      function startSyncLoop() {
+        if (syncLoopHandle === null) {
+          syncLoopHandle = requestAnimationFrame(stepSync);
+        }
+      }
+
+      function stopSyncLoop() {
+        if (syncLoopHandle !== null) {
+          cancelAnimationFrame(syncLoopHandle);
+          syncLoopHandle = null;
+        }
+      }
+
+      function playBoth() {
+        originalVideo.currentTime = 0;
+        prototypeVideo.currentTime = 0;
+        originalVideo.play();
+        prototypeVideo.play();
+      }
+
+      if (playBothButton) {
+        playBothButton.addEventListener("click", playBoth);
+      }
+
+      originalVideo.addEventListener("play", startSyncLoop);
+      originalVideo.addEventListener("pause", stopSyncLoop);
+      originalVideo.addEventListener("ended", stopSyncLoop);
+      originalVideo.addEventListener("seeked", () => {
+        prototypeVideo.currentTime = originalVideo.currentTime;
+      });
+    </script>
+    <noscript>
+      <h1>Application Failure</h1>
+      <p>
+        The application cannot offer an experience because it relies on
+        Javascript.
+      </p>
+      <p>Please enable Javascript to use this demo.</p>
+    </noscript>
+  </body>
+</html>

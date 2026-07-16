@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="en" hip-font-size-dynamic>
+  <head>
+    <title>Navigate360 | Student Onboarding &amp; Intake Survey</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="EAB Global Inc." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="Navigate360 student onboarding intake survey and account prototype" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, user-scalable=no, width=device-width, viewport-fit=cover"
+    />
+
+    <style id="hip-fouc-guard">
+      body:not([x-hif="initialized"]) main#app,
+      body:not([x-hif="initialized"]) yi-view-footer,
+      body:not([x-hif="initialized"]) .iface-index__page { visibility: hidden; }
+    </style>
+    <link rel="stylesheet" href="../interface.css" />
+
+    <script
+      src="https://cdn.dev.eab.com/hif/latest/index.js"
+      auto-start
+      release="prod"
+      system-load-core
+      system-load-baseline
+      system-load-ds
+      system-load-os
+      library-stop-dragula
+      library-stop-moment
+    ></script>
+    <script>
+      $ip.flags.load([
+        ["/eip/hi-form/default-to-rest", true],
+        ["/pip/pi-ip/insert-css-after-script", true],
+        ["/eip/hi-http/enable-xss-purification-response", false],
+      ]);
+    </script>
+  </head>
+  <body x-layout-system="blueprint" x-hosting="owner">
+  <style>
+    .logo_container {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .application_title {
+      font-weight: var(--hi-font--weight-bold);
+      color: var(--hi-clr--theme-3);
+      text-transform: uppercase;
+      white-space: nowrap;
+      font-size: 1rem;
+    }
+    .institution-logo {
+      display: block;
+      width: 8rem;
+      margin: 0 auto 1.5rem;
+    }
+    .page-title-menu[hidden] {
+      display: none;
+    }
+    .right-controls-navigation {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5em;
+      margin-left: 0.5em;
+    }
+    .hi-item-button {
+      width: 100%;
+      justify-content: flex-start;
+    }
+    .login-banner {
+      min-height: 70vh;
+      background-image: url('assets/student-alerts/library-banner.jpg');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 3rem;
+    }
+    .login-card {
+      width: 22rem;
+      background: var(--hi-clr--surface-1, #fff);
+    }
+  </style>
+  <!--
+    Deviation disclosure: this file holds two separate, self-contained
+    stories - one continuous session each, no persona switching within
+    either story - chosen purely by a `?login=` URL query param with no
+    in-app switcher UI:
+    - `intake` (default): Whitehurst University / Penelope Smith - Intake
+      Survey (dialog) -> Account.
+    - `pulse-check`: Woodley University / James Wyatt - Login screen ->
+      Pulse Check survey (inline in the main content area, not a dialog,
+      per the source video) -> Home -> Surveys -> Help (drawer) -> Self
+      Alert -> Documents. This tiny inline script only decides which
+      story's *first* screen is shown on load.
+  -->
+  <script>
+    (function () {
+      var scenario = new URLSearchParams(location.search).get('login') === 'pulse-check'
+        ? 'pulse-check'
+        : 'intake';
+      document.addEventListener('DOMContentLoaded', function () {
+        if (scenario === 'pulse-check') {
+          var intake = document.getElementById('intake-survey-dialog');
+          if (intake) intake.removeAttribute('opened');
+          document.getElementById('app-main-james-login').style.display = '';
+          var secondaryNav = document.getElementById('app-secondary-nav');
+          if (secondaryNav) secondaryNav.setAttribute('account-avatar', '{"initials":"JW"}');
+        }
+      });
+    })();
+  </script>
+    <main id="app" x-area="screen" x-hosting="screen" x-layout-screen="left_main" style="--region-left--width: 200px;">
+      <hi-navigation-primary theme="university" x-region="navigation-primary">
+        WOODLEY UNIVERSITY
+      </hi-navigation-primary>
+
+      <!--
+        Deviation disclosure: the source video shows a permanently-expanded
+        left rail (icon + visible label on every row, not hover tooltips).
+        hi-navigation-tertiary only documents a collapsed icon rail with
+        tooltip labels (see @eab-eip/hi-navigation/visual_guide.md) and has
+        no documented "expanded" state, so it cannot reproduce this. Using
+        the documented `left` blueprint region with hi-list/hi-item instead,
+        per @eab-yip/yi-blueprint/layout_area/area.md and
+        @eab-eip/hi-list/visual_guide.md. Region width is overridden via the
+        documented `--region-left--width` CSS variable (see
+        @eab-yip/yi-blueprint/core/layout_screen.md) to match the narrower
+        rail seen in the source video.
+
+        Deviation disclosure: the source video shows a completely blank
+        (no sidebar, no page content) background behind the Intake Survey
+        - this app gates all navigation/content until the survey is
+        submitted, rather than showing a dialog over existing content.
+        `id="app-nav-left"` starts hidden (via inline `display:none` -
+        blueprint's region CSS sets `display:block` on `[x-area="region"]`
+        with higher specificity than the `[hidden]` UA style, so the plain
+        `hidden` attribute alone doesn't work here) and is revealed by the
+        same Playwright `evaluate` step (see config/student-onboarding/
+        walkthrough.json) that closes the dialog, matching that timing.
+      -->
+      <section id="app-nav-left" x-area="region" x-region="left" class="pa-4" style="display: none;">
+        <hi-list fit-width value="account">
+          <hi-item value="notifications"><hi-icon glyph="bell" size="medium" theme="blue" class="mr-2"></hi-icon>Notifications</hi-item>
+          <hi-item value="calendar"><hi-icon glyph="calendar" size="medium" theme="magenta" class="mr-2"></hi-icon>Calendar</hi-item>
+          <hi-item value="home"><hi-icon glyph="home" size="medium" class="mr-2"></hi-icon>Home</hi-item>
+          <hi-item value="appointments"><hi-icon glyph="person" size="medium" theme="magenta" class="mr-2"></hi-icon>Appointments</hi-item>
+          <hi-item value="resources"><hi-icon glyph="notebook_with_person" size="medium" theme="teal" class="mr-2"></hi-icon>Resources</hi-item>
+          <hi-item value="class-schedule"><hi-icon glyph="book_with_watch" size="medium" theme="purple" class="mr-2"></hi-icon>Class Schedule</hi-item>
+          <hi-item value="checklist"><hi-icon glyph="checklist" size="medium" theme="purple" class="mr-2"></hi-icon>Checklist</hi-item>
+          <hi-item value="journeys"><hi-icon glyph="route" size="medium" theme="blue" class="mr-2"></hi-icon>Journeys</hi-item>
+          <hi-item value="job-simulations"><hi-icon glyph="double_arrow" size="medium" theme="green" class="mr-2"></hi-icon>Job Simulations</hi-item>
+          <hi-item value="study-buddies"><hi-icon glyph="study_buddies" size="medium" theme="green" class="mr-2"></hi-icon>Study Buddies</hi-item>
+          <hi-item value="surveys"><hi-icon glyph="bubble_question" size="medium" theme="blue" class="mr-2"></hi-icon>Surveys</hi-item>
+          <hi-item value="my-docs"><hi-icon glyph="description" size="medium" theme="purple" class="mr-2"></hi-icon>My Docs</hi-item>
+          <hi-item value="major-explorer"><hi-icon glyph="graduation" size="medium" class="mr-2"></hi-icon>Major Explorer</hi-item>
+          <hi-item value="favorites"><hi-icon glyph="heart" size="medium" class="mr-2"></hi-icon>Favorites</hi-item>
+          <hi-item value="hand-raise"><hi-icon glyph="front_hand" size="medium" theme="green" class="mr-2"></hi-icon>Hand Raise</hi-item>
+          <hi-item value="holds"><hi-icon glyph="warning" size="medium" theme="purple" class="mr-2"></hi-icon>Holds</hi-item>
+          <hi-item value="financial-planner"><hi-icon glyph="savings" size="medium" theme="green" class="mr-2"></hi-icon>Financial Planner</hi-item>
+          <hi-item value="help"><hi-icon glyph="question_circle" size="medium" theme="magenta" class="mr-2"></hi-icon>Help</hi-item>
+          <hi-item value="account"><hi-icon glyph="account_box" size="medium" theme="blue" class="mr-2"></hi-icon>Account</hi-item>
+          <hi-item value="apply"><hi-icon glyph="appily" size="medium" class="mr-2"></hi-icon>Apply</hi-item>
+          <hi-item value="canvas"><hi-icon glyph="flag" size="medium" class="mr-2"></hi-icon>Canvas <hi-icon glyph="north_east" size="small" class="ml-1"></hi-icon></hi-item>
+          <hi-item value="events"><hi-icon glyph="list" size="medium" class="mr-2"></hi-icon>Events</hi-item>
+        </hi-list>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- WOODLEY/JAMES SIDEBAR: one continuous session for the Pulse   -->
+      <!-- Check / Student Generated Alerts story. Hidden by default;    -->
+      <!-- revealed by clicking "Login" on the login screen below.      -->
+      <!-- ============================================================ -->
+      <section id="app-nav-left-james" x-area="region" x-region="left" class="pa-4" style="display: none;">
+        <hi-list fit-width value="home">
+          <hi-item value="my-docs"><hi-icon glyph="description" size="medium" theme="purple" class="mr-2"></hi-icon>My Docs</hi-item>
+          <hi-item value="home"><hi-icon glyph="home" size="medium" class="mr-2"></hi-icon>Home</hi-item>
+          <hi-item value="appointments"><hi-icon glyph="person" size="medium" theme="magenta" class="mr-2"></hi-icon>Appointments</hi-item>
+          <hi-item value="study-buddies"><hi-icon glyph="study_buddies" size="medium" theme="green" class="mr-2"></hi-icon>Study Buddies</hi-item>
+          <hi-item value="class-schedule"><hi-icon glyph="book_with_watch" size="medium" theme="purple" class="mr-2"></hi-icon>Class Schedule</hi-item>
+          <hi-item value="resources"><hi-icon glyph="notebook_with_person" size="medium" theme="teal" class="mr-2"></hi-icon>Resources</hi-item>
+          <hi-item value="holds"><hi-icon glyph="warning" size="medium" theme="purple" class="mr-2"></hi-icon>Holds</hi-item>
+          <hi-item value="notifications"><hi-icon glyph="bell" size="medium" theme="blue" class="mr-2"></hi-icon>Notifications</hi-item>
+          <hi-item value="major-explorer"><hi-icon glyph="graduation" size="medium" class="mr-2"></hi-icon>Major Explorer</hi-item>
+          <hi-item value="financial-planner"><hi-icon glyph="savings" size="medium" theme="green" class="mr-2"></hi-icon>Financial Planner</hi-item>
+          <hi-item value="favorites"><hi-icon glyph="heart" size="medium" class="mr-2"></hi-icon>Favorites</hi-item>
+          <hi-item value="surveys" id="james-nav-surveys"><hi-icon glyph="bubble_question" size="medium" theme="blue" class="mr-2"></hi-icon>Surveys<hi-badge theme="error" value="3" class="ml-2"></hi-badge></hi-item>
+          <hi-item value="i-need-support" id="james-nav-i-need-support"><hi-icon glyph="front_hand" size="medium" theme="green" class="mr-2"></hi-icon>I Need Support</hi-item>
+          <hi-item value="help"><hi-button for="get-help-dialog" aesthetic="text" class="hi-item-button"><hi-icon glyph="question_circle" size="medium" theme="magenta" class="mr-2"></hi-icon>Help</hi-button></hi-item>
+          <hi-item value="account"><hi-icon glyph="account_box" size="medium" theme="blue" class="mr-2"></hi-icon>Account</hi-item>
+          <hi-item value="contact-ssa"><hi-icon glyph="person" size="medium" theme="magenta" class="mr-2"></hi-icon>Contact your SSA</hi-item>
+        </hi-list>
+      </section>
+
+      <hi-navigation-secondary
+        x-region="navigation-secondary"
+        accessibility-tools
+        aria-label="Main Menu"
+        section-actions='[
+          { "uri": "/explore", "title": "Explore", "href": "#/explore" },
+          { "uri": "/planner", "title": "Planner", "href": "#/planner" },
+          { "uri": "/schedule-courses", "title": "Schedule Courses", "href": "#/schedule-courses" }
+        ]'
+        account-actions='[
+          { "href": "#/help-center", "title": "Help Center", "icon": "info" },
+          { "href": "#/account", "title": "Account", "icon": "user" },
+          { "href": "#/logout", "title": "Logout", "icon": "logout" }
+        ]'
+        account-avatar='{
+          "initials": "PS"
+        }'
+        id="app-secondary-nav"
+      >
+        <div slot="logo" class="logo_container">
+          <hi-image
+            aesthetic="icon"
+            src="https://bucks-qa-grey-mt.gradesfirst.com/images/eab_navigate360_logo.svg"
+            alt="EAB Navigate360 Logo"
+            height="27"
+            width="152"
+          ></hi-image>
+        </div>
+        <div slot="right-controls" class="right-controls-navigation">
+          <hi-button aesthetic="icon" size="large-x" layout="icon">
+            <hi-icon glyph="plus" size="large-x" inherit-color></hi-icon>
+          </hi-button>
+          <hi-button aesthetic="icon" size="large-x" layout="icon">
+            <hi-icon glyph="question_circle" size="large-x" inherit-color></hi-icon>
+          </hi-button>
+        </div>
+      </hi-navigation-secondary>
+
+      <!-- ============================================================ -->
+      <!-- MAIN CONTENT: Account settings page (background beneath the -->
+      <!-- Intake Survey dialog, matching the recorded walkthrough)     -->
+      <!-- ============================================================ -->
+      <section id="app-main-account" x-area="region" x-region="main" class="pl-8 pr-8 pb-8" style="display: none;">
+        <hi-link href="#" aesthetic="secondary" class="mb-4">
+          <hi-icon glyph="chevron_left" size="small" inherit-color></hi-icon>
+          Go back
+        </hi-link>
+        <h1 class="mb-6">Account</h1>
+
+        <img
+          src="assets/student-onboarding/whitehurst-logo.png"
+          alt="Whitehurst University logo"
+          class="institution-logo"
+        />
+
+        <div class="l-center-all-column">
+          <ul x-area="stack" style="max-width: 32rem; width: 100%;">
+            <li class="card card--bordered card--entity">
+              <section class="card__header">
+                <hi-avatar layout-inline initials="PS" full-name="Smith, Penelope" label="Penelope Smith"></hi-avatar>
+                <p class="clr-gray_80-txt text-sz-s mt-2">Student ID: penelope</p>
+                <p class="clr-gray_80-txt text-sz-s">Email: penelopesmith@whitehurst.edu</p>
+              </section>
+            </li>
+          </ul>
+
+          <hi-link-group kind="stacked" class="mt-6" style="max-width: 32rem; width: 100%;">
+            <hi-link href="#">Retake Intake Survey</hi-link>
+            <hi-link href="#">Notification Settings</hi-link>
+            <hi-link href="#">About</hi-link>
+          </hi-link-group>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- JAMES HOME: Woodley University student home ("Hey James")   -->
+      <!-- Hidden by default; revealed after Pulse Check is dismissed.  -->
+      <!-- ============================================================ -->
+      <section id="app-main-james-home" x-area="region" x-region="main" class="pl-8 pr-8 pb-8" style="display: none;">
+        <div class="card card--bordered" style="max-width: 48rem;">
+          <hi-image
+            src="assets/student-alerts/library-banner.jpg"
+            alt="Students studying in the campus library"
+            height="220"
+          ></hi-image>
+          <div class="pa-4">
+            <h1 class="mb-4">Hey James</h1>
+            <h3>Announcements</h3>
+            <p class="mt-3"><strong>Internship and Job Opps</strong></p>
+            <p>
+              Looking for real-world experience or your next career opportunity? Don't miss out on our
+              <strong>Career Fair, happening today, from 1:00 PM to 5:00 PM</strong> in the Student Union. Meet with
+              representatives from top companies and organizations seeking talented students like you. Bring copies of
+              your resume and dress to impress. This could be your chance to land your dream internship or job!
+            </p>
+            <p class="mt-3"><strong>Work Study Availability</strong></p>
+            <p>
+              Planning your summer schedule? We're excited to announce our wide range of summer session courses!
+              Whether you want to get ahead on credits, explore new subjects, or fulfill degree requirements, we have
+              something for you. <strong>Check out our course catalog online and register starting April 1st.</strong>
+              Don't miss this opportunity to make the most of your summer!
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- JAMES / SURVEY HOME: reached from the sidebar "Surveys" item -->
+      <!-- (with its pending-count badge). Deviation disclosure: the    -->
+      <!-- source video puts the completed-survey card above the       -->
+      <!-- "Survey Home" heading; the narrator explicitly calls this out-->
+      <!-- as wrong mid-recording ("this header here is in the wrong    -->
+      <!-- spot. It should be at the top of the page under this go back-->
+      <!-- button") so it's corrected here: heading first, card below. -->
+      <!-- ============================================================ -->
+      <section id="app-main-james-surveys" x-area="region" x-region="main" class="pl-8 pr-8 pb-8" style="display: none;">
+        <hi-link href="#" aesthetic="secondary" class="mb-4">
+          <hi-icon glyph="chevron_left" size="small" inherit-color></hi-icon>
+          Go back
+        </hi-link>
+        <h1 class="mb-2">Survey Home</h1>
+        <p class="clr-gray_80-txt mb-4">
+          The following surveys were sent by staff members from your school. Completed and expired surveys cannot be
+          viewed or taken again.
+        </p>
+        <hi-input-group class="mb-6" style="width: 20rem;">
+          <hi-label for="survey-status-filter">Status Filter</hi-label>
+          <hi-dropdown kind="value" id="survey-status-filter">
+            <hi-select allow-key-search value="New, In Progress, Completed">
+              <hi-option value="new">New</hi-option>
+              <hi-option value="in-progress">In Progress</hi-option>
+              <hi-option value="completed" selected>Completed</hi-option>
+              <hi-option value="expired">Expired</hi-option>
+            </hi-select>
+          </hi-dropdown>
+        </hi-input-group>
+        <div class="card card--bordered" style="max-width: 32rem;">
+          <div class="pa-4">
+            <h3>Quick Check In 3</h3>
+            <p class="clr-gray_80-txt text-sz-s mb-3">Jul 13 - Aug 31</p>
+            <hi-badge mode="content" theme="success" class="mr-2">COMPLETED</hi-badge>
+            <hi-badge mode="content" theme="info">QUICK_POLL</hi-badge>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- JAMES / I NEED SUPPORT: prior self-alert submissions list    -->
+      <!-- Hidden by default; shown when the "I Need Support" sidebar   -->
+      <!-- item is choreographed into view by the walkthrough recording.-->
+      <!-- ============================================================ -->
+      <section id="app-main-james-support" x-area="region" x-region="main" class="pl-8 pr-8 pb-8" style="display: none;">
+        <hi-link href="#" aesthetic="secondary" class="mb-4">
+          <hi-icon glyph="chevron_left" size="small" inherit-color></hi-icon>
+          Go back
+        </hi-link>
+        <h1 class="mb-4">I Need Support</h1>
+        <hi-button aesthetic="primary" for="i-need-support-dialog" class="mb-4">Create a I Need Support</hi-button>
+        <p class="mb-4">Below are your previous submissions. Your school will review your submissions and contact you to follow-up.</p>
+        <hi-list fit-width>
+          <hi-item>
+            <div>
+              <hi-link href="#">I am seeking on-campus employment</hi-link>
+              <p class="clr-gray_80-txt text-sz-s">Submitted: Jun 18, 2026</p>
+            </div>
+          </hi-item>
+          <hi-item>
+            <div>
+              <hi-link href="#">I need help with classes</hi-link>
+              <p class="clr-gray_80-txt text-sz-s">PSY-201-C4 Behavioral Change · Submitted: May 7, 2026</p>
+            </div>
+          </hi-item>
+          <hi-item>
+            <div>
+              <hi-link href="#">Request Withdrawal</hi-link>
+              <p class="clr-gray_80-txt text-sz-s">Submitted: Oct 8, 2025</p>
+            </div>
+          </hi-item>
+          <hi-item>
+            <div>
+              <hi-link href="#">I need help paying for school</hi-link>
+              <p class="clr-gray_80-txt text-sz-s">Submitted: Oct 8, 2025</p>
+            </div>
+          </hi-item>
+          <hi-item>
+            <div>
+              <hi-link href="#">I need help paying for school</hi-link>
+              <p class="clr-gray_80-txt text-sz-s">Submitted: Sep 11, 2025</p>
+            </div>
+          </hi-item>
+        </hi-list>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- GET HELP DRAWER: accordion of help options, opened from the  -->
+      <!-- sidebar Help item. The source video shows this sliding in    -->
+      <!-- from the right over existing content, which is hi-drawer's   -->
+      <!-- documented default direction (not hi-dialog).                -->
+      <!-- ============================================================ -->
+      <hi-drawer id="get-help-dialog" heading="Get Help" sub-heading="We are happy to help!">
+        <hi-accordion selected-index="0">
+          <hi-bar><strong>For Self Alert Help</strong></hi-bar>
+          <hi-note>
+            <p class="mb-4">
+              Submit a self alert to your school staff. They will review these and contact you to follow up. You can
+              see your self alerts in the "My Docs" feature.
+            </p>
+            <hi-button aesthetic="primary" for="i-need-support-dialog">I Need Support</hi-button>
+          </hi-note>
+          <hi-bar><strong>For Advising Help</strong></hi-bar>
+          <hi-note>
+            <p>Contact your assigned advisor through the Appointments feature to schedule advising time.</p>
+          </hi-note>
+          <hi-bar><strong>For Technical Help</strong></hi-bar>
+          <hi-note>
+            <p>Reach out to your campus IT help desk for login, app, or device issues.</p>
+          </hi-note>
+        </hi-accordion>
+      </hi-drawer>
+
+      <!-- ============================================================ -->
+      <!-- I NEED SUPPORT DIALOG: self-alert submission form            -->
+      <!-- ============================================================ -->
+      <hi-dialog id="i-need-support-dialog" heading="I Need Support" tight-screen>
+        <p class="mb-4">
+          Submit a self alert to your school staff. They will review these and contact you to follow up. You can see
+          your self alerts in the "My Docs" feature.
+        </p>
+        <hi-form>
+          <hi-input-group>
+            <hi-label for="support-reason">Please select a reason</hi-label>
+            <hi-dropdown kind="value" id="support-reason">
+              <hi-select allow-key-search>
+                <hi-option value="classes" selected>I need help with classes</hi-option>
+                <hi-option value="paying">I need help paying for school</hi-option>
+                <hi-option value="withdrawal">Request Withdrawal</hi-option>
+                <hi-option value="employment">I am seeking on-campus employment</hi-option>
+                <hi-option value="career-services">Career Services</hi-option>
+              </hi-select>
+            </hi-dropdown>
+          </hi-input-group>
+          <hi-input-group>
+            <hi-label for="support-course">Is this associated with a specific class?</hi-label>
+            <hi-dropdown kind="value" id="support-course">
+              <hi-select allow-key-search>
+                <hi-option value="math-25-47296" selected>MATH-25-47296-Online College Algebra</hi-option>
+                <hi-option value="psy-201-c4">PSY-201-C4 Behavioral Change</hi-option>
+              </hi-select>
+            </hi-dropdown>
+          </hi-input-group>
+          <hi-input-group>
+            <hi-label for="support-comments">Additional comments</hi-label>
+            <hi-textarea id="support-comments"></hi-textarea>
+          </hi-input-group>
+          <hi-button type="submit" slot="controls" aesthetic="primary">Submit</hi-button>
+          <hi-button type="reset" slot="controls" aesthetic="secondary">Cancel</hi-button>
+        </hi-form>
+      </hi-dialog>
+
+      <!-- ============================================================ -->
+      <!-- LOGIN: Navigate360 authentication form, matching the source  -->
+      <!-- video's opening frame. Shown first for the pulse-check story -->
+      <!-- (see scenario-gate script in <head>). No documented HI/P     -->
+      <!-- login component exists in the local cache, so this uses      -->
+      <!-- documented form primitives (hi-form/hi-input/hi-button) in a -->
+      <!-- centered card, per the no-fabrication + closest-documented-  -->
+      <!-- pattern rule.                                                -->
+      <!-- ============================================================ -->
+      <section id="app-main-james-login" x-area="region" x-region="main" style="display: none;">
+        <div class="login-banner">
+          <div class="card card--bordered login-card">
+            <div class="pa-6">
+              <div class="logo_container mb-4">
+                <hi-image
+                  aesthetic="icon"
+                  src="https://bucks-qa-grey-mt.gradesfirst.com/images/eab_navigate360_logo.svg"
+                  alt="EAB Navigate360 Logo"
+                  height="27"
+                  width="152"
+                ></hi-image>
+              </div>
+              <h3 class="mb-4">Welcome to Woodley University</h3>
+              <hi-form>
+                <hi-input-group>
+                  <hi-label for="login-user-id">Enter your User ID</hi-label>
+                  <hi-input id="login-user-id" type="text" value="90634817"></hi-input>
+                </hi-input-group>
+                <hi-input-group>
+                  <hi-label for="login-password">Password</hi-label>
+                  <hi-input id="login-password" type="password" value="********"></hi-input>
+                </hi-input-group>
+                <hi-button type="submit" slot="controls" aesthetic="primary">Login</hi-button>
+              </hi-form>
+              <hi-link href="#" class="mt-4">Need help logging in?</hi-link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- PULSE CHECK: "Quick Check In 3" - shown immediately after     -->
+      <!-- login. The source video shows this rendered inline in the   -->
+      <!-- main content area (sidebar visible throughout), not as a    -->
+      <!-- dialog, replacing the home page until the survey is done.    -->
+      <!-- ============================================================ -->
+      <section id="app-main-james-pulse-check" x-area="region" x-region="main" class="pl-8 pr-8 pb-8" style="display: none;">
+        <hi-link href="#" aesthetic="secondary" class="mb-4">
+          <hi-icon glyph="chevron_left" size="small" inherit-color></hi-icon>
+          Go back
+        </hi-link>
+        <div style="max-width: 32rem;">
+          <h1 class="mb-6">Quick Check In 3</h1>
+          <hi-tab-group id="pulse-check-tabs" for="pulse-check-panels" class="mb-4" hidden>
+            <hi-tab for="pulse-check-intro" selected>1</hi-tab>
+            <hi-tab for="pulse-check-question-1">2</hi-tab>
+            <hi-tab for="pulse-check-question-2">3</hi-tab>
+            <hi-tab for="pulse-check-question-3">4</hi-tab>
+          </hi-tab-group>
+          <hi-switch id="pulse-check-panels" value="pulse-check-intro">
+            <hi-case id="pulse-check-intro" value="pulse-check-intro">
+              <p class="mb-3">Please answer a few questions to let us know how you are doing.</p>
+              <p class="mb-4">Please consent to the terms.</p>
+              <hi-button aesthetic="primary" stretched>Begin Survey</hi-button>
+            </hi-case>
+            <hi-case id="pulse-check-question-1" value="pulse-check-question-1" hidden>
+              <hi-meter value="33" class="mb-4"></hi-meter>
+              <hi-form>
+                <hi-input-group>
+                  <hi-label for="pulse-q1-group">
+                    When you are on campus or engaging with the institution, how often do you feel like there are
+                    people who recognize or know you?
+                  </hi-label>
+                  <hi-radio-group id="pulse-q1-group" name="pulse-q1" value="neutral">
+                    <hi-radio id="pulse-q1-strongly-disagree" value="strongly-disagree"></hi-radio>
+                    <hi-label for="pulse-q1-strongly-disagree">Strongly Disagree</hi-label>
+                    <hi-radio id="pulse-q1-disagree" value="disagree"></hi-radio>
+                    <hi-label for="pulse-q1-disagree">Disagree</hi-label>
+                    <hi-radio id="pulse-q1-neutral" value="neutral" checked></hi-radio>
+                    <hi-label for="pulse-q1-neutral">Neutral</hi-label>
+                    <hi-radio id="pulse-q1-agree" value="agree"></hi-radio>
+                    <hi-label for="pulse-q1-agree">Agree</hi-label>
+                    <hi-radio id="pulse-q1-strongly-agree" value="strongly-agree"></hi-radio>
+                    <hi-label for="pulse-q1-strongly-agree">Strongly Agree</hi-label>
+                  </hi-radio-group>
+                </hi-input-group>
+                <hi-button type="submit" slot="controls" aesthetic="primary">Save and Continue</hi-button>
+              </hi-form>
+            </hi-case>
+            <hi-case id="pulse-check-question-2" value="pulse-check-question-2" hidden>
+              <hi-meter value="66" class="mb-4"></hi-meter>
+              <hi-form>
+                <hi-input-group>
+                  <hi-label for="pulse-q2-group">
+                    How often do you feel a sense of belonging at this institution?
+                  </hi-label>
+                  <hi-radio-group id="pulse-q2-group" name="pulse-q2" value="neutral">
+                    <hi-radio id="pulse-q2-strongly-disagree" value="strongly-disagree"></hi-radio>
+                    <hi-label for="pulse-q2-strongly-disagree">Strongly Disagree</hi-label>
+                    <hi-radio id="pulse-q2-disagree" value="disagree"></hi-radio>
+                    <hi-label for="pulse-q2-disagree">Disagree</hi-label>
+                    <hi-radio id="pulse-q2-neutral" value="neutral" checked></hi-radio>
+                    <hi-label for="pulse-q2-neutral">Neutral</hi-label>
+                    <hi-radio id="pulse-q2-agree" value="agree"></hi-radio>
+                    <hi-label for="pulse-q2-agree">Agree</hi-label>
+                    <hi-radio id="pulse-q2-strongly-agree" value="strongly-agree"></hi-radio>
+                    <hi-label for="pulse-q2-strongly-agree">Strongly Agree</hi-label>
+                  </hi-radio-group>
+                </hi-input-group>
+                <hi-button type="submit" slot="controls" aesthetic="primary">Save and Continue</hi-button>
+              </hi-form>
+            </hi-case>
+            <hi-case id="pulse-check-question-3" value="pulse-check-question-3" hidden>
+              <hi-meter value="100" class="mb-4"></hi-meter>
+              <hi-form>
+                <hi-input-group>
+                  <hi-label for="pulse-q3-group">
+                    How confident are you that you have the resources you need to be successful this term?
+                  </hi-label>
+                  <hi-radio-group id="pulse-q3-group" name="pulse-q3" value="neutral">
+                    <hi-radio id="pulse-q3-strongly-disagree" value="strongly-disagree"></hi-radio>
+                    <hi-label for="pulse-q3-strongly-disagree">Strongly Disagree</hi-label>
+                    <hi-radio id="pulse-q3-disagree" value="disagree"></hi-radio>
+                    <hi-label for="pulse-q3-disagree">Disagree</hi-label>
+                    <hi-radio id="pulse-q3-neutral" value="neutral" checked></hi-radio>
+                    <hi-label for="pulse-q3-neutral">Neutral</hi-label>
+                    <hi-radio id="pulse-q3-agree" value="agree"></hi-radio>
+                    <hi-label for="pulse-q3-agree">Agree</hi-label>
+                    <hi-radio id="pulse-q3-strongly-agree" value="strongly-agree"></hi-radio>
+                    <hi-label for="pulse-q3-strongly-agree">Strongly Agree</hi-label>
+                  </hi-radio-group>
+                </hi-input-group>
+                <hi-button type="submit" slot="controls" aesthetic="primary">Submit</hi-button>
+              </hi-form>
+            </hi-case>
+          </hi-switch>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- INTAKE SURVEY DIALOG: 4-step configurable onboarding survey  -->
+      <!-- ============================================================ -->
+      <hi-dialog id="intake-survey-dialog" heading="Intake Survey" opened tight-screen>
+        <hi-tab-group id="intake-survey-tabs" for="intake-survey-panels" class="mb-6" hidden>
+          <hi-tab for="intake-step-1" selected>1</hi-tab>
+          <hi-tab for="intake-step-2">2</hi-tab>
+          <hi-tab for="intake-step-3">3</hi-tab>
+          <hi-tab for="intake-step-4">4</hi-tab>
+        </hi-tab-group>
+
+        <hi-switch id="intake-survey-panels" value="intake-step-1">
+          <!-- STEP 1: general situation -->
+          <hi-case id="intake-step-1" value="intake-step-1">
+            <hi-form>
+              <hi-input-group>
+                <hi-label for="intake-1-group">Help us get to know you! Please select all that apply:</hi-label>
+                <hi-checkbox-group id="intake-1-group">
+                  <hi-checkbox value="first-gen"></hi-checkbox>
+                  <hi-label>I'm the first in my family to attend college.</hi-label>
+                  <hi-checkbox value="online-classes"></hi-checkbox>
+                  <hi-label>I plan to take all my classes online.</hi-label>
+                  <hi-checkbox value="work-10-hrs" checked></hi-checkbox>
+                  <hi-label>I plan to work at least 10 hours per week during the academic year</hi-label>
+                  <hi-checkbox value="returning"></hi-checkbox>
+                  <hi-label>I am returning after a semester or more away from college</hi-label>
+                  <hi-checkbox value="pay-concern"></hi-checkbox>
+                  <hi-label>I'm concerned about how I will pay for college</hi-label>
+                  <hi-checkbox value="caregiver" checked></hi-checkbox>
+                  <hi-label>I'm a full-time care giver for one or more family member.</hi-label>
+                  <hi-checkbox value="veteran" checked></hi-checkbox>
+                  <hi-label>I am an active service member, a veteran, or military dependent</hi-label>
+                </hi-checkbox-group>
+              </hi-input-group>
+              <hi-button type="submit" slot="controls" stretched aesthetic="primary">Submit</hi-button>
+            </hi-form>
+          </hi-case>
+
+          <!-- STEP 2: interests -->
+          <hi-case id="intake-step-2" value="intake-step-2" hidden>
+            <hi-form>
+              <hi-input-group>
+                <hi-label for="intake-2-group">Select all that apply</hi-label>
+                <hi-checkbox-group id="intake-2-group">
+                  <hi-checkbox value="study-abroad" checked></hi-checkbox>
+                  <hi-label>I am interested in study abroad</hi-label>
+                  <hi-checkbox value="internships" checked></hi-checkbox>
+                  <hi-label>I am interested in internship opportunities related to my major</hi-label>
+                  <hi-checkbox value="tutoring"></hi-checkbox>
+                  <hi-label>I am interested in tutoring services</hi-label>
+                  <hi-checkbox value="research"></hi-checkbox>
+                  <hi-label>I am interested in learning more about undergraduate research opportunities</hi-label>
+                  <hi-checkbox value="recreation" checked></hi-checkbox>
+                  <hi-label>I am interested in outdoor, recreational, or sports activities</hi-label>
+                  <hi-checkbox value="clubs" checked></hi-checkbox>
+                  <hi-label>I am interested in learning more about clubs and organizations on campus</hi-label>
+                  <hi-checkbox value="billing" checked></hi-checkbox>
+                  <hi-label>I have questions about my bill</hi-label>
+                </hi-checkbox-group>
+              </hi-input-group>
+              <hi-button type="submit" slot="controls" stretched aesthetic="primary">Submit</hi-button>
+            </hi-form>
+          </hi-case>
+
+          <!-- STEP 3: work constraints -->
+          <hi-case id="intake-step-3" value="intake-step-3" hidden>
+            <hi-form>
+              <hi-input-group>
+                <hi-label for="intake-3-group">How many hours do you plan to work?</hi-label>
+                <hi-radio-group id="intake-3-group" name="work-hours" value="5-10">
+                  <hi-radio id="work-hours-5-10" value="5-10" checked></hi-radio>
+                  <hi-label for="work-hours-5-10">5-10</hi-label>
+                  <hi-radio id="work-hours-11-20" value="11-20"></hi-radio>
+                  <hi-label for="work-hours-11-20">11-20</hi-label>
+                  <hi-radio id="work-hours-21-30" value="21-30"></hi-radio>
+                  <hi-label for="work-hours-21-30">21-30</hi-label>
+                  <hi-radio id="work-hours-31-40" value="31-40"></hi-radio>
+                  <hi-label for="work-hours-31-40">31-40</hi-label>
+                </hi-radio-group>
+              </hi-input-group>
+              <hi-button type="submit" slot="controls" stretched aesthetic="primary">Submit</hi-button>
+            </hi-form>
+          </hi-case>
+
+          <!-- STEP 4: partner-configurable page (shown in recording with -->
+          <!-- placeholder/test copy - reproduced verbatim from the video) -->
+          <hi-case id="intake-step-4" value="intake-step-4" hidden>
+            <hi-form>
+              <hi-input-group>
+                <hi-label for="intake-4-group">Tell us about yourself</hi-label>
+                <hi-checkbox-group id="intake-4-group">
+                  <hi-checkbox value="test1-a"></hi-checkbox>
+                  <hi-label>Test1</hi-label>
+                  <hi-checkbox value="test1-b" checked></hi-checkbox>
+                  <hi-label>Test1</hi-label>
+                </hi-checkbox-group>
+              </hi-input-group>
+              <hi-button type="submit" slot="controls" stretched aesthetic="primary">Submit</hi-button>
+            </hi-form>
+          </hi-case>
+        </hi-switch>
+      </hi-dialog>
+    </main>
+
+    <link rel="stylesheet" href="../unset.css" />
+    <link rel="stylesheet" href="../demo-menu.css" />
+    <nav class="unset demo-menu-bar" aria-label="Prototype demo controls">
+      <button type="button" class="demo-menu-bar__brand" onclick="location.href='../index.html'">
+        <img class="demo-menu-bar__logo" src="assets/shared/eab-mark-white.svg" alt="" width="28" height="28" />
+        Prototypes
+      </button>
+      <div class="demo-menu-bar__menus">
+        <div class="demo-menu">
+          <button type="button" class="demo-menu__toggle" aria-haspopup="true" aria-expanded="false">
+            Scenarios<span class="demo-menu__caret" aria-hidden="true">▴</span>
+          </button>
+          <div class="demo-menu__panel demo-menu__panel--wide" hidden>
+            <div id="scenarios-menu-list" class="scenarios-menu-list"></div>
+          </div>
+        </div>
+        <div class="demo-menu">
+          <button type="button" class="demo-menu__toggle" aria-haspopup="true" aria-expanded="false">
+            Personas<span class="demo-menu__caret" aria-hidden="true">▴</span>
+          </button>
+          <div class="demo-menu__panel" hidden>
+            <p class="demo-menu__note">James Wyatt (Student) — current</p>
+          </div>
+        </div>
+        <div class="demo-menu">
+          <button type="button" class="demo-menu__toggle" aria-haspopup="true" aria-expanded="false">
+            Theme<span class="demo-menu__caret" aria-hidden="true">▴</span>
+          </button>
+          <div class="demo-menu__panel" hidden>
+            <p class="demo-menu__note">HI/P — current</p>
+            <p class="demo-menu__note demo-menu__note--muted">Classic (coming soon)</p>
+            <p class="demo-menu__note demo-menu__note--muted">Modern (coming soon)</p>
+          </div>
+        </div>
+        <div class="demo-menu">
+          <button type="button" class="demo-menu__toggle" aria-haspopup="true" aria-expanded="false">
+            Settings<span class="demo-menu__caret" aria-hidden="true">▴</span>
+          </button>
+          <div class="demo-menu__panel" hidden>
+            <button type="button" class="demo-menu__link" onclick="location.href='../index.html'">Back to Index</button>
+            <button type="button" class="demo-menu__link" onclick="location.href='help.html'">Help</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <script src="../interface.js"></script>
+    <script src="scenarios.js"></script>
+  </body>
+</html>
