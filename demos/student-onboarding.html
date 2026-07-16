@@ -814,11 +814,42 @@
         }
 
         function navigateJamesNav(value) {
-          if (value === "home") showMainSection("app-main-james-home");
-          else if (value === "surveys") showMainSection("app-main-james-surveys");
-          else if (value === "i-need-support" || value === "my-docs") {
+          if (value === "surveys") showMainSection("app-main-james-surveys");
+          else if (value === "i-need-support" || value === "my-docs" || value === "contact-ssa") {
             showMainSection("app-main-james-support");
+          } else {
+            showMainSection("app-main-james-home");
           }
+        }
+
+        function navigatePenelopeNav(value) {
+          showMainSection("app-main-account");
+        }
+
+        function wireSidebarNav(navSectionId, listSelector, onNavigate, skipValues) {
+          var navSection = document.getElementById(navSectionId);
+          if (!navSection) return;
+          var navList = navSection.querySelector(listSelector || "hi-list");
+          var skip = skipValues || [];
+
+          if (navList) {
+            navList.addEventListener("value-changed", function (e) {
+              var val = (e.detail && e.detail.value) || navList.getAttribute("value");
+              if (skip.indexOf(val) === -1) onNavigate(val);
+            });
+          }
+
+          navSection.addEventListener("click", function (e) {
+            var path = e.composedPath ? e.composedPath() : [e.target];
+            var item = path.find(function (node) {
+              return node && node.tagName === "HI-ITEM" && node.hasAttribute("value");
+            });
+            if (!item) return;
+            var val = item.getAttribute("value");
+            if (skip.indexOf(val) !== -1) return;
+            if (navList) navList.setAttribute("value", val);
+            onNavigate(val);
+          });
         }
 
         function openIntakeSurvey() {
@@ -836,16 +867,22 @@
           if (dialog) dialog.removeAttribute("opened");
           var nav = document.getElementById("app-nav-left");
           if (nav) nav.style.display = "";
+          var penelopeNavList = document.querySelector("#app-nav-left hi-list");
+          if (penelopeNavList) penelopeNavList.setAttribute("value", "account");
           showMainSection("app-main-account");
         }
 
         function completePulseCheck() {
           showMainSection("app-main-james-home");
+          var jamesNavList = document.querySelector("#app-nav-left-james hi-list");
+          if (jamesNavList) jamesNavList.setAttribute("value", "home");
         }
 
         function startJamesSession() {
           var nav = document.getElementById("app-nav-left-james");
           if (nav) nav.style.display = "";
+          var jamesNavList = document.querySelector("#app-nav-left-james hi-list");
+          if (jamesNavList) jamesNavList.setAttribute("value", "home");
           showMainSection("app-main-james-pulse-check");
         }
 
@@ -927,28 +964,8 @@
           });
         }
 
-        var jamesNav = document.getElementById("app-nav-left-james");
-        var jamesNavList = jamesNav && jamesNav.querySelector("hi-list");
-
-        if (jamesNavList) {
-          jamesNavList.addEventListener("value-changed", function (e) {
-            var val = (e.detail && e.detail.value) || jamesNavList.getAttribute("value");
-            navigateJamesNav(val);
-          });
-        }
-
-        if (jamesNav) {
-          jamesNav.addEventListener("click", function (e) {
-            var path = e.composedPath ? e.composedPath() : [e.target];
-            var item = path.find(function (node) {
-              return node && node.tagName === "HI-ITEM" && node.hasAttribute("value");
-            });
-            if (!item || item.getAttribute("value") === "help") return;
-            var val = item.getAttribute("value");
-            if (jamesNavList) jamesNavList.setAttribute("value", val);
-            navigateJamesNav(val);
-          });
-        }
+        wireSidebarNav("app-nav-left-james", "hi-list", navigateJamesNav, ["help"]);
+        wireSidebarNav("app-nav-left", "hi-list", navigatePenelopeNav, ["help"]);
 
         var getHelpDrawer = document.getElementById("get-help-dialog");
         var supportDialog = document.getElementById("i-need-support-dialog");
@@ -968,6 +985,7 @@
             if (isSubmit) {
               setOverlayOpened(getHelpDrawer, false);
               showMainSection("app-main-james-support");
+              var jamesNavList = document.querySelector("#app-nav-left-james hi-list");
               if (jamesNavList) jamesNavList.setAttribute("value", "i-need-support");
             }
           });
