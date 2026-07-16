@@ -263,7 +263,7 @@
           </ul>
 
           <hi-link-group kind="stacked" class="mt-6" style="max-width: 32rem; width: 100%;">
-            <hi-link href="#">Retake Intake Survey</hi-link>
+            <hi-link href="#" id="retake-intake-survey-link">Retake Intake Survey</hi-link>
             <hi-link href="#">Notification Settings</hi-link>
             <hi-link href="#">About</hi-link>
           </hi-link-group>
@@ -597,7 +597,7 @@
       <!-- ============================================================ -->
       <!-- INTAKE SURVEY DIALOG: 4-step configurable onboarding survey  -->
       <!-- ============================================================ -->
-      <hi-dialog id="intake-survey-dialog" heading="Intake Survey" opened tight-screen>
+      <hi-dialog id="intake-survey-dialog" heading="Intake Survey" opened tight-screen disallow-close>
         <hi-tab-group id="intake-survey-tabs" for="intake-survey-panels" class="mb-6" hidden>
           <hi-tab for="intake-step-1" selected>1</hi-tab>
           <hi-tab for="intake-step-2">2</hi-tab>
@@ -743,6 +743,237 @@
         </div>
       </div>
     </nav>
+    <script>
+      (function () {
+        var INTAKE_STEPS = [
+          "intake-step-1",
+          "intake-step-2",
+          "intake-step-3",
+          "intake-step-4",
+        ];
+        var PULSE_STEPS = [
+          "pulse-check-intro",
+          "pulse-check-question-1",
+          "pulse-check-question-2",
+          "pulse-check-question-3",
+        ];
+
+        function showCase(switchEl, targetValue) {
+          if (!switchEl) return;
+          switchEl.querySelectorAll("hi-case").forEach(function (c) {
+            if (c.getAttribute("value") === targetValue) {
+              c.removeAttribute("hidden");
+            } else if (c.parentElement === switchEl) {
+              c.setAttribute("hidden", "");
+            }
+          });
+          switchEl.setAttribute("value", targetValue);
+        }
+
+        function syncTabs(tabGroup, stepId) {
+          if (!tabGroup) return;
+          tabGroup.querySelectorAll("hi-tab").forEach(function (tab) {
+            if (tab.getAttribute("for") === stepId) {
+              tab.setAttribute("selected", "");
+            } else {
+              tab.removeAttribute("selected");
+            }
+          });
+        }
+
+        function showMainSection(sectionId) {
+          [
+            "app-main-account",
+            "app-main-james-home",
+            "app-main-james-surveys",
+            "app-main-james-support",
+            "app-main-james-login",
+            "app-main-james-pulse-check",
+          ].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.style.display = id === sectionId ? "" : "none";
+          });
+        }
+
+        function advanceWizard(steps, panels, tabs, currentStep) {
+          var index = steps.indexOf(currentStep);
+          if (index === -1) return false;
+          if (index < steps.length - 1) {
+            var next = steps[index + 1];
+            showCase(panels, next);
+            syncTabs(tabs, next);
+            return true;
+          }
+          return false;
+        }
+
+        function setOverlayOpened(el, open) {
+          if (!el) return;
+          if (open) el.setAttribute("opened", "");
+          else el.removeAttribute("opened");
+        }
+
+        function navigateJamesNav(value) {
+          if (value === "home") showMainSection("app-main-james-home");
+          else if (value === "surveys") showMainSection("app-main-james-surveys");
+          else if (value === "i-need-support" || value === "my-docs") {
+            showMainSection("app-main-james-support");
+          }
+        }
+
+        function openIntakeSurvey() {
+          var dialog = document.getElementById("intake-survey-dialog");
+          var panels = document.getElementById("intake-survey-panels");
+          var tabs = document.getElementById("intake-survey-tabs");
+          if (!dialog || !panels) return;
+          showCase(panels, "intake-step-1");
+          syncTabs(tabs, "intake-step-1");
+          dialog.setAttribute("opened", "");
+        }
+
+        function completeIntakeSurvey() {
+          var dialog = document.getElementById("intake-survey-dialog");
+          if (dialog) dialog.removeAttribute("opened");
+          var nav = document.getElementById("app-nav-left");
+          if (nav) nav.style.display = "";
+          showMainSection("app-main-account");
+        }
+
+        function completePulseCheck() {
+          showMainSection("app-main-james-home");
+        }
+
+        function startJamesSession() {
+          var nav = document.getElementById("app-nav-left-james");
+          if (nav) nav.style.display = "";
+          showMainSection("app-main-james-pulse-check");
+        }
+
+        function findSubmitButton(path) {
+          return path.find(function (node) {
+            return (
+              node &&
+              node.tagName === "HI-BUTTON" &&
+              node.getAttribute("type") === "submit"
+            );
+          });
+        }
+
+        function findWizardButton(path, container) {
+          return path.find(function (node) {
+            return node && node.tagName === "HI-BUTTON" && container.contains(node);
+          });
+        }
+
+        var intakeDialog = document.getElementById("intake-survey-dialog");
+        var intakePanels = document.getElementById("intake-survey-panels");
+        var intakeTabs = document.getElementById("intake-survey-tabs");
+
+        if (intakeDialog && intakePanels) {
+          intakeDialog.addEventListener("click", function (e) {
+            var path = e.composedPath ? e.composedPath() : [e.target];
+            var button = findSubmitButton(path);
+            if (!button || !intakeDialog.contains(button)) return;
+
+            var form = button.closest("hi-form");
+            var step = form && form.closest("hi-case");
+            if (!step) return;
+
+            e.preventDefault();
+            var current = step.getAttribute("value");
+            if (!advanceWizard(INTAKE_STEPS, intakePanels, intakeTabs, current)) {
+              completeIntakeSurvey();
+            }
+          });
+        }
+
+        var retakeLink = document.getElementById("retake-intake-survey-link");
+        if (retakeLink) {
+          retakeLink.addEventListener("click", function (e) {
+            e.preventDefault();
+            openIntakeSurvey();
+          });
+        }
+
+        var loginSection = document.getElementById("app-main-james-login");
+        if (loginSection) {
+          loginSection.addEventListener("click", function (e) {
+            var path = e.composedPath ? e.composedPath() : [e.target];
+            var button = findSubmitButton(path);
+            if (!button || !loginSection.contains(button)) return;
+            e.preventDefault();
+            startJamesSession();
+          });
+        }
+
+        var pulseSection = document.getElementById("app-main-james-pulse-check");
+        var pulsePanels = document.getElementById("pulse-check-panels");
+        var pulseTabs = document.getElementById("pulse-check-tabs");
+
+        if (pulseSection && pulsePanels) {
+          pulseSection.addEventListener("click", function (e) {
+            var path = e.composedPath ? e.composedPath() : [e.target];
+            var button = findWizardButton(path, pulseSection);
+            if (!button) return;
+
+            var step = button.closest("hi-case");
+            if (!step) return;
+
+            e.preventDefault();
+            var current = step.getAttribute("value");
+            if (!advanceWizard(PULSE_STEPS, pulsePanels, pulseTabs, current)) {
+              completePulseCheck();
+            }
+          });
+        }
+
+        var jamesNav = document.getElementById("app-nav-left-james");
+        var jamesNavList = jamesNav && jamesNav.querySelector("hi-list");
+
+        if (jamesNavList) {
+          jamesNavList.addEventListener("value-changed", function (e) {
+            var val = (e.detail && e.detail.value) || jamesNavList.getAttribute("value");
+            navigateJamesNav(val);
+          });
+        }
+
+        if (jamesNav) {
+          jamesNav.addEventListener("click", function (e) {
+            var path = e.composedPath ? e.composedPath() : [e.target];
+            var item = path.find(function (node) {
+              return node && node.tagName === "HI-ITEM" && node.hasAttribute("value");
+            });
+            if (!item || item.getAttribute("value") === "help") return;
+            var val = item.getAttribute("value");
+            if (jamesNavList) jamesNavList.setAttribute("value", val);
+            navigateJamesNav(val);
+          });
+        }
+
+        var getHelpDrawer = document.getElementById("get-help-dialog");
+        var supportDialog = document.getElementById("i-need-support-dialog");
+
+        if (supportDialog) {
+          supportDialog.addEventListener("click", function (e) {
+            var path = e.composedPath ? e.composedPath() : [e.target];
+            var button = findWizardButton(path, supportDialog);
+            if (!button) return;
+
+            var isSubmit = button.getAttribute("type") === "submit";
+            var isCancel = button.getAttribute("type") === "reset";
+            if (!isSubmit && !isCancel) return;
+
+            e.preventDefault();
+            setOverlayOpened(supportDialog, false);
+            if (isSubmit) {
+              setOverlayOpened(getHelpDrawer, false);
+              showMainSection("app-main-james-support");
+              if (jamesNavList) jamesNavList.setAttribute("value", "i-need-support");
+            }
+          });
+        }
+      })();
+    </script>
     <script src="../interface.js"></script>
     <script src="scenarios.js"></script>
   </body>

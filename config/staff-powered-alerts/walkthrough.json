@@ -1,0 +1,17 @@
+{
+  "demo": "demos/navigate-app.html?view=staff-powered-alerts",
+  "viewport": { "width": 1600, "height": 1050 },
+  "output": "videos/staff-powered-alerts/prototype.webm",
+  "actions": [
+    { "at": 0, "type": "log", "message": "Professor Home loaded" },
+    { "at": 8, "type": "evaluate", "expression": "window.goToProgressReport()", "message": "Fill Out Progress Reports" },
+    { "at": 16, "type": "evaluate", "expression": "window.goToProgressReportSuccess()", "message": "Submit progress report feedback" },
+    { "at": 24, "type": "evaluate", "expression": "window.goToStaffHome()", "message": "Go Home to Staff Home" },
+    { "at": 32, "type": "evaluate", "expression": "window.openIssueAlert()", "message": "Issue an Alert from sidebar" },
+    { "at": 40, "type": "click", "selector": "#submit-issue-alert-btn", "message": "Submit alert" },
+    { "at": 48, "type": "evaluate", "expression": "window.goToCaseDetail()", "message": "Open Case 514" },
+    { "at": 56, "type": "evaluate", "expression": "window.openEditCaseDrawer()", "message": "Edit case details drawer" },
+    { "at": 64, "type": "click", "selector": "#save-case-details-btn", "message": "Save and close case" },
+    { "at": 72, "type": "log", "message": "End of Staff Powered Alerts walkthrough" }
+  ]
+}

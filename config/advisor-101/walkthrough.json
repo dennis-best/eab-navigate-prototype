@@ -1,0 +1,17 @@
+{
+  "demo": "demos/navigate-app.html?view=advisor-101",
+  "viewport": { "width": 1600, "height": 1050 },
+  "output": "videos/advisor-101/prototype.webm",
+  "actions": [
+    { "at": 0, "type": "log", "message": "Staff Home with Michael Adams in Assigned Students" },
+    { "at": 8, "type": "evaluate", "expression": "window.goToMichaelAdams()", "message": "Open Michael Adams student profile" },
+    { "at": 14, "type": "click", "selector": "#open-staff-assistant-btn", "message": "Open Staff Assistant drawer" },
+    { "at": 22, "type": "evaluate", "expression": "document.getElementById('staff-assistant-drawer').removeAttribute('opened'); window.goToStaffHome()", "message": "Close drawer, return to Staff Home" },
+    { "at": 28, "type": "clickTab", "for": "appointments", "message": "Staff Home Appointments tab" },
+    { "at": 36, "type": "evaluate", "expression": "window.openAppointmentSummary()", "message": "Open appointment summary for Peggy Aguila" },
+    { "at": 44, "type": "click", "selector": "#start-transcription-btn", "message": "Start transcription consent flow" },
+    { "at": 50, "type": "click", "selector": "#transcription-consent-yes", "message": "Accept transcription consent" },
+    { "at": 58, "type": "evaluate", "expression": "window.goToDashboard()", "message": "Open Dashboard from left rail" },
+    { "at": 70, "type": "log", "message": "End of Advisor 101 walkthrough" }
+  ]
+}

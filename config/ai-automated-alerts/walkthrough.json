@@ -1,0 +1,20 @@
+{
+  "demo": "demos/navigate-app.html?view=ai-automated-alerts",
+  "viewport": { "width": 1600, "height": 1050 },
+  "output": "videos/ai-automated-alerts/prototype.webm",
+  "actions": [
+    { "at": 0, "type": "log", "message": "Dashboard loaded" },
+    { "at": 8, "type": "evaluate", "expression": "window.goToReports()", "message": "Open Reporting" },
+    { "at": 16, "type": "click", "selector": "#open-report-finder-btn", "message": "Open Report Finder drawer" },
+    { "at": 24, "type": "evaluate", "expression": "window.goToStudentsReport()", "message": "Open Students Report" },
+    { "at": 32, "type": "click", "selector": "#open-save-report-btn", "message": "Save as New Report" },
+    { "at": 40, "type": "click", "selector": "#confirm-save-report-btn", "message": "Confirm save report" },
+    { "at": 48, "type": "evaluate", "expression": "window.goToMessagingCampaignWizard()", "message": "Messaging Add New campaign wizard" },
+    { "at": 56, "type": "evaluate", "expression": "window.goToMsgStepOutreach()", "message": "Configure Outreach step" },
+    { "at": 64, "type": "evaluate", "expression": "window.goToMessagingNudgeSms()", "message": "Edit SMS welcome nudge" },
+    { "at": 72, "type": "evaluate", "expression": "window.goToMessagingCampaignSummary()", "message": "Launch campaign summary" },
+    { "at": 80, "type": "evaluate", "expression": "window.goToAutomations()", "message": "My Report Automations" },
+    { "at": 88, "type": "evaluate", "expression": "window.goToNewAutomation()", "message": "New Automation" },
+    { "at": 96, "type": "log", "message": "End of AI Automated Alerts walkthrough" }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "demo": "demos/navigate-app.html?view=campaigns",
+  "viewport": { "width": 1600, "height": 1050 },
+  "output": "videos/campaign-overview/prototype.webm",
+  "actions": [
+    { "at": 0, "type": "log", "message": "Campaigns & Events landing" },
+    { "at": 8, "type": "evaluate", "expression": "window.goToEnrollmentCampaigns()", "message": "Enrollment Campaigns list" },
+    { "at": 16, "type": "evaluate", "expression": "window.goToCampaignWizard()", "message": "Start campaign wizard" },
+    { "at": 24, "type": "evaluate", "expression": "window.goToCampaignStep('campaign-step-recipients')", "message": "Verify Recipients step" },
+    { "at": 32, "type": "evaluate", "expression": "window.goToCampaignStep('campaign-step-nudges')", "message": "Compose Nudges step" },
+    { "at": 40, "type": "evaluate", "expression": "window.goToCampaignStep('campaign-step-verify')", "message": "Verify & Start step" },
+    { "at": 48, "type": "evaluate", "expression": "window.goToCampaignDetail()", "message": "Campaign detail stats page" },
+    { "at": 60, "type": "log", "message": "End of Campaign Overview walkthrough" }
+  ]
+}

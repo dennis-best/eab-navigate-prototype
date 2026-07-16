@@ -2452,7 +2452,7 @@ Thank you!</hi-textarea>
               <hi-tile allow-toolbar aesthetic="outline">
                 <h5 slot="title">Options</h5>
                 <p class="mb-4">I want to...</p>
-                <p class="mb-2"><hi-link href="#">Message Student</hi-link></p>
+                <p class="mb-2"><hi-link href="#" class="goto-message-student-link">Message Student</hi-link></p>
                 <p class="mb-2"><hi-link href="#">Add a Note on this Student</hi-link></p>
                 <p class="mb-2"><hi-link href="#">Add a Journey to this Student</hi-link></p>
                 <p class="mb-2"><hi-link href="#">Add a To-Do to this Student</hi-link></p>
@@ -2555,6 +2555,22 @@ Thank you!</hi-textarea>
           <hi-textarea id="staff-assistant-prompt" name="prompt" placeholder="Ask me a question"></hi-textarea>
         </hi-input-group>
       </hi-drawer>
+
+      <!-- Message Student dialog (Staff Home walkthrough) -->
+      <hi-dialog id="message-student-dialog" heading="Message Student" size="medium">
+        <hi-form>
+          <hi-input-group>
+            <hi-label for="message-student-subject">Subject</hi-label>
+            <hi-input id="message-student-subject" name="subject" value="Follow up"></hi-input>
+          </hi-input-group>
+          <hi-input-group>
+            <hi-label for="message-student-body">Message</hi-label>
+            <hi-textarea id="message-student-body" name="body"></hi-textarea>
+          </hi-input-group>
+          <hi-button slot="controls" aesthetic="secondary" id="close-message-student-btn">Cancel</hi-button>
+          <hi-button slot="controls" aesthetic="primary" id="send-message-student-btn">Send</hi-button>
+        </hi-form>
+      </hi-dialog>
 
       <!-- Appointment summary dialog (Advisor 101) -->
       <hi-dialog id="appointment-summary-dialog" heading="Create an Appointment Summary Report" size="large">
@@ -3046,6 +3062,7 @@ Thank you!</hi-textarea>
       }
 
       const staffAssistantDrawer = document.getElementById("staff-assistant-drawer");
+      const messageStudentDialog = document.getElementById("message-student-dialog");
       const appointmentSummaryDialog = document.getElementById("appointment-summary-dialog");
       const transcriptionConsentDialog = document.getElementById("transcription-consent-dialog");
       const transcriptionOutput = document.getElementById("transcription-output");
@@ -3061,6 +3078,12 @@ Thank you!</hi-textarea>
       }
 
       document.getElementById("open-staff-assistant-btn")?.addEventListener("click", openStaffAssistant);
+      document.getElementById("close-message-student-btn")?.addEventListener("click", () => {
+        if (messageStudentDialog) messageStudentDialog.removeAttribute("opened");
+      });
+      document.getElementById("send-message-student-btn")?.addEventListener("click", () => {
+        if (messageStudentDialog) messageStudentDialog.removeAttribute("opened");
+      });
       document.getElementById("close-appt-summary-btn")?.addEventListener("click", closeAppointmentSummary);
       document.getElementById("start-transcription-btn")?.addEventListener("click", () => {
         if (transcriptionConsentDialog) transcriptionConsentDialog.setAttribute("opened", "");
@@ -3114,6 +3137,7 @@ Thank you!</hi-textarea>
       window.goToEnrollmentCampaigns = goToEnrollmentCampaigns;
       window.goToCampaignWizard = goToCampaignWizard;
       window.goToCampaignDetail = goToCampaignDetail;
+      window.goToCampaignStep = goToCampaignStep;
 
       // Allow deep-linking straight into the Campaigns & Events area, e.g.
       // navigate-app.html?view=campaigns, matching the ?login=pulse-check
@@ -3225,6 +3249,7 @@ Thank you!</hi-textarea>
         // composedPath() instead, which includes every real node the event
         // passed through, shadow DOM or not.
         const path = e.composedPath ? e.composedPath() : [e.target];
+        const messageStudentLink = path.find((n) => n.classList && n.classList.contains("goto-message-student-link"));
         const wyattLink = path.find((n) => n.classList && n.classList.contains("goto-wyatt-link"));
         const adamsLink = path.find((n) => n.classList && n.classList.contains("goto-adams-link"));
         const staffHomeLink = path.find((n) => n.classList && n.classList.contains("goto-staff-home-link"));
@@ -3249,7 +3274,10 @@ Thank you!</hi-textarea>
         const automationsLink = path.find((n) => n.classList && n.classList.contains("goto-automations-link"));
         const newAutomationLink = path.find((n) => n.classList && n.classList.contains("goto-new-automation-link"));
         const automationDetailLink = path.find((n) => n.classList && n.classList.contains("goto-automation-detail-link"));
-        if (wyattLink) {
+        if (messageStudentLink) {
+          e.preventDefault();
+          if (messageStudentDialog) messageStudentDialog.setAttribute("opened", "");
+        } else if (wyattLink) {
           e.preventDefault();
           goToJamesWyatt();
         } else if (adamsLink) {
@@ -3332,12 +3360,19 @@ Thank you!</hi-textarea>
       window.goToDashboard = goToDashboard;
       window.goToProfessorHome = goToProfessorHome;
       window.goToProgressReport = goToProgressReport;
+      window.goToProgressReportSuccess = goToProgressReportSuccess;
       window.goToCases = goToCases;
       window.goToCaseDetail = goToCaseDetail;
       window.openIssueAlert = openIssueAlert;
+      window.openEditCaseDrawer = openEditCaseDrawer;
       window.goToReports = goToReports;
+      window.goToStudentsReport = goToStudentsReport;
       window.goToMessagingCampaignWizard = goToMessagingCampaignWizard;
+      window.goToMessagingNudgeSms = goToMessagingNudgeSms;
+      window.goToMsgStepOutreach = goToMsgStepOutreach;
+      window.goToMessagingCampaignSummary = goToMessagingCampaignSummary;
       window.goToAutomations = goToAutomations;
+      window.goToNewAutomation = goToNewAutomation;
       window.openAppointmentSummary = openAppointmentSummary;
 
       // Page-title menus inside the prototype (Staff Home / James Wyatt flyouts)

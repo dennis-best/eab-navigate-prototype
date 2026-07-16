@@ -1,0 +1,18 @@
+{
+  "demo": "demos/application-management.html",
+  "viewport": { "width": 1600, "height": 1050 },
+  "output": "videos/application-management/prototype.webm",
+  "actions": [
+    { "at": 0, "type": "log", "message": "Applicant Portal Home" },
+    { "at": 8, "type": "evaluate", "expression": "window.showView('application-hub')", "message": "Open General Application hub" },
+    { "at": 16, "type": "evaluate", "expression": "window.showView('personal-background')", "message": "Personal Background form" },
+    { "at": 24, "type": "dispatchClick", "selector": "#pb-same-address", "message": "Toggle mailing address conditional" },
+    { "at": 32, "type": "evaluate", "expression": "window.showView('application-hub')", "message": "Save personal background, return to hub" },
+    { "at": 40, "type": "evaluate", "expression": "window.showView('documents')", "message": "Documents upload page" },
+    { "at": 48, "type": "evaluate", "expression": "window.showView('todos')", "message": "To-Dos list" },
+    { "at": 56, "type": "click", "selector": "#open-todo-drawer-link", "message": "Open To-Do detail drawer" },
+    { "at": 64, "type": "evaluate", "expression": "window.showView('recommendations')", "message": "Recommendation letters" },
+    { "at": 72, "type": "evaluate", "expression": "window.showView('recommender-claim')", "message": "External recommender accept page" },
+    { "at": 80, "type": "log", "message": "End of Application Management walkthrough" }
+  ]
+}

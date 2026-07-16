@@ -272,7 +272,7 @@
             <yi-card>
               <div class="hub-section-row">
                 <hi-link class="goto-personal-background-link">Personal Background</hi-link>
-                <span class="hub-section-status">Missing Required Items</span>
+                <span class="hub-section-status" id="hub-status-personal-background">Missing Required Items</span>
               </div>
               <div class="hub-section-row">
                 <hi-link class="goto-section-stub-link" data-section="Family/Guardian Information">Family/Guardian Information</hi-link>
@@ -484,7 +484,7 @@
               <p class="upload-dropzone mt-2">Drag a file here or click to browse. Any existing file will be replaced.</p>
 
               <div class="mt-6">
-                <hi-button aesthetic="primary" class="mr-4">Save Documents</hi-button>
+                <hi-button aesthetic="primary" class="mr-4" id="save-documents-btn">Save Documents</hi-button>
                 <hi-link class="goto-application-hub-link">Back to Pages</hi-link>
               </div>
             </yi-card>
@@ -506,7 +506,7 @@
             <yi-card>
               <p class="mb-4"><hi-link id="open-todo-drawer-link">Finish Financial Aid Documents</hi-link></p>
               <p class="app-meta mb-6">Due Date: - | Created By: System</p>
-              <p class="mb-4"><hi-link>Submit Letters of Recommendation</hi-link></p>
+              <p class="mb-4"><hi-link class="goto-recommendations-link">Submit Letters of Recommendation</hi-link></p>
               <p class="app-meta mb-6">Due Date: - | Created By: System</p>
               <hi-link class="goto-application-hub-link">Back to Pages</hi-link>
             </yi-card>
@@ -732,7 +732,7 @@
         <p><strong>Total Amount Due:</strong> $50.00</p>
 
         <hi-button slot="controls" aesthetic="secondary" id="close-payment-dialog-btn">Cancel</hi-button>
-        <hi-button slot="controls" aesthetic="primary">Submit</hi-button>
+        <hi-button slot="controls" aesthetic="primary" id="submit-payment-dialog-btn">Submit</hi-button>
       </hi-dialog>
 
         </div><!-- .portal-body -->
@@ -899,6 +899,45 @@
       });
       document.getElementById("close-payment-dialog-btn").addEventListener("click", () => {
         document.getElementById("payment-dialog").opened = false;
+      });
+
+      document.getElementById("submit-payment-dialog-btn").addEventListener("click", () => {
+        document.getElementById("payment-dialog").opened = false;
+        showView("submitted-summer");
+      });
+
+      document.getElementById("save-documents-btn").addEventListener("click", () => {
+        const hubDocs = document.getElementById("hub-status-documents");
+        if (hubDocs) hubDocs.textContent = "Complete";
+        showView("application-hub");
+      });
+
+      document.getElementById("todo-drawer").addEventListener("click", (e) => {
+        const path = e.composedPath ? e.composedPath() : [e.target];
+        const btn = path.find((n) => n.tagName === "HI-BUTTON" && n.getAttribute("type") === "submit");
+        if (!btn) return;
+        e.preventDefault();
+        document.getElementById("todo-drawer").opened = false;
+      });
+
+      document.getElementById("portal-view").addEventListener("click", (e) => {
+        const path = e.composedPath ? e.composedPath() : [e.target];
+        const btn = path.find((n) => n.tagName === "HI-BUTTON" && n.getAttribute("type") === "submit");
+        if (!btn) return;
+        const form = btn.closest("hi-form");
+        const viewCase = form && form.closest("hi-case");
+        if (!viewCase) return;
+        e.preventDefault();
+        const viewId = viewCase.getAttribute("value");
+        if (viewId === "personal-background") {
+          const hubPb = document.getElementById("hub-status-personal-background");
+          if (hubPb) hubPb.textContent = "Complete";
+          showView("application-hub");
+        } else if (viewId === "section-stub") {
+          showView("application-hub");
+        } else if (viewId === "recommender-form") {
+          showView("recommender-claim");
+        }
       });
 
       // After recommendation submitted, update statuses
