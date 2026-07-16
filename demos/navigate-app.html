@@ -454,7 +454,7 @@
                     </hi-case>
                     <hi-case id="recent-reports" value="recent-reports" hidden>
                       <div scroll-x="auto">
-                        <vi-grid id="grid-26" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"date":{"title":"Date","render_type":"html"},"student_name":{"title":"Student Name","render_type":"html"},"summary":{"title":"Summary","render_type":"html"},"follow_up":{"title":"Follow-Up?","render_type":"html"},"details":{"title":"Details","render_type":"html"}}}' input='[{"id":"row-23","date":"05/07/2026","student_name":"<hi-link href=\"#\">Adam, Michael</hi-link>","summary":"Jack Whitmore and Michael Adam discuss Michael's plans. M...","follow_up":"No","details":"<hi-link href=\"#\">Details</hi-link> &nbsp; <hi-link href=\"#\">Delete</hi-link>"},{"id":"row-24","date":"04/14/2026","student_name":"<hi-link href=\"#\">Andrews, Garland</hi-link>","summary":"","follow_up":"No","details":"<hi-link href=\"#\">Details</hi-link> &nbsp; <hi-link href=\"#\">Delete</hi-link>"},{"id":"row-25","date":"04/07/2026","student_name":"<hi-link href=\"#\" class=\"goto-wyatt-link\">Wyatt, James</hi-link>","summary":"went over this concept","follow_up":"No","details":"<hi-link href=\"#\">Details</hi-link> &nbsp; <hi-link href=\"#\">Delete</hi-link>"}]'></vi-grid>
+                        <vi-grid id="grid-26" settings='{"hidden":{"export":true,"add_row":true,"grid_table":true,"sort_manager":true,"column_manager":true,"settings_manager":true,"clear_all_limits":true,"global_search":true,"pagination_row_size":true,"auto_fit_column_width":true},"allow":{"row_selections":false,"table_sort":true,"table_filter":false,"table_pagination":false}}' type='{"fields":{"date":{"title":"Date","render_type":"html"},"student_name":{"title":"Student Name","render_type":"html"},"summary":{"title":"Summary","render_type":"html"},"follow_up":{"title":"Follow-Up?","render_type":"html"},"details":{"title":"Details","render_type":"html"}}}' input='[{"id":"row-23","date":"05/07/2026","student_name":"<hi-link href=\"#\" class=\"goto-adams-link\">Adam, Michael</hi-link>","summary":"Jack Whitmore and Michael Adam discuss Michael's plans. M...","follow_up":"No","details":"<hi-link href=\"#\">Details</hi-link> &nbsp; <hi-link href=\"#\">Delete</hi-link>"},{"id":"row-24","date":"04/14/2026","student_name":"<hi-link href=\"#\">Andrews, Garland</hi-link>","summary":"","follow_up":"No","details":"<hi-link href=\"#\">Details</hi-link> &nbsp; <hi-link href=\"#\">Delete</hi-link>"},{"id":"row-25","date":"04/07/2026","student_name":"<hi-link href=\"#\" class=\"goto-wyatt-link\">Wyatt, James</hi-link>","summary":"went over this concept","follow_up":"No","details":"<hi-link href=\"#\">Details</hi-link> &nbsp; <hi-link href=\"#\">Delete</hi-link>"}]'></vi-grid>
                       </div>
                     </hi-case>
                   </hi-switch>
@@ -1436,7 +1436,7 @@
                   specific action or to be notified at different times.
                 </p>
 
-                <h4 class="mb-2"><hi-link href="#">Appointment Campaigns</hi-link></h4>
+                <h4 class="mb-2"><hi-link href="#" class="goto-campaigns-link">Appointment Campaigns</hi-link></h4>
                 <p class="clr-gray_80-txt mb-2">
                   Allows staff to reach out to specific student populations and encourage them to schedule
                   appointments. Appointment Campaigns are best deployed by staff members seeking to
@@ -1444,7 +1444,7 @@
                 </p>
                 <hi-button aesthetic="secondary" size="small" class="mb-6"><hi-icon kind="plus" size="small" class="mr-1"></hi-icon>Add New</hi-button>
 
-                <h4 class="mb-2"><hi-link href="#">Messaging Campaigns</hi-link></h4>
+                <h4 class="mb-2"><hi-link href="#" class="goto-messaging-campaign-wizard-link">Messaging Campaigns</hi-link></h4>
                 <p class="clr-gray_80-txt mb-2">
                   Email or text a group of students on specified dates about certain things they may need
                   to do or attend.
@@ -1457,7 +1457,7 @@
                 </p>
                 <hi-button aesthetic="secondary" size="small" class="mb-6 goto-enrollment-campaigns-link"><hi-icon kind="plus" size="small" class="mr-1"></hi-icon>Add New</hi-button>
 
-                <h4 class="mb-2"><hi-link href="#">Survey Campaigns</hi-link></h4>
+                <h4 class="mb-2"><hi-link href="#" class="goto-campaigns-link">Survey Campaigns</hi-link></h4>
                 <p class="clr-gray_80-txt mb-2">
                   Send out surveys for students to fill out and keep track of their progress in answering
                   the survey.
@@ -1472,7 +1472,7 @@
                   specific action and track outcomes for each campaign.
                 </p>
 
-                <h4 class="mb-2"><hi-link href="#">Progress Report Campaigns</hi-link></h4>
+                <h4 class="mb-2"><hi-link href="#" class="goto-campaigns-link">Progress Report Campaigns</hi-link></h4>
                 <p class="clr-gray_80-txt mb-2">
                   Progress Report Campaigns identify potential barriers to student success through
                   instructor feedback. Progress Report Campaigns are initiated by staff in order to collect
@@ -1480,7 +1480,7 @@
                 </p>
                 <hi-button aesthetic="secondary" size="small" class="mb-6"><hi-icon kind="plus" size="small" class="mr-1"></hi-icon>Add New</hi-button>
 
-                <h4 class="mb-2"><hi-link href="#">Enrollment Census Campaigns</hi-link></h4>
+                <h4 class="mb-2"><hi-link href="#" class="goto-enrollment-campaigns-link">Enrollment Census Campaigns</hi-link></h4>
                 <p class="clr-gray_80-txt mb-2">
                   Enrollment Censuses let you monitor student attendance patterns, including which
                   students attended class and the date of their last attendance.
@@ -2358,7 +2358,7 @@ Thank you!</hi-textarea>
 
               <hi-tile allow-toolbar aesthetic="outline" class="mb-6" style="width: 49%;">
                 <h5 slot="title">My Active Appointment Campaigns</h5>
-                <p><hi-link href="#">Dalhousie Study Coach Appointments</hi-link></p>
+                <p><hi-link href="#" class="goto-campaign-detail-link">Dalhousie Study Coach Appointments</hi-link></p>
                 <p class="clr-gray_80-txt text-sz-s">06/29/2026 - 07/31/2026</p>
               </hi-tile>
 
@@ -2413,20 +2413,20 @@ Thank you!</hi-textarea>
                 <p class="mb-2"><hi-link href="#">School Information</hi-link></p>
                 <p class="mb-2"><hi-link href="#">Download Center for Reports</hi-link></p>
                 <p class="mb-4">Campaigns&hellip;</p>
-                <p class="mb-2"><hi-link href="#">Appointment Campaigns</hi-link></p>
+                <p class="mb-2"><hi-link href="#" class="goto-campaigns-link">Appointment Campaigns</hi-link></p>
                 <p><hi-link href="#">Travel Letters</hi-link></p>
               </hi-tile>
 
               <hi-tile allow-toolbar aesthetic="outline">
                 <h5 slot="title">To-Dos</h5>
-                <p class="mb-2"><hi-link href="#">3 To-Dos assigned to you</hi-link></p>
-                <p><hi-link href="#">2 To-Dos relative to students</hi-link></p>
+                <p class="mb-2"><hi-link href="#" class="goto-cases-link">3 To-Dos assigned to you</hi-link></p>
+                <p><hi-link href="#" class="goto-cases-link">2 To-Dos relative to students</hi-link></p>
               </hi-tile>
 
               <hi-tile allow-toolbar aesthetic="outline">
                 <h5 slot="title">Upcoming Appointments</h5>
                 <p class="clr-gray_80-txt text-sz-s mb-2">Next appointment</p>
-                <p class="mb-1"><hi-link href="#">Adam, Michael</hi-link></p>
+                <p class="mb-1"><hi-link href="#" class="goto-adams-link">Adam, Michael</hi-link></p>
                 <p class="clr-gray_80-txt text-sz-s">07/14/2026 &middot; Math Lab</p>
               </hi-tile>
             </section>
@@ -2468,14 +2468,14 @@ Thank you!</hi-textarea>
 
               <hi-tile allow-toolbar aesthetic="outline">
                 <h5 slot="title">Current Alerts</h5>
-                <p class="mb-2"><hi-link href="#">14 Open Cases</hi-link></p>
+                <p class="mb-2"><hi-link href="#" class="goto-cases-link">14 Open Cases</hi-link></p>
                 <p><hi-link href="#">12 Alerts</hi-link></p>
               </hi-tile>
 
               <hi-tile allow-toolbar aesthetic="outline">
                 <h5 slot="title">Active Appt. Campaigns</h5>
                 <p class="clr-gray_80-txt text-sz-s mb-2">Sorted by most recent</p>
-                <p><hi-link href="#">Dalhousie Study Coach Appointments</hi-link> 06/29/2026 - 07/31/2026</p>
+                <p><hi-link href="#" class="goto-campaign-detail-link">Dalhousie Study Coach Appointments</hi-link> 06/29/2026 - 07/31/2026</p>
               </hi-tile>
 
               <hi-tile allow-toolbar aesthetic="outline">
