@@ -13,7 +13,7 @@ product recording as a working, click-through prototype for review and compariso
 
 Just click this link and it opens in your browser like any website:
 
-### [**→ View the demos here ←**](https://theforage.github.io/eab-navigate-prototype/)
+### [**→ View the demos here ←**](https://dennis-best.github.io/eab-navigate-prototype/)
 
 Once it's open, click on any demo listed to try it out. Everything is clickable, just like the real product.
 
