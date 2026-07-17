@@ -3142,3 +3142,37 @@ html[data-theme="classic"] #james-wyatt hi-button[aesthetic="secondary"] {
   font-size: 12px;
   font-weight: 700;
 }
+
+/* ===================================================================
+   FULL-VIEWPORT SHELL — must stay last.
+   Earlier "video-frame calibration" layers capped main#app at ~1018px,
+   shrank chrome to 9–10px type, and replaced the real grid areas with a
+   miniature 3-column strip. That is why classic looked like a tiny dollhouse
+   next to the real Navigate360 UI. Restore full-width layout here.
+   =================================================================== */
+html[data-theme="classic"] body {
+  font-size: 16px;
+  background: #fff;
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] {
+  width: 100%;
+  max-width: none;
+  min-height: 100vh;
+  grid-template-columns: 56px minmax(0, 1fr) 280px;
+  grid-template-rows: 24px 44px 1fr;
+  grid-template-areas:
+    "primary    primary    primary"
+    "tertiary   secondary  secondary"
+    "tertiary   main       right";
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="main_right"]:has(#james-wyatt:not([hidden])) {
+  grid-template-columns: 56px minmax(0, 1fr) 280px;
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="left_main"] {
+  width: 100%;
+  max-width: none;
+  min-height: 100vh;
+}
