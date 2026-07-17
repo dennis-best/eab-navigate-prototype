@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en" hip-font-size-dynamic>
   <head>
+    <script src="../themes/theme.js"></script>
     <title>Navigate360 | Student Onboarding &amp; Intake Survey</title>
     <meta charset="utf-8" />
     <meta name="author" content="EAB Global Inc." />
@@ -19,24 +20,10 @@
     </style>
     <link rel="stylesheet" href="../interface.css" />
 
-    <script
-      src="https://cdn.dev.eab.com/hif/latest/index.js"
-      auto-start
-      release="prod"
-      system-load-core
-      system-load-baseline
-      system-load-ds
-      system-load-os
-      library-stop-dragula
-      library-stop-moment
-    ></script>
-    <script>
-      $ip.flags.load([
-        ["/eip/hi-form/default-to-rest", true],
-        ["/pip/pi-ip/insert-css-after-script", true],
-        ["/eip/hi-http/enable-xss-purification-response", false],
-      ]);
-    </script>
+    <!-- HIP-RUNTIME-BOOTSTRAP: injected by theme.js only when the active
+         theme is "hip". In "classic" mode this block is intentionally
+         skipped so hi-* elements never hydrate; classic-theme.js re-skins
+         the same static markup instead. -->
   </head>
   <body x-layout-system="blueprint" x-hosting="owner">
   <style>
@@ -728,7 +715,7 @@
           </button>
           <div class="demo-menu__panel" hidden>
             <p class="demo-menu__note">HI/P — current</p>
-            <p class="demo-menu__note demo-menu__note--muted">Classic (coming soon)</p>
+            <button type="button" class="demo-menu__link" onclick="EAB_setTheme('classic')">Classic</button>
             <p class="demo-menu__note demo-menu__note--muted">Modern (coming soon)</p>
           </div>
         </div>

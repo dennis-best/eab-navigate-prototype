@@ -1,0 +1,3144 @@
+/* Classic theme — re-skins the REAL hi-* HIP markup in place.
+   Loaded only when theme.js decides theme === "classic" (HIP runtime never
+   loads, so these tags have zero native styling/behavior on their own).
+   Targets real tag/attribute selectors from the actual markup - not an
+   invented parallel class system - so both themes share one HTML file.
+   Real Navigate360 palette is blue, not maroon (see project notes). */
+
+:root,
+html[data-theme="classic"] {
+  --hi-clr--theme-3: #0b5cab;
+  --hi-clr--theme-5: #0b5cab;
+  --hi-clr--blue-1: #eaf1fb;
+  --hi-clr--blue-3: #0b5cab;
+  --hi-clr--gray_10: #f4f6f8;
+  --hi-clr--gray_20: #e7e9ec;
+  --hi-clr--gray_30: #d5d8dc;
+  --hi-clr--gray_60: #666;
+  --hi-clr--surface-1: #ffffff;
+  --hi-clr--warning_10: #fff6e0;
+  --hi-clr--warning_40: #c98a00;
+  --hi-clr--white: #ffffff;
+  --hi-font--weight-bold: 700;
+  --hi-radius--m: 4px;
+
+  --classic-navy: #17395e;
+  --classic-blue: #0b5cab;
+  --classic-blue-dark: #094a8a;
+  --classic-border: #dde1e6;
+  --classic-bg: #f4f6f8;
+  --classic-text: #2b2f33;
+}
+
+html[data-theme="classic"] body {
+  font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--classic-text);
+  background: var(--classic-bg);
+}
+
+/* interface.css's default #app hiding is handled in theme.js; make sure
+   nothing else keeps content invisible while classic assets load. */
+html[data-theme="classic"] main#app { visibility: visible; }
+
+/* ── Page shell layout ───────────────────────────────────────────────
+   HIP's blueprint system normally lays [x-region] children out via CSS
+   grid-template-areas keyed off x-region, independent of DOM order (the
+   institution bar, icon rail, top nav, and main content are siblings in
+   the DOM but rendered top/left/right by that grid). Without the HIP
+   runtime/CSS none of that grid exists, so the same siblings just stack
+   in DOM order instead. Rebuild the same grid here using the same
+   x-region attributes already on the real elements. */
+/* Scoped to x-layout-screen specifically (not just x-area="screen") because
+   application-management.html's shell is its own bespoke flex layout
+   (.portal-body etc., see that file's own <style> block) with no
+   x-region children at all - it must be left completely alone. */
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] {
+  display: grid;
+  grid-template-columns: 72px 1fr 320px;
+  grid-template-rows: auto auto 1fr;
+  grid-template-areas:
+    "primary    primary    primary"
+    "tertiary   secondary  secondary"
+    "tertiary   main       right";
+  min-height: 100vh;
+}
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] > [x-region="navigation-primary"] { grid-area: primary; }
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] > [x-region="navigation-tertiary"] { grid-area: tertiary; }
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] > [x-region="navigation-secondary"] { grid-area: secondary; }
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] > [x-area="region"][x-region="main"] { grid-area: main; min-width: 0; }
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] > [x-area="region"][x-region="right"] { grid-area: right; min-width: 0; }
+
+/* left_main layout (student-onboarding.html): no icon rail, just a top bar
+   (primary + secondary stacked full-width) then a fixed-width left sidebar
+   beside a flexible main content area. */
+html[data-theme="classic"] main#app[x-layout-screen="left_main"] {
+  display: grid;
+  grid-template-columns: var(--region-left--width, 220px) 1fr;
+  grid-template-rows: auto auto 1fr;
+  grid-template-areas:
+    "primary primary"
+    "topbar  topbar"
+    "left    main";
+  min-height: 100vh;
+}
+html[data-theme="classic"] main#app[x-layout-screen="left_main"] > [x-region="navigation-primary"] { grid-area: primary; }
+html[data-theme="classic"] main#app[x-layout-screen="left_main"] > [x-region="navigation-secondary"] { grid-area: topbar; }
+html[data-theme="classic"] main#app[x-layout-screen="left_main"] > [x-area="region"][x-region="left"] {
+  grid-area: left;
+  border-right: 1px solid var(--classic-border);
+  background: #fff;
+}
+html[data-theme="classic"] main#app[x-layout-screen="left_main"] > [x-area="region"][x-region="main"] {
+  grid-area: main;
+  min-width: 0;
+}
+
+/* ── Institution bar (hi-navigation-primary) ────────────────────────── */
+html[data-theme="classic"] hi-navigation-primary {
+  display: block;
+  background: #ffffff;
+  color: #555;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.4rem 1.25rem;
+  border-bottom: 1px solid var(--classic-border);
+  text-transform: uppercase;
+}
+
+/* ── Top nav (hi-navigation-secondary): logo + search + icon buttons ── */
+html[data-theme="classic"] hi-navigation-secondary {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: #ffffff;
+  border-bottom: 1px solid var(--classic-border);
+  padding: 0.5rem 1.25rem;
+  flex-wrap: wrap;
+}
+html[data-theme="classic"] hi-navigation-secondary [slot="logo"] {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+html[data-theme="classic"] .application_title {
+  font-weight: 700;
+  color: var(--classic-blue);
+  text-transform: uppercase;
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
+html[data-theme="classic"] .title_divider { color: #ccc; }
+html[data-theme="classic"] hi-navigation-secondary [slot="left-controls"],
+html[data-theme="classic"] hi-navigation-secondary [slot="right-controls"] {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+html[data-theme="classic"] hi-search {
+  display: inline-flex;
+  flex: 1 1 auto;
+  align-items: center;
+  border: 1px solid var(--classic-border);
+  border-radius: 3px;
+  padding: 0.3rem 0.6rem;
+  min-width: 16rem;
+  max-width: 40rem;
+  background: #fff;
+  color: #888;
+}
+
+/* ── Icon-only left rail (hi-navigation-tertiary) ───────────────────── */
+html[data-theme="classic"] hi-navigation-tertiary {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 72px;
+  flex-shrink: 0;
+  background: #ffffff;
+  border-right: 1px solid var(--classic-border);
+  padding: 0.5rem 0;
+}
+html[data-theme="classic"] hi-navigation-tertiary hi-link[x-style="nav-list-item"],
+html[data-theme="classic"] hi-navigation-tertiary hi-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.65rem 0.2rem;
+  color: var(--classic-navy);
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  font-size: 0.55rem;
+  text-align: center;
+}
+html[data-theme="classic"] hi-navigation-tertiary hi-link[active] {
+  border-left-color: var(--classic-blue);
+  background: var(--hi-clr--blue-1);
+  color: var(--classic-blue);
+}
+/* Items injected by classic-theme.js from the real navigation-actions JSON. */
+html[data-theme="classic"] .classic-nav-tertiary-item {
+  text-decoration: none;
+}
+html[data-theme="classic"] .classic-nav-tertiary-label {
+  display: block;
+  line-height: 1.15;
+}
+
+/* ── Tabs (hi-tab / hi-tab-group) ────────────────────────────────────── */
+html[data-theme="classic"] hi-tab-group {
+  display: flex;
+  gap: 1.5rem;
+  border-bottom: 1px solid var(--classic-border);
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+html[data-theme="classic"] hi-tab {
+  display: inline-block;
+  padding: 0.55rem 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #555;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+html[data-theme="classic"] hi-tab[active],
+html[data-theme="classic"] hi-tab[selected] {
+  color: var(--classic-blue);
+  border-bottom-color: var(--classic-blue);
+}
+
+/* ── Items / list rows (hi-item, hi-list, hi-link-group) ────────────── */
+html[data-theme="classic"] hi-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+html[data-theme="classic"] hi-item:hover { background: var(--classic-bg); }
+
+/* ── Buttons ─────────────────────────────────────────────────────────── */
+html[data-theme="classic"] hi-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border-radius: 3px;
+  border: 1px solid var(--classic-blue);
+  background: var(--classic-blue);
+  color: #fff;
+  cursor: pointer;
+  line-height: 1.2;
+}
+html[data-theme="classic"] hi-button:hover { background: var(--classic-blue-dark); }
+html[data-theme="classic"] hi-button[aesthetic="secondary"],
+html[data-theme="classic"] hi-button[aesthetic="ghost"] {
+  background: #fff;
+  color: var(--classic-blue);
+}
+html[data-theme="classic"] hi-button[aesthetic="link"],
+html[data-theme="classic"] hi-button[aesthetic="text"] {
+  background: none;
+  border-color: transparent;
+  color: var(--classic-blue);
+  padding: 0;
+}
+html[data-theme="classic"] hi-button[aesthetic="icon"] {
+  background: none;
+  border-color: transparent;
+  color: var(--classic-navy);
+  padding: 0.25rem;
+}
+
+/* ── Links ───────────────────────────────────────────────────────────── */
+html[data-theme="classic"] hi-link { color: var(--classic-blue); cursor: pointer; }
+html[data-theme="classic"] hi-link:not([x-style="nav-list-item"]):hover { text-decoration: underline; }
+
+/* ── Badges / tags ───────────────────────────────────────────────────── */
+html[data-theme="classic"] hi-badge {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  background: var(--classic-bg);
+  color: #555;
+}
+html[data-theme="classic"] hi-badge[theme="success"],
+html[data-theme="classic"] hi-badge[theme="green"] { background: #e3f4e3; color: #1e7a1e; }
+html[data-theme="classic"] hi-badge[theme="blue"] { background: var(--hi-clr--blue-1); color: var(--classic-blue); }
+html[data-theme="classic"] hi-badge[theme="error"] { background: #fbe4e2; color: #c0392b; }
+html[data-theme="classic"] hi-badge[theme="neutral"] { background: var(--classic-bg); color: #555; }
+html[data-theme="classic"] hi-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  background: var(--classic-bg);
+  border: 1px solid var(--classic-border);
+  margin: 0.15rem;
+}
+
+/* ── Form layout helpers (l-kind="hort" rows, hi-input-group, hi-form) ── */
+html[data-theme="classic"] [l-kind="hort"] {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+html[data-theme="classic"] [l-kind="hort"][l-align="end"] { align-items: flex-end; }
+html[data-theme="classic"] hi-input-group {
+  display: inline-block;
+  vertical-align: bottom;
+}
+html[data-theme="classic"] hi-input-group.ml-4 { margin-left: 1rem; }
+
+/* ── Forms (hi-input, hi-select, hi-combobox, hi-checkbox, hi-textarea) ── */
+html[data-theme="classic"] hi-label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: #444;
+}
+html[data-theme="classic"] hi-input,
+html[data-theme="classic"] hi-select,
+html[data-theme="classic"] hi-combobox,
+html[data-theme="classic"] hi-dropdown,
+html[data-theme="classic"] hi-textarea {
+  display: block;
+  border: 1px solid #a9adb3;
+  border-radius: 3px;
+  background: #fff;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.875rem;
+  color: #333;
+  min-width: 10rem;
+}
+html[data-theme="classic"] hi-textarea { min-height: 5rem; }
+
+/* hi-select / hi-combobox re-skinned as closed dropdowns: classic-theme.js
+   hides every hi-option except the current value (or injects the matching
+   .classic-combobox-value span from the real `input` JSON), so this only
+   needs to look like a single-line select with a chevron. */
+html[data-theme="classic"] hi-select,
+html[data-theme="classic"] hi-combobox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: default;
+}
+html[data-theme="classic"] hi-select::after,
+html[data-theme="classic"] hi-combobox::after {
+  content: "\25BE";
+  color: #666;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+html[data-theme="classic"] hi-select hi-option { display: none; }
+html[data-theme="classic"] .classic-combobox-value { color: #333; }
+html[data-theme="classic"] hi-checkbox,
+html[data-theme="classic"] hi-radio,
+html[data-theme="classic"] hi-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* ── Panels / tiles / accordion ──────────────────────────────────────── */
+html[data-theme="classic"] hi-panel,
+html[data-theme="classic"] hi-tile {
+  display: block;
+  background: #fff;
+  border: 1px solid var(--classic-border);
+  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+html[data-theme="classic"] hi-title {
+  display: block;
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 1rem;
+}
+html[data-theme="classic"] hi-accordion { display: block; border: 1px solid var(--classic-border); border-radius: 4px; }
+
+/* ── Dialogs / drawers / flyouts ─────────────────────────────────────── */
+/* These are all closed-by-default overlays in the real product - only
+   visible once JS adds an "open" attribute (same as hi-flyout already
+   handled below). Without that guard they'd render inline and permanently
+   visible, stacked on top of the page content. */
+html[data-theme="classic"] hi-dialog,
+html[data-theme="classic"] hi-drawer {
+  display: none;
+}
+html[data-theme="classic"] hi-dialog[open],
+html[data-theme="classic"] hi-dialog[opened] {
+  display: block;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  max-width: 90vw;
+  max-height: 85vh;
+  overflow: auto;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  padding: 1.5rem;
+}
+html[data-theme="classic"] hi-flyout[open],
+html[data-theme="classic"] hi-flyout[opened] {
+  display: block;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  padding: 1.5rem;
+}
+html[data-theme="classic"] hi-drawer[open],
+html[data-theme="classic"] hi-drawer[opened] {
+  display: block;
+  background: #fff;
+  box-shadow: -2px 0 12px rgba(0, 0, 0, 0.15);
+  padding: 1.5rem;
+}
+
+/* ── Steps / pagination / meter ──────────────────────────────────────── */
+html[data-theme="classic"] hi-step-group { display: flex; gap: 0.5rem; align-items: center; }
+html[data-theme="classic"] hi-pagination { display: flex; gap: 0.35rem; align-items: center; justify-content: center; }
+html[data-theme="classic"] hi-meter {
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--classic-border);
+  overflow: hidden;
+}
+
+/* ── Icons (real extracted SVGs injected by classic-theme.js) ────────── */
+html[data-theme="classic"] hi-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--classic-navy);
+  width: 1.25em;
+  height: 1.25em;
+  vertical-align: middle;
+}
+html[data-theme="classic"] hi-icon svg { width: 100%; height: 100%; fill: currentColor; }
+html[data-theme="classic"] hi-icon[theme="blue"] { color: var(--classic-blue); }
+html[data-theme="classic"] hi-icon[theme="error"],
+html[data-theme="classic"] hi-icon[theme="red"] { color: #c0392b; }
+html[data-theme="classic"] hi-icon[theme="green"] { color: #1e7a1e; }
+html[data-theme="classic"] hi-icon[size="small"] { width: 0.9em; height: 0.9em; }
+html[data-theme="classic"] hi-icon[size="large"],
+html[data-theme="classic"] hi-icon[size="large-x"] { width: 1.6em; height: 1.6em; }
+html[data-theme="classic"] hi-icon[size="large-xx"],
+html[data-theme="classic"] hi-icon[size="large-xxx"] { width: 2rem; height: 2rem; }
+/* Glyphs never hydrated in TEMP.HTML (no shadow-root svg available to copy) -
+   render as an empty inline slot rather than an invented shape. */
+html[data-theme="classic"] hi-icon[data-classic-icon-missing] { visibility: hidden; }
+
+/* ── Tables (gridzilla / DataTables markup used across the portals) ──── */
+html[data-theme="classic"] table.dt-container,
+html[data-theme="classic"] table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+html[data-theme="classic"] table th {
+  text-align: left;
+  background: #f3f4f6;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 2px solid var(--classic-border);
+  font-weight: 700;
+}
+html[data-theme="classic"] table td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+
+/* vi-grid tables built by classic-theme.js from the real type/input JSON. */
+html[data-theme="classic"] vi-grid {
+  display: block;
+  background: #fff;
+  border: 1px solid var(--classic-border);
+  border-radius: 4px;
+  overflow: auto;
+}
+html[data-theme="classic"] .classic-grid-table tr:hover td { background: var(--classic-bg); }
+html[data-theme="classic"] .classic-grid-empty {
+  padding: 1.5rem;
+  text-align: center;
+  color: #666;
+}
+html[data-theme="classic"] .classic-grid-empty-title { font-weight: 700; margin-bottom: 0.25rem; }
+
+/* ── Navigate360 forgery pass ─────────────────────────────────────────
+   This section is intentionally stronger than the generic re-skin above.
+   The HTML files remain the source of truth; this CSS turns the inert tags
+   and JS-injected renderings into the legacy Navigate-style interface. */
+html[data-theme="classic"],
+html[data-theme="classic"] body {
+  min-width: 0;
+  overflow-x: auto;
+}
+
+html[data-theme="classic"] body {
+  margin: 0;
+  background: #f3f5f7;
+  color: #222;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+html[data-theme="classic"] * {
+  box-sizing: border-box;
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] {
+  grid-template-columns: 64px minmax(0, 1fr) 300px;
+  grid-template-rows: 34px 64px 1fr;
+  grid-template-areas:
+    "primary  primary    primary"
+    "tertiary secondary  secondary"
+    "tertiary main       right";
+  background: #f4f6f8;
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] > [x-area="region"][x-region="main"] {
+  padding: 0 18px 28px 18px !important;
+  background: #f4f6f8;
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] > [x-area="region"][x-region="right"] {
+  padding: 96px 18px 28px 0 !important;
+  background: #f4f6f8;
+}
+
+html[data-theme="classic"] hi-navigation-primary {
+  height: 34px;
+  padding: 9px 0 0 26px;
+  border-top: 4px solid #2b3541;
+  border-bottom: 1px solid #dfe3e8;
+  color: #4a4f55;
+  background: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+html[data-theme="classic"] hi-navigation-secondary {
+  height: 64px;
+  padding: 0 20px 0 26px;
+  gap: 16px;
+  flex-wrap: nowrap;
+  border-bottom: 1px solid #d9dde3;
+  background: #fff;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="logo"] {
+  width: 150px;
+  gap: 9px;
+  overflow: hidden;
+}
+
+html[data-theme="classic"] hi-image {
+  display: inline-block;
+  line-height: 0;
+}
+
+html[data-theme="classic"] hi-image .classic-image-node {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="logo"] hi-image .classic-image-node {
+  width: 152px;
+  height: 27px;
+  object-fit: contain;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="logo"] hi-image + .application_title,
+html[data-theme="classic"] hi-navigation-secondary [slot="logo"] .title_divider {
+  margin-left: 7px;
+}
+
+html[data-theme="classic"] .application_title {
+  color: #005a8b;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+html[data-theme="classic"] .title_divider {
+  color: #cfd4da;
+  font-weight: 400;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="left-controls"] {
+  gap: 10px;
+  margin-left: 6px;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="left-controls"] hi-flyout {
+  display: inline-flex;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="left-controls"] hi-panel {
+  width: 72px;
+  height: 48px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e0e3e7;
+  border-radius: 0;
+  background: #fff;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="left-controls"] hi-icon {
+  width: 22px;
+  height: 22px;
+  color: #1f405d;
+}
+
+html[data-theme="classic"] hi-badge[hidden] {
+  display: none !important;
+}
+
+html[data-theme="classic"] hi-badge:not([hidden]) {
+  min-width: 16px;
+  height: 16px;
+  padding: 1px 4px;
+  border-radius: 2px;
+  line-height: 14px;
+  text-align: center;
+  font-size: 10px;
+  background: #f8e9e8;
+  color: #9d2b24;
+}
+
+html[data-theme="classic"] .top-nav__center-controls {
+  min-width: 360px;
+  max-width: 620px;
+  flex: 1 1 520px;
+}
+
+html[data-theme="classic"] .quick-search-container {
+  height: 36px;
+  gap: 10px !important;
+}
+
+html[data-theme="classic"] #ss-quick-search-filter-dropdown {
+  min-width: 150px;
+  width: 150px;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+html[data-theme="classic"] #ss-quick-search-filter {
+  width: 150px;
+  min-width: 150px;
+  height: 36px;
+  padding: 8px 12px;
+  border: 1px solid #b9bfc6;
+  border-radius: 0;
+  color: #333;
+  background: #fff;
+  font-size: 13px;
+}
+
+html[data-theme="classic"] hi-search {
+  min-width: 260px;
+  max-width: none;
+  height: 8px;
+  padding: 0;
+  border: 1px solid #e1e4e8;
+  border-radius: 0;
+  background: #fff;
+}
+
+html[data-theme="classic"] .classic-search-input {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 0 8px;
+  outline: 0;
+  font: inherit;
+  color: #333;
+  background: transparent;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="right-controls"] {
+  margin-left: auto;
+  gap: 10px;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="right-controls"] hi-button,
+html[data-theme="classic"] hi-navigation-secondary [slot="right-controls"] hi-flyout {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="right-controls"] hi-icon {
+  width: 20px;
+  height: 20px;
+}
+
+html[data-theme="classic"] hi-navigation-tertiary {
+  width: 64px;
+  padding: 0;
+  border-right: 1px solid #d7dce2;
+  background: #fff;
+}
+
+html[data-theme="classic"] hi-navigation-tertiary hi-link {
+  min-height: 45px;
+  padding: 6px 3px 5px;
+  gap: 3px;
+  border-left-width: 3px;
+  color: #23405b;
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+html[data-theme="classic"] hi-navigation-tertiary hi-link[active] {
+  color: #0a5d91;
+  background: #f3f7fb;
+  border-left-color: #006aa6;
+}
+
+html[data-theme="classic"] hi-navigation-tertiary hi-icon {
+  width: 15px;
+  height: 15px;
+}
+
+html[data-theme="classic"] .classic-nav-tertiary-label {
+  max-width: 56px;
+}
+
+html[data-theme="classic"] [x-region="main"] > hi-switch,
+html[data-theme="classic"] [x-region="right"] > hi-switch,
+html[data-theme="classic"] hi-switch {
+  display: block;
+}
+
+html[data-theme="classic"] hi-case[hidden],
+html[data-theme="classic"] [hidden] {
+  display: none !important;
+}
+
+html[data-theme="classic"] .page-title-menu-wrap {
+  margin: 0;
+}
+
+html[data-theme="classic"] .page-title-flyout-anchor {
+  display: inline-flex;
+  align-items: center;
+  min-height: 0;
+  color: #222;
+  box-shadow: none !important;
+}
+
+html[data-theme="classic"] .page-title-flyout-anchor hi-title {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+html[data-theme="classic"] .page-title-flyout-anchor hi-icon {
+  width: 14px;
+  height: 14px;
+  margin-left: 8px;
+}
+
+html[data-theme="classic"] #staff-home > [l-kind="hort"]:first-child {
+  display: none;
+}
+
+html[data-theme="classic"] hi-tab-group {
+  height: 58px;
+  margin: 0 0 30px 0;
+  padding-top: 24px;
+  gap: 26px;
+  border-bottom: 1px solid #d4d9df;
+  background: transparent;
+}
+
+html[data-theme="classic"] hi-tab {
+  height: 34px;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 34px;
+  color: #333;
+  border-bottom: 2px solid transparent;
+}
+
+html[data-theme="classic"] hi-tab[selected],
+html[data-theme="classic"] hi-tab[active] {
+  color: #005e90;
+  border-bottom-color: #006a9b;
+}
+
+html[data-theme="classic"] h1,
+html[data-theme="classic"] h2,
+html[data-theme="classic"] h3,
+html[data-theme="classic"] h4,
+html[data-theme="classic"] h5 {
+  margin-top: 0;
+  color: #222;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+}
+
+html[data-theme="classic"] h2 {
+  margin: 0 0 14px;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+html[data-theme="classic"] hi-form {
+  display: block;
+  margin: 0 0 11px !important;
+}
+
+html[data-theme="classic"] [l-kind="hort"] {
+  gap: 0;
+  flex-wrap: nowrap;
+}
+
+html[data-theme="classic"] hi-input-group {
+  width: 180px !important;
+  margin: 0 16px 0 0 !important;
+}
+
+html[data-theme="classic"] hi-label {
+  margin: 0 0 3px;
+  color: #222;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+html[data-theme="classic"] hi-select,
+html[data-theme="classic"] hi-combobox {
+  width: 100%;
+  min-width: 0;
+  height: 32px;
+  padding: 6px 28px 6px 9px;
+  border: 1px solid #b8bec5;
+  border-radius: 0;
+  background: #fff;
+  color: #333;
+  font-size: 13px;
+  line-height: 18px;
+  position: relative;
+}
+
+html[data-theme="classic"] hi-select::after,
+html[data-theme="classic"] hi-combobox::after {
+  position: absolute;
+  right: 9px;
+  top: 9px;
+  color: #666;
+}
+
+html[data-theme="classic"] .classic-combobox-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[data-theme="classic"] hi-button[aesthetic="link"] {
+  color: #00628f;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+html[data-theme="classic"] [scroll-x="auto"] {
+  margin-bottom: 8px !important;
+  overflow: visible;
+}
+
+html[data-theme="classic"] .classic-gridzilla {
+  margin-top: 4px;
+  border: 0;
+  background: transparent;
+}
+
+html[data-theme="classic"] .classic-grid-toolbar {
+  height: 23px;
+  margin: 0 0 0;
+}
+
+html[data-theme="classic"] .classic-grid-actions {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #00628f;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+html[data-theme="classic"] .classic-caret::after {
+  content: "";
+  display: inline-block;
+  margin-left: 4px;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 6px solid #777;
+  vertical-align: middle;
+}
+
+html[data-theme="classic"] vi-grid {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+html[data-theme="classic"] .classic-grid-scroll {
+  max-height: none;
+  overflow: auto;
+  background: #fff;
+  border-top: 1px solid #cfd4da;
+}
+
+html[data-theme="classic"] .classic-grid-table {
+  width: 100%;
+  min-width: 860px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 12px;
+  line-height: 1.25;
+  color: #222;
+  background: #fff;
+}
+
+html[data-theme="classic"] .classic-grid-table th,
+html[data-theme="classic"] .classic-grid-table td {
+  padding: 7px 9px;
+  border-bottom: 1px solid #e6e8eb;
+  vertical-align: top;
+}
+
+html[data-theme="classic"] .classic-grid-table th {
+  height: 34px;
+  background: #f1f2f4;
+  border-bottom: 1px solid #cfd4da;
+  color: #222;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+}
+
+html[data-theme="classic"] .classic-grid-table td {
+  background: #fff;
+  word-wrap: break-word;
+}
+
+html[data-theme="classic"] .classic-grid-table th:nth-child(1),
+html[data-theme="classic"] .classic-grid-table td:nth-child(1) {
+  width: 38px;
+  color: #555;
+  text-align: right;
+}
+
+html[data-theme="classic"] .classic-grid-table th:nth-child(2),
+html[data-theme="classic"] .classic-grid-table td:nth-child(2) {
+  width: 28px;
+  text-align: center;
+}
+
+html[data-theme="classic"] .classic-grid-table th:nth-child(3),
+html[data-theme="classic"] .classic-grid-table td:nth-child(3) {
+  width: 122px;
+}
+
+html[data-theme="classic"] .classic-grid-table th:nth-child(4),
+html[data-theme="classic"] .classic-grid-table td:nth-child(4) {
+  width: 82px;
+}
+
+html[data-theme="classic"] .classic-grid-table th:nth-child(5),
+html[data-theme="classic"] .classic-grid-table td:nth-child(5),
+html[data-theme="classic"] .classic-grid-table th:nth-child(6),
+html[data-theme="classic"] .classic-grid-table td:nth-child(6),
+html[data-theme="classic"] .classic-grid-table th:nth-child(7),
+html[data-theme="classic"] .classic-grid-table td:nth-child(7) {
+  width: 120px;
+}
+
+html[data-theme="classic"] .classic-grid-table hi-link,
+html[data-theme="classic"] .classic-grid-table a {
+  color: #00628f;
+  text-decoration: none;
+}
+
+html[data-theme="classic"] .classic-grid-table hi-link:hover,
+html[data-theme="classic"] .classic-grid-table a:hover {
+  text-decoration: underline;
+}
+
+html[data-theme="classic"] .classic-grid-sort {
+  position: relative;
+  display: inline-block;
+  width: 11px;
+  height: 16px;
+  margin-left: 5px;
+  vertical-align: -3px;
+}
+
+html[data-theme="classic"] .classic-grid-sort-up,
+html[data-theme="classic"] .classic-grid-sort-down {
+  position: absolute;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+}
+
+/* two clearly separated chevrons (not a merged diamond): up triangle pinned
+   to the top, down triangle to the bottom, with a gap between them */
+html[data-theme="classic"] .classic-grid-sort-up {
+  top: 0;
+  border-bottom: 6px solid #8d949c;
+}
+
+html[data-theme="classic"] .classic-grid-sort-down {
+  bottom: 0;
+  border-top: 6px solid #8d949c;
+}
+
+html[data-theme="classic"] .classic-grid-number,
+html[data-theme="classic"] .classic-grid-select {
+  color: #555;
+  white-space: nowrap;
+}
+
+html[data-theme="classic"] input[type="checkbox"] {
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  vertical-align: middle;
+}
+
+html[data-theme="classic"] hi-pagination {
+  display: inline-flex;
+  gap: 4px;
+  font-size: 12px;
+}
+
+html[data-theme="classic"] hi-pagination::before {
+  content: "Previous  1  2  3  4  5  Next";
+  color: #333;
+}
+
+html[data-theme="classic"] .clr-gray_80-txt {
+  color: #444;
+}
+
+html[data-theme="classic"] [x-region="right"] .institution-badge {
+  width: 96px;
+  height: 96px;
+  margin: 0 0 16px 0;
+}
+
+html[data-theme="classic"] [x-region="right"] .institution-badge .classic-image-node {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+}
+
+html[data-theme="classic"] hi-tile {
+  margin: 0 0 16px;
+  padding: 18px 18px 20px;
+  border: 1px solid #e2e5e9;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: none;
+}
+
+html[data-theme="classic"] hi-tile h3,
+html[data-theme="classic"] hi-tile h4,
+html[data-theme="classic"] hi-tile h5 {
+  margin: 0 0 18px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+html[data-theme="classic"] hi-tile p {
+  margin: 0 0 11px;
+  font-size: 13px;
+}
+
+html[data-theme="classic"] hi-tile p:last-child {
+  margin-bottom: 0;
+}
+
+html[data-theme="classic"] hi-tile hi-link,
+html[data-theme="classic"] hi-tile a {
+  color: #00628f;
+  text-decoration: none;
+}
+
+html[data-theme="classic"] hi-tile hi-link:hover,
+html[data-theme="classic"] hi-tile a:hover {
+  text-decoration: underline;
+}
+
+html[data-theme="classic"] .profile-header-photo,
+html[data-theme="classic"] .profile-header-photo .classic-image-node {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+}
+
+html[data-theme="classic"] .classic-avatar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+html[data-theme="classic"] .classic-avatar img,
+html[data-theme="classic"] .classic-avatar-initials {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+html[data-theme="classic"] .classic-avatar-initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: #477ca6;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+html[data-theme="classic"] .classic-avatar-label {
+  color: #00628f;
+  font-size: 13px;
+}
+
+html[data-theme="classic"] hi-dialog[opened],
+html[data-theme="classic"] hi-dialog[open] {
+  padding: 0;
+  border: 1px solid #bfc5cc;
+  border-radius: 2px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+html[data-theme="classic"] hi-drawer[opened],
+html[data-theme="classic"] hi-drawer[open] {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 900;
+  width: 420px;
+  overflow: auto;
+  border-left: 1px solid #c8cdd3;
+  background: #fff;
+}
+
+@media (max-width: 1200px) {
+  html[data-theme="classic"] main#app[x-layout-screen="main_right"] {
+    grid-template-columns: 64px minmax(760px, 1fr) 280px;
+  }
+}
+
+/* ── Video-frame calibration: Navigate360 staff home opening ───────── */
+html[data-theme="classic"] body {
+  background: #fff;
+  color: #1f1f1f;
+  font-size: 10px;
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] {
+  width: min(1024px, 100vw);
+  grid-template-columns: 33px minmax(0, 740px) 251px;
+  grid-template-rows: 20px 27px 1fr;
+  grid-template-areas:
+    "primary primary primary"
+    "secondary secondary secondary"
+    "tertiary main right";
+  background: #fff;
+}
+
+html[data-theme="classic"] hi-navigation-primary {
+  height: 20px;
+  padding: 4px 0 0 5px;
+  border-top: 0;
+  border-bottom: 1px solid #d9dde1;
+  color: #222;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+html[data-theme="classic"] hi-navigation-secondary {
+  height: 27px;
+  padding: 0 9px 0 5px;
+  gap: 7px;
+  border-bottom: 1px solid #c9d0d6;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="logo"] {
+  width: 174px;
+  gap: 4px;
+  flex: 0 0 174px;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="logo"] hi-image .classic-image-node {
+  width: 69px;
+  height: 16px;
+  object-fit: contain;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="logo"] .application_title {
+  font-size: 10px;
+  line-height: 16px;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="logo"] .title_divider {
+  color: #7f8d98;
+  margin: 0 2px;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="left-controls"] {
+  gap: 7px;
+  margin-left: 0;
+  flex: 0 0 auto;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="left-controls"] hi-panel {
+  width: 18px;
+  height: 20px;
+  border: 0;
+  background: transparent;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="left-controls"] hi-icon {
+  width: 14px;
+  height: 14px;
+  color: #0c5786;
+}
+
+html[data-theme="classic"] hi-badge:not([hidden]) {
+  min-width: 10px;
+  height: 10px;
+  padding: 0 2px;
+  font-size: 8px;
+  line-height: 10px;
+}
+
+html[data-theme="classic"] .top-nav__center-controls {
+  min-width: 0;
+  max-width: none;
+  flex: 0 1 633px;
+}
+
+html[data-theme="classic"] .quick-search-container {
+  height: 20px;
+  gap: 4px !important;
+}
+
+html[data-theme="classic"] #ss-quick-search-filter-dropdown {
+  width: 70px;
+  min-width: 70px;
+}
+
+html[data-theme="classic"] #ss-quick-search-filter {
+  width: 70px;
+  min-width: 70px;
+  height: 18px;
+  padding: 2px 16px 2px 5px;
+  border-color: #8795a0;
+  font-size: 9px;
+  line-height: 12px;
+}
+
+html[data-theme="classic"] #ss-quick-search-filter::after {
+  right: 5px;
+  top: 5px;
+  font-size: 7px;
+}
+
+html[data-theme="classic"] hi-search {
+  height: 16px;
+  min-width: 0;
+  border-color: #a8b4be;
+}
+
+html[data-theme="classic"] .classic-search-input {
+  padding: 0 7px;
+  font-size: 9px;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="right-controls"] {
+  gap: 10px;
+  flex: 0 0 auto;
+  margin-left: 0;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="right-controls"] hi-button,
+html[data-theme="classic"] hi-navigation-secondary [slot="right-controls"] hi-flyout {
+  width: 14px;
+  height: 18px;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="right-controls"] hi-icon {
+  width: 13px;
+  height: 13px;
+  color: #1e3b55;
+}
+
+html[data-theme="classic"] hi-navigation-tertiary {
+  width: 33px;
+  border-right: 1px solid #d8dde2;
+}
+
+html[data-theme="classic"] hi-navigation-tertiary hi-link {
+  min-height: 26px;
+  height: 26px;
+  padding: 5px 0;
+  border-left-width: 0;
+  justify-content: center;
+}
+
+html[data-theme="classic"] hi-navigation-tertiary hi-link[active] {
+  background: transparent;
+  color: #0c5786;
+  border-left: 0;
+}
+
+html[data-theme="classic"] hi-navigation-tertiary hi-icon {
+  width: 13px;
+  height: 13px;
+}
+
+html[data-theme="classic"] .classic-nav-tertiary-label {
+  display: none;
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] > [x-area="region"][x-region="main"] {
+  padding: 28px 11px 24px 24px !important;
+  background: #fff;
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] > [x-area="region"][x-region="right"] {
+  padding: 64px 24px 24px 0 !important;
+  background: #fff;
+  position: relative;
+}
+
+html[data-theme="classic"] #staff-home > [l-kind="hort"]:first-child {
+  display: flex;
+  margin: 0 0 8px !important;
+}
+
+html[data-theme="classic"] .page-title-flyout-anchor hi-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #555;
+  line-height: 24px;
+}
+
+html[data-theme="classic"] .page-title-flyout-anchor hi-icon {
+  width: 10px;
+  height: 10px;
+  margin-left: 8px;
+  color: #555;
+}
+
+html[data-theme="classic"] hi-tab-group {
+  height: 22px;
+  margin: 0 0 8px;
+  padding-top: 0;
+  gap: 0;
+  border-bottom: 1px solid #d2d7dc;
+}
+
+html[data-theme="classic"] hi-tab {
+  height: 22px;
+  min-width: 62px;
+  padding: 0 8px;
+  border: 1px solid #d9dde1;
+  border-left: 0;
+  border-bottom: 0;
+  background: #f4f5f6;
+  color: #222;
+  font-size: 8px;
+  font-weight: 400;
+  line-height: 21px;
+  text-align: center;
+}
+
+html[data-theme="classic"] hi-tab:first-child {
+  border-left: 1px solid #d9dde1;
+}
+
+html[data-theme="classic"] hi-tab[selected],
+html[data-theme="classic"] hi-tab[active] {
+  background: #fff;
+  color: #004d75;
+  border-top: 2px solid #006da3;
+  line-height: 19px;
+}
+
+html[data-theme="classic"] h2 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+html[data-theme="classic"] hi-form {
+  margin: 0 0 4px !important;
+}
+
+html[data-theme="classic"] hi-input-group {
+  width: auto !important;
+  margin-right: 8px !important;
+}
+
+html[data-theme="classic"] hi-label {
+  display: inline-block;
+  margin: 0 4px 0 0;
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 18px;
+}
+
+html[data-theme="classic"] #students hi-input-group {
+  display: inline-flex;
+  align-items: center;
+}
+
+html[data-theme="classic"] #filter-list-type {
+  width: 91px;
+}
+
+html[data-theme="classic"] #filter-term {
+  width: 92px;
+}
+
+html[data-theme="classic"] #filter-relationship {
+  width: 92px;
+}
+
+html[data-theme="classic"] hi-select,
+html[data-theme="classic"] hi-combobox {
+  height: 18px;
+  padding: 2px 14px 2px 5px;
+  border-color: #c1c7cd;
+  font-size: 8px;
+  line-height: 12px;
+}
+
+html[data-theme="classic"] hi-select::after,
+html[data-theme="classic"] hi-combobox::after {
+  right: 5px;
+  top: 5px;
+  font-size: 6px;
+}
+
+html[data-theme="classic"] [scroll-x="auto"] {
+  margin: 0 !important;
+}
+
+html[data-theme="classic"] .classic-gridzilla {
+  margin-top: 0;
+  border: 1px solid #cfd4d9;
+  background: #f3f3f3;
+}
+
+html[data-theme="classic"] .classic-grid-toolbar {
+  height: 23px;
+  padding: 6px 6px 0;
+  background: #f8f8f8;
+  border-bottom: 1px solid #cfd4d9;
+}
+
+html[data-theme="classic"] .classic-grid-actions {
+  color: #333;
+  font-size: 8px;
+}
+
+html[data-theme="classic"] .classic-caret::after {
+  display: none;
+}
+
+html[data-theme="classic"] .classic-grid-scroll {
+  height: 198px;
+  overflow: hidden;
+  border-top: 0;
+}
+
+html[data-theme="classic"] .classic-grid-table {
+  min-width: 0;
+  font-size: 8px;
+  line-height: 1.18;
+}
+
+html[data-theme="classic"] .classic-grid-table th {
+  height: 26px;
+  padding: 5px 6px;
+  background: #d9d9d9;
+  color: #555;
+  font-size: 8px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+html[data-theme="classic"] .classic-grid-table td {
+  height: 55px;
+  padding: 12px 6px 4px;
+  border-bottom: 1px solid #d7d7d7;
+  color: #111;
+  background: #fff;
+}
+
+html[data-theme="classic"] .classic-grid-table th:nth-child(1),
+html[data-theme="classic"] .classic-grid-table td:nth-child(1) {
+  width: 22px;
+  text-align: right;
+  color: #444;
+}
+
+html[data-theme="classic"] .classic-grid-table th:nth-child(2),
+html[data-theme="classic"] .classic-grid-table td:nth-child(2) {
+  width: 22px;
+}
+
+html[data-theme="classic"] .classic-grid-table th:nth-child(3),
+html[data-theme="classic"] .classic-grid-table td:nth-child(3) {
+  width: 72px;
+}
+
+html[data-theme="classic"] .classic-grid-table th:nth-child(4),
+html[data-theme="classic"] .classic-grid-table td:nth-child(4) {
+  width: 70px;
+}
+
+html[data-theme="classic"] .classic-grid-table th:nth-child(5),
+html[data-theme="classic"] .classic-grid-table td:nth-child(5) {
+  width: 110px;
+}
+
+html[data-theme="classic"] .classic-grid-table th:nth-child(6),
+html[data-theme="classic"] .classic-grid-table td:nth-child(6) {
+  width: 135px;
+}
+
+html[data-theme="classic"] .classic-grid-table th:nth-child(7),
+html[data-theme="classic"] .classic-grid-table td:nth-child(7) {
+  width: 160px;
+}
+
+html[data-theme="classic"] .classic-grid-table th:nth-child(8),
+html[data-theme="classic"] .classic-grid-table td:nth-child(8) {
+  width: auto;
+}
+
+html[data-theme="classic"] .classic-grid-table td:nth-child(8) {
+  font-size: 7px;
+  line-height: 1.08;
+}
+
+html[data-theme="classic"] .classic-grid-table hi-link,
+html[data-theme="classic"] .classic-grid-table a {
+  color: #00628f;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+html[data-theme="classic"] .classic-grid-sort {
+  float: right;
+  width: 7px;
+  height: 12px;
+  margin-left: 3px;
+}
+
+html[data-theme="classic"] .classic-grid-sort-up,
+html[data-theme="classic"] .classic-grid-sort-down {
+  left: 1px;
+  border-left-width: 3px;
+  border-right-width: 3px;
+}
+
+html[data-theme="classic"] .classic-grid-sort-up {
+  border-bottom: 5px solid #1d66a2;
+}
+
+html[data-theme="classic"] .classic-grid-sort-down {
+  border-top: 5px solid #1d66a2;
+}
+
+html[data-theme="classic"] .classic-grid-bottom {
+  position: relative;
+  height: 74px;
+  padding: 12px 10px;
+  background: #f3f3f3;
+  border-top: 1px solid #d2d2d2;
+}
+
+html[data-theme="classic"] .classic-grid-paging {
+  display: flex;
+  align-items: center;
+}
+
+html[data-theme="classic"] .classic-grid-page {
+  min-width: 27px;
+  height: 22px;
+  margin: 0;
+  padding: 0 8px;
+  border: 1px solid #bcc4cc;
+  border-left: 0;
+  background: #fff;
+  color: #00628f;
+  font-size: 8px;
+}
+
+html[data-theme="classic"] .classic-grid-page:first-child {
+  border-left: 1px solid #bcc4cc;
+}
+
+html[data-theme="classic"] .classic-grid-page.current {
+  color: #222;
+  border-color: #6f7780;
+  background: #fff;
+}
+
+html[data-theme="classic"] .classic-grid-page.disabled {
+  color: #c6c6c6;
+  background: #f6f6f6;
+}
+
+html[data-theme="classic"] .classic-grid-info {
+  position: absolute;
+  right: 14px;
+  bottom: 28px;
+  color: #111;
+  font-size: 8px;
+}
+
+html[data-theme="classic"] #students > section > div[l-kind][l-justify="between"].mt-6 {
+  display: none;
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] > [x-area="region"][x-region="right"] hi-switch {
+  display: block;
+}
+
+html[data-theme="classic"] [x-region="right"] .institution-badge {
+  position: absolute;
+  top: 4px;
+  left: 94px;
+  width: 46px;
+  height: 46px;
+  z-index: 2;
+}
+
+html[data-theme="classic"] [x-region="right"] .institution-badge .classic-image-node {
+  width: 46px;
+  height: 46px;
+}
+
+html[data-theme="classic"] [x-region="right"] hi-tile {
+  margin: 0 0 15px;
+  padding: 0;
+  border: 1px solid #d8d8d8;
+  border-radius: 0;
+  background: #fff;
+}
+
+html[data-theme="classic"] [x-region="right"] hi-tile h5 {
+  height: 23px;
+  margin: 0;
+  padding: 7px 8px 0;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f8f8f8;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+html[data-theme="classic"] [x-region="right"] hi-tile p,
+html[data-theme="classic"] [x-region="right"] hi-tile hi-link {
+  font-size: 8px;
+}
+
+html[data-theme="classic"] [x-region="right"] hi-tile p {
+  margin: 9px 8px;
+}
+
+html[data-theme="classic"] [x-region="right"] hi-tile hi-link {
+  color: #00628f;
+}
+
+html[data-theme="classic"] [x-region="right"] .profile-header-photo {
+  display: block;
+  padding: 7px;
+}
+
+html[data-theme="classic"] [x-region="right"] .profile-header-photo .classic-image-node {
+  width: 100%;
+  height: 160px;
+  max-height: none;
+  object-fit: cover;
+}
+
+html[data-theme="classic"] hi-button[aesthetic="link"] {
+  font-size: 8px;
+}
+
+html[data-theme="classic"] [scroll-x="auto"] > hi-button[aesthetic="link"] {
+  display: none;
+}
+
+/* ── Forgery correction layer: match Navigate360 video frames ───────── */
+html[data-theme="classic"] body {
+  color: #333;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] {
+  width: 100%;
+  max-width: 1024px;
+  grid-template-columns: 33px minmax(0, 740px) 251px;
+  grid-template-rows: 18px 29px 1fr;
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="main_right"]:has(#james-wyatt:not([hidden])) {
+  grid-template-columns: 33px minmax(0, 1fr) 0;
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="main_right"]:has(#james-wyatt:not([hidden])) > [x-region="right"] {
+  display: none;
+}
+
+html[data-theme="classic"] hi-navigation-primary {
+  height: 18px;
+  padding: 3px 0 0 5px;
+  border-bottom: 1px solid #cbd5df;
+  border-top: 3px solid #2d6fa4;
+  color: #1d2d3d;
+  font-size: 9px;
+  line-height: 10px;
+  background: #fff;
+}
+
+html[data-theme="classic"] hi-navigation-secondary {
+  height: 29px;
+  padding: 0 8px 0 5px;
+  border-bottom: 1px solid #b8c1ca;
+  background: linear-gradient(#fff, #f9fbfc);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.13);
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="logo"] {
+  flex: 0 0 178px;
+  width: 178px;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="logo"] hi-image .classic-image-node {
+  width: 77px;
+  height: 18px;
+}
+
+html[data-theme="classic"] .application_title {
+  color: #174c73;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="left-controls"] {
+  gap: 8px;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="left-controls"] hi-icon,
+html[data-theme="classic"] hi-navigation-secondary [slot="right-controls"] hi-icon {
+  color: #184e74;
+}
+
+html[data-theme="classic"] .top-nav__center-controls {
+  flex: 0 1 632px;
+}
+
+html[data-theme="classic"] #ss-quick-search-filter {
+  width: 70px;
+  min-width: 70px;
+  height: 19px;
+  border-color: #8f9ba5;
+  color: #333;
+  font-size: 9px;
+  background: #fff;
+}
+
+html[data-theme="classic"] hi-search.top-nav__quick-search {
+  height: 17px;
+  border-color: #9aa8b3;
+}
+
+html[data-theme="classic"] hi-search.top-nav__quick-search .classic-search-input {
+  font-size: 9px;
+}
+
+html[data-theme="classic"] hi-navigation-tertiary {
+  background: #fff;
+  border-right: 1px solid #d4dbe2;
+}
+
+html[data-theme="classic"] hi-navigation-tertiary hi-link {
+  height: 27px;
+  min-height: 27px;
+}
+
+html[data-theme="classic"] hi-navigation-tertiary hi-icon {
+  width: 14px;
+  height: 14px;
+  color: #1b547d;
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] > [x-region="main"] {
+  padding: 27px 10px 24px 24px !important;
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] > [x-region="right"] {
+  padding: 64px 24px 24px 0 !important;
+}
+
+html[data-theme="classic"] .page-title-flyout-anchor hi-title {
+  color: #555;
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+html[data-theme="classic"] .page-title-flyout-anchor hi-icon {
+  color: #555;
+}
+
+html[data-theme="classic"] h2 {
+  color: #333;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+html[data-theme="classic"] hi-tab-group {
+  height: 22px;
+  margin-bottom: 8px;
+  border-bottom-color: #ccd5dd;
+}
+
+html[data-theme="classic"] hi-tab {
+  min-width: 63px;
+  height: 22px;
+  padding: 0 8px;
+  border-color: #d7dde2;
+  background: #f6f7f8;
+  color: #333;
+  font-size: 8px;
+  line-height: 21px;
+}
+
+html[data-theme="classic"] hi-tab[selected],
+html[data-theme="classic"] hi-tab[active] {
+  background: #fff;
+  color: #174c73;
+  border-top-color: #1f6b9f;
+  font-weight: 700;
+}
+
+html[data-theme="classic"] hi-label {
+  color: #222;
+  font-size: 8px;
+}
+
+html[data-theme="classic"] hi-select,
+html[data-theme="classic"] hi-combobox {
+  border-color: #c3c9cf;
+  color: #333;
+  background: #fff;
+}
+
+html[data-theme="classic"] .classic-gridzilla {
+  border-color: #c9d0d6;
+  background: #f2f2f2;
+}
+
+html[data-theme="classic"] .classic-grid-toolbar {
+  height: 24px;
+  background: #f8f8f8;
+}
+
+html[data-theme="classic"] .classic-grid-actions {
+  color: #333;
+}
+
+html[data-theme="classic"] .classic-grid-actions::after {
+  content: " \25BE";
+  color: #333;
+}
+
+html[data-theme="classic"] .classic-grid-scroll {
+  height: 201px;
+}
+
+html[data-theme="classic"] .classic-grid-table th {
+  height: 26px;
+  background: #d7d7d7;
+  color: #555;
+}
+
+html[data-theme="classic"] .classic-grid-table td {
+  height: 56px;
+  color: #111;
+}
+
+html[data-theme="classic"] .classic-grid-table hi-link,
+html[data-theme="classic"] .classic-grid-table a,
+html[data-theme="classic"] hi-link,
+html[data-theme="classic"] a {
+  color: #00628f;
+}
+
+html[data-theme="classic"] .classic-grid-bottom {
+  height: 74px;
+  background: #f2f2f2;
+}
+
+html[data-theme="classic"] .classic-grid-page {
+  height: 23px;
+  min-width: 27px;
+  border-color: #b9c2ca;
+  color: #00628f;
+}
+
+html[data-theme="classic"] .classic-grid-page.current {
+  border-color: #777;
+  color: #111;
+}
+
+html[data-theme="classic"] [x-region="right"] .institution-badge {
+  top: -2px;
+  left: 94px;
+}
+
+html[data-theme="classic"] [x-region="right"] hi-tile {
+  margin-bottom: 14px;
+  border-color: #d8d8d8;
+  background: #fff;
+}
+
+html[data-theme="classic"] [x-region="right"] hi-tile h5 {
+  height: 22px;
+  padding-top: 6px;
+  background: #f8f8f8;
+  color: #222;
+  font-size: 9px;
+}
+
+html[data-theme="classic"] [x-region="right"] hi-tile p {
+  margin: 6px 8px;
+  line-height: 1.25;
+}
+
+html[data-theme="classic"] [x-region="right"] hi-tile hi-link {
+  line-height: 1.2;
+}
+
+html[data-theme="classic"] [x-region="right"] .profile-header-photo .classic-image-node {
+  height: 158px;
+}
+
+html[data-theme="classic"] #sidebar-staff-home hi-tile:nth-of-type(n+4) {
+  display: block;
+}
+
+html[data-theme="classic"] main#app:has(#james-wyatt:not([hidden])) #james-wyatt {
+  font-size: 14px;
+  color: #333;
+}
+
+html[data-theme="classic"] main#app:has(#james-wyatt:not([hidden])) > [x-region="main"] {
+  padding: 29px 30px 32px 31px !important;
+}
+
+html[data-theme="classic"] #james-wyatt .page-title-flyout-anchor hi-title {
+  font-size: 24px;
+  color: #555;
+  font-weight: 600;
+}
+
+html[data-theme="classic"] #james-tabs {
+  height: auto;
+  min-height: 0;
+  flex-wrap: nowrap;
+  margin-bottom: 18px;
+}
+
+html[data-theme="classic"] #james-tabs hi-tab {
+  min-width: 0;
+  height: auto;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+html[data-theme="classic"] #james-wyatt hi-tile {
+  display: block;
+  margin: 0 0 18px;
+  padding: 20px;
+  border: 1px solid #d8dfe4;
+  border-radius: 0;
+  background: #fff;
+}
+
+html[data-theme="classic"] #james-wyatt hi-tile h5 {
+  margin: 0 0 22px;
+  color: #222;
+  font-size: 14px;
+  font-weight: 700;
+  background: transparent;
+  border: 0;
+  height: auto;
+  padding: 0;
+}
+
+html[data-theme="classic"] #james-wyatt #jw-overview > section > hi-tile:first-child {
+  display: none;
+}
+
+html[data-theme="classic"] #student-overview-details {
+  min-height: 250px;
+  align-items: flex-end;
+}
+
+html[data-theme="classic"] #student-overview-details p {
+  margin: 0 0 13px;
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+html[data-theme="classic"] #student-overview-details .clr-gray_80-txt {
+  color: #333;
+}
+
+html[data-theme="classic"] #student-goals-tile {
+  min-height: 260px;
+}
+
+html[data-theme="classic"] #student-goals-content p {
+  margin: 0 0 15px;
+  font-size: 14px;
+  line-height: 1.28;
+}
+
+html[data-theme="classic"] #james-wyatt hi-tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+html[data-theme="classic"] #james-wyatt hi-tag {
+  display: inline-block;
+  padding: 6px 10px;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  background: #f3f3f3;
+  color: #333;
+  font-size: 14px;
+  line-height: 1;
+}
+
+html[data-theme="classic"] #james-wyatt hi-search {
+  display: inline-block;
+  width: 130px;
+  height: 20px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+html[data-theme="classic"] #james-wyatt .classic-search-input {
+  font-size: 11px;
+}
+
+html[data-theme="classic"] #james-wyatt hi-button[aesthetic="secondary"] {
+  display: inline-block;
+  height: 36px;
+  padding: 7px 15px;
+  border: 1px solid #00628f;
+  background: #fff;
+  color: #00628f;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+html[data-theme="classic"] vi-metric {
+  display: block;
+}
+
+html[data-theme="classic"] .classic-metric {
+  min-height: 58px;
+  padding: 9px 12px;
+  border: 1px solid #d8dfe4;
+  background: #fff;
+}
+
+html[data-theme="classic"] .classic-metric-value {
+  color: #333;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+html[data-theme="classic"] .classic-metric-header {
+  color: #666;
+  font-size: 11px;
+}
+
+/* ── Scale repair: restore normal browser text scale ────────────────── */
+html[data-theme="classic"] body {
+  font-size: 16px;
+}
+
+html[data-theme="classic"] hi-navigation-primary {
+  height: 22px;
+  padding: 4px 0 0 5px;
+  font-size: 11px;
+  line-height: 12px;
+}
+
+html[data-theme="classic"] hi-navigation-secondary {
+  height: 34px;
+  padding-left: 6px;
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] {
+  grid-template-rows: 22px 34px 1fr;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="logo"] {
+  flex-basis: 174px;
+  width: 174px;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="logo"] hi-image {
+  width: 78px;
+  height: 17px;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="logo"] hi-image .classic-image-node {
+  width: 78px;
+  height: 17px;
+}
+
+html[data-theme="classic"] .application_title {
+  font-size: 0.66rem;
+  line-height: 17px;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="left-controls"] {
+  gap: 6px;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="left-controls"] hi-panel,
+html[data-theme="classic"] hi-navigation-secondary [slot="right-controls"] hi-button,
+html[data-theme="classic"] hi-navigation-secondary [slot="right-controls"] hi-flyout {
+  width: 18px;
+  height: 24px;
+}
+
+html[data-theme="classic"] hi-navigation-secondary [slot="left-controls"] hi-icon,
+html[data-theme="classic"] hi-navigation-secondary [slot="right-controls"] hi-icon {
+  width: 14px;
+  height: 14px;
+}
+
+html[data-theme="classic"] .top-nav__center-controls {
+  flex: 1 1 auto;
+}
+
+html[data-theme="classic"] #ss-quick-search-filter {
+  width: 92px;
+  min-width: 92px;
+  height: 22px;
+  font-size: 0.72rem;
+  line-height: 18px;
+}
+
+html[data-theme="classic"] hi-search.top-nav__quick-search {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  height: 18px;
+  margin-left: 6px;
+  overflow: hidden;
+}
+
+html[data-theme="classic"] hi-search.top-nav__quick-search .classic-search-input {
+  display: block;
+  min-width: 0;
+  height: 100%;
+  line-height: 18px;
+  font-size: 0.72rem;
+}
+
+html[data-theme="classic"] hi-navigation-tertiary {
+  width: 33px;
+}
+
+html[data-theme="classic"] hi-navigation-tertiary hi-link {
+  height: 27px;
+  min-height: 27px;
+}
+
+html[data-theme="classic"] hi-navigation-tertiary hi-icon {
+  width: 14px;
+  height: 14px;
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] {
+  grid-template-columns: 33px minmax(0, 740px) 251px;
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] > [x-region="main"] {
+  padding: 28px 11px 28px 24px !important;
+}
+
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] > [x-region="right"] {
+  padding: 64px 24px 24px 0 !important;
+}
+
+html[data-theme="classic"] .page-title-flyout-anchor hi-title {
+  font-size: 1.55rem;
+  line-height: 1.2;
+}
+
+html[data-theme="classic"] .page-title-flyout-anchor hi-icon {
+  width: 16px;
+  height: 16px;
+}
+
+html[data-theme="classic"] h2 {
+  font-size: 1.05rem;
+}
+
+html[data-theme="classic"] hi-tab-group {
+  height: 31px;
+}
+
+html[data-theme="classic"] hi-tab {
+  height: 31px;
+  min-width: 88px;
+  padding: 0 12px;
+  font-size: 0.78rem;
+  line-height: 30px;
+}
+
+html[data-theme="classic"] hi-tab[selected],
+html[data-theme="classic"] hi-tab[active] {
+  line-height: 28px;
+}
+
+html[data-theme="classic"] hi-label {
+  font-size: 0.76rem;
+  line-height: 24px;
+}
+
+html[data-theme="classic"] hi-select,
+html[data-theme="classic"] hi-combobox {
+  height: 26px;
+  padding: 4px 20px 4px 7px;
+  font-size: 0.75rem;
+  line-height: 16px;
+}
+
+html[data-theme="classic"] #filter-list-type,
+html[data-theme="classic"] #filter-term,
+html[data-theme="classic"] #filter-relationship {
+  width: 132px;
+}
+
+html[data-theme="classic"] .classic-grid-toolbar {
+  height: 32px;
+  padding-top: 8px;
+}
+
+html[data-theme="classic"] .classic-grid-actions {
+  font-size: 12px;
+}
+
+html[data-theme="classic"] .classic-grid-table {
+  table-layout: fixed;
+  font-size: 0.72rem;
+}
+
+html[data-theme="classic"] .classic-grid-table th {
+  height: 36px;
+  padding: 8px 8px;
+  font-size: 0.67rem;
+}
+
+html[data-theme="classic"] .classic-grid-table td {
+  height: 62px;
+  padding: 12px 8px 6px;
+  font-size: 0.72rem;
+}
+
+html[data-theme="classic"] .classic-grid-table td:nth-child(8) {
+  font-size: 0.66rem;
+  line-height: 1.12;
+}
+
+html[data-theme="classic"] .classic-grid-table hi-link,
+html[data-theme="classic"] .classic-grid-table a {
+  font-size: 0.72rem;
+}
+
+html[data-theme="classic"] .classic-grid-table th:nth-child(3),
+html[data-theme="classic"] .classic-grid-table td:nth-child(3) {
+  width: 96px;
+}
+
+html[data-theme="classic"] .classic-grid-table th:nth-child(4),
+html[data-theme="classic"] .classic-grid-table td:nth-child(4) {
+  width: 82px;
+}
+
+html[data-theme="classic"] .classic-grid-table th:nth-child(5),
+html[data-theme="classic"] .classic-grid-table td:nth-child(5) {
+  width: 95px;
+}
+
+html[data-theme="classic"] .classic-grid-table th:nth-child(6),
+html[data-theme="classic"] .classic-grid-table td:nth-child(6) {
+  width: 110px;
+}
+
+html[data-theme="classic"] .classic-grid-table th:nth-child(7),
+html[data-theme="classic"] .classic-grid-table td:nth-child(7) {
+  width: 120px;
+}
+
+html[data-theme="classic"] .classic-grid-scroll {
+  height: 270px;
+}
+
+html[data-theme="classic"] .classic-grid-bottom {
+  height: 78px;
+}
+
+html[data-theme="classic"] .classic-grid-page {
+  height: 30px;
+  min-width: 36px;
+  font-size: 0.75rem;
+}
+
+html[data-theme="classic"] .classic-grid-info {
+  font-size: 0.75rem;
+}
+
+html[data-theme="classic"] [x-region="right"] .institution-badge {
+  top: 0;
+  left: 96px;
+  width: 46px;
+  height: 46px;
+}
+
+html[data-theme="classic"] [x-region="right"] .institution-badge .classic-image-node {
+  width: 46px;
+  height: 46px;
+}
+
+html[data-theme="classic"] [x-region="right"] hi-tile h5 {
+  height: 23px;
+  padding: 6px 8px 0;
+  font-size: 0.78rem;
+}
+
+html[data-theme="classic"] [x-region="right"] hi-tile p,
+html[data-theme="classic"] [x-region="right"] hi-tile hi-link {
+  font-size: 0.72rem;
+}
+
+html[data-theme="classic"] [x-region="right"] .profile-header-photo .classic-image-node {
+  height: 158px;
+}
+
+/* ===================================================================
+   GROUND-TRUTH CALIBRATION — 2× reference corrected (authoritative)
+   Source: Walkthrough Screenshots/screenshot_0001.png (2036×1416 @2 →
+   1018 CSS px browser window) + TEMP.HTML live chrome CSS. Every size
+   here is a real measured CSS pixel value, overriding the earlier
+   half-scale guesses above (which were calibrated against a mentally
+   halved 2× capture). Base font stays 16px.
+   =================================================================== */
+
+html[data-theme="classic"] {
+  --n360-blue: #2d6cbe;   /* chrome icons / logo text / tabs / active */
+  --n360-link: #00628f;   /* body + table links */
+  --n360-rail-border: #d7dce2;
+  --n360-bar-border: #d9dde3;
+}
+
+html[data-theme="classic"] body {
+  font-size: 16px;
+  color: #333;
+}
+
+/* ── shell / grid ──────────────────────────────────────────────────── */
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] {
+  width: 100%;
+  max-width: 1018px;
+  grid-template-columns: 56px minmax(0, 1fr) 230px;
+  grid-template-rows: 24px 44px 1fr;
+  background: #fff;
+}
+html[data-theme="classic"] main#app[x-layout-screen="main_right"]:has(#james-wyatt:not([hidden])) {
+  grid-template-columns: 56px minmax(0, 1fr) 0;
+}
+
+/* ── WOODLEY institution bar ────────────────────────────────────────── */
+html[data-theme="classic"] hi-navigation-primary {
+  height: 24px;
+  padding: 6px 0 0 16px;
+  border-top: 0;
+  border-bottom: 1px solid #dfe3e8;
+  background: #eef1f4;
+  color: #5a6470;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+/* ── Navigate360 top bar ────────────────────────────────────────────── */
+html[data-theme="classic"] hi-navigation-secondary {
+  height: 44px;
+  padding: 0 14px;
+  gap: 14px;
+  flex-wrap: nowrap;
+  border-bottom: 1px solid var(--n360-bar-border);
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+html[data-theme="classic"] hi-navigation-secondary [slot="logo"] {
+  width: auto;
+  flex: 0 0 auto;
+  gap: 8px;
+  align-items: center;
+}
+html[data-theme="classic"] hi-navigation-secondary [slot="logo"] hi-image,
+html[data-theme="classic"] hi-navigation-secondary [slot="logo"] hi-image .classic-image-node {
+  width: 152px;
+  height: 27px;
+  object-fit: contain;
+}
+html[data-theme="classic"] .application_title {
+  color: var(--n360-blue);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+html[data-theme="classic"] .title_divider {
+  color: #cfd4da;
+  font-weight: 400;
+  margin: 0 2px;
+}
+
+/* left controls: advising / envelope / minimize (24px, blue) */
+html[data-theme="classic"] hi-navigation-secondary [slot="left-controls"] {
+  gap: 14px;
+  margin-left: 8px;
+  flex: 0 0 auto;
+}
+html[data-theme="classic"] hi-navigation-secondary [slot="left-controls"] hi-panel {
+  width: auto;
+  height: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+html[data-theme="classic"] hi-navigation-secondary [slot="left-controls"] hi-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--n360-blue);
+}
+/* broadcast/announcement (cell_tower) glyph is large-xx in real chrome */
+html[data-theme="classic"] hi-navigation-secondary hi-icon[kind="cell_tower"] {
+  width: 30px;
+  height: 30px;
+  color: var(--n360-blue);
+}
+
+/* search cluster: School Users select + quick search box */
+html[data-theme="classic"] .top-nav__center-controls {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: none;
+}
+html[data-theme="classic"] .quick-search-container {
+  height: 30px;
+  gap: 6px !important;
+}
+html[data-theme="classic"] #ss-quick-search-filter-dropdown,
+html[data-theme="classic"] #ss-quick-search-filter {
+  width: 118px;
+  min-width: 118px;
+  height: 30px;
+  padding: 4px 22px 4px 8px;
+  border: 1px solid #b9bfc6;
+  border-radius: 2px;
+  background: #fff;
+  color: #333;
+  font-size: 12px;
+  line-height: 20px;
+}
+html[data-theme="classic"] #ss-quick-search-filter::after {
+  right: 7px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 9px;
+}
+html[data-theme="classic"] hi-search.top-nav__quick-search {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  height: 30px;
+  min-width: 0;
+  margin-left: 0;
+  padding: 0;
+  border: 1px solid #b9bfc6;
+  border-radius: 2px;
+  background: #fff;
+  overflow: hidden;
+}
+html[data-theme="classic"] hi-search.top-nav__quick-search .classic-search-input {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  padding: 0 10px;
+  font-size: 12px;
+  line-height: 28px;
+  color: #333;
+}
+
+/* right controls: help / broadcast / apps / avatar (24px, blue) */
+html[data-theme="classic"] hi-navigation-secondary [slot="right-controls"] {
+  margin-left: auto;
+  gap: 14px;
+  flex: 0 0 auto;
+}
+html[data-theme="classic"] hi-navigation-secondary [slot="right-controls"] hi-button,
+html[data-theme="classic"] hi-navigation-secondary [slot="right-controls"] hi-flyout {
+  width: auto;
+  height: auto;
+  padding: 0;
+}
+html[data-theme="classic"] hi-navigation-secondary [slot="right-controls"] hi-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--n360-blue);
+}
+html[data-theme="classic"] hi-navigation-secondary [slot="right-controls"] hi-icon[kind="app_switcher"] {
+  width: 20px;
+  height: 20px;
+}
+
+/* ── left icon rail ─────────────────────────────────────────────────── */
+html[data-theme="classic"] hi-navigation-tertiary {
+  width: 56px;
+  padding: 0;
+  border-right: 1px solid var(--n360-rail-border);
+  background: #fff;
+}
+html[data-theme="classic"] hi-navigation-tertiary hi-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  min-height: 52px;
+  padding: 0;
+  border-left: 2px solid transparent;
+}
+html[data-theme="classic"] hi-navigation-tertiary hi-link[active] {
+  background: #eaf1fb;
+  border-left: 2px solid var(--n360-blue);
+  color: var(--n360-blue);
+}
+html[data-theme="classic"] hi-navigation-tertiary hi-icon,
+html[data-theme="classic"] hi-navigation-tertiary hi-icon[size],
+html[data-theme="classic"] hi-navigation-tertiary hi-icon[size="large"] {
+  width: 24px;
+  height: 24px;
+  color: var(--n360-blue);
+}
+html[data-theme="classic"] .classic-nav-tertiary-label {
+  display: none;
+}
+
+/* ── content padding ────────────────────────────────────────────────── */
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] > [x-region="main"] {
+  padding: 16px 16px 28px 20px !important;
+  background: #fff;
+}
+html[data-theme="classic"] main#app[x-layout-screen="main_right"] > [x-region="right"] {
+  padding: 16px 16px 28px 0 !important;
+  background: #fff;
+  position: relative;
+}
+
+/* ── page title ─────────────────────────────────────────────────────── */
+html[data-theme="classic"] .page-title-flyout-anchor hi-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+html[data-theme="classic"] .page-title-flyout-anchor hi-icon {
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+  color: #555;
+}
+
+/* ── tabs: boxed folder tabs (active = white box w/ blue top edge) ───── */
+html[data-theme="classic"] hi-tab-group {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  gap: 0;
+  height: auto;
+  margin: 12px 0 20px;
+  padding: 0;
+  border-bottom: 1px solid #cfd4da;
+  background: transparent;
+  /* too many tabs → horizontal scroll within the column (not wrap, not
+     spilling under the sidebar); scrollbar hidden but still scrollable */
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html[data-theme="classic"] hi-tab-group::-webkit-scrollbar {
+  display: none;
+}
+html[data-theme="classic"] hi-tab {
+  height: auto;
+  min-width: 0;
+  flex: 0 0 auto;
+  margin: 0 0 0 -1px; /* collapse shared side borders into single 1px lines */
+  padding: 9px 18px;
+  border: 1px solid #d4d8dc;
+  border-bottom: 0;
+  border-radius: 0;
+  background: #f4f5f7;
+  color: #3d4451;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+}
+html[data-theme="classic"] hi-tab:first-child {
+  margin-left: 0;
+}
+html[data-theme="classic"] hi-tab:hover:not([selected]):not([active]) {
+  background: #eceef1;
+  color: var(--n360-blue);
+}
+html[data-theme="classic"] hi-tab[selected],
+html[data-theme="classic"] hi-tab[active] {
+  position: relative;
+  z-index: 1;
+  margin-bottom: -1px;
+  padding-top: 7px;
+  border: 1px solid #c2c8ce;
+  border-top: 3px solid var(--n360-blue);
+  border-bottom: 0;
+  background: #fff;
+  color: var(--n360-blue);
+  font-weight: 700;
+  line-height: 1.2;
+}
+/* injected empty-state panel for tabs with no content yet */
+html[data-theme="classic"] .classic-empty-state {
+  padding: 48px 16px;
+  color: #6a7078;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ── section heading + filter dropdowns ─────────────────────────────── */
+html[data-theme="classic"] h2 {
+  margin: 0 0 12px;
+  color: #333;
+  font-size: 20px;
+  font-weight: 700;
+}
+html[data-theme="classic"] hi-label {
+  display: inline-block;
+  margin: 0 6px 0 0;
+  color: #333;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 30px;
+  white-space: nowrap;
+}
+/* ===================================================================
+   CLASSIC DROPDOWNS — single source of truth. Mimics the real Select2
+   control in TEMP.HTML / the screenshots: flat white box, thin light-gray
+   1px border, ~3px radius, gray value text, small light-gray caret inset
+   from the right. Every property is set here so no earlier layer leaks in.
+   =================================================================== */
+html[data-theme="classic"] hi-select,
+html[data-theme="classic"] hi-combobox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  box-sizing: border-box;
+  min-width: 0; /* kill the earlier min-width:10rem floor so real widths apply */
+  height: 32px;
+  padding: 0 10px 0 12px;
+  border: 1px solid #c5c9ce;
+  border-radius: 3px;
+  background: #fff;
+  color: #555;
+  font-size: 13px;
+  line-height: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: default;
+}
+html[data-theme="classic"] hi-select::after,
+html[data-theme="classic"] hi-combobox::after {
+  content: "\25BE";
+  flex: 0 0 auto;
+  margin-left: 6px;
+  color: #8a9099;
+  font-size: 11px;
+  position: static; /* neutralize the stale absolute-position attempt */
+  transform: none;
+}
+html[data-theme="classic"] .classic-combobox-value {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+html[data-theme="classic"] hi-select hi-option {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+/* labels that directly precede a dropdown get a trailing colon (matches the
+   real Navigate360 filter rows: "List Type:", "Term:", "Relationship Type:") */
+html[data-theme="classic"] hi-label:has(+ hi-combobox)::after,
+html[data-theme="classic"] hi-label:has(+ hi-select)::after {
+  content: ":";
+}
+/* real filter widths — sized so all three sit on one line like the reference */
+html[data-theme="classic"] #filter-list-type { width: 150px; }
+html[data-theme="classic"] #filter-term { width: 140px; }
+html[data-theme="classic"] #filter-relationship { width: 160px; }
+/* keep the assigned-students filter row on a single line and let each
+   label+dropdown group size to its content (overrides the inline width:14rem
+   in the markup, which would otherwise force the row to wrap) */
+html[data-theme="classic"] [l-kind="hort"]:has(#filter-list-type) {
+  flex-wrap: nowrap;
+  align-items: center;
+}
+html[data-theme="classic"] [l-kind="hort"]:has(#filter-list-type) hi-input-group {
+  width: auto !important;
+  flex: 0 0 auto;
+}
+html[data-theme="classic"] [l-kind="hort"]:has(#filter-list-type) hi-input-group.ml-4 {
+  margin-left: 8px;
+}
+
+/* ── grid table ─────────────────────────────────────────────────────── */
+html[data-theme="classic"] .classic-gridzilla {
+  margin-top: 0;
+  border: 1px solid #dfe1e4;
+  background: #fff;
+}
+html[data-theme="classic"] .classic-grid-toolbar {
+  height: 34px;
+  padding: 8px 12px 0;
+  background: #eff1f2;
+  border-bottom: 1px solid #dfe1e4;
+}
+html[data-theme="classic"] .classic-grid-actions {
+  color: #333;
+  font-size: 13px;
+}
+html[data-theme="classic"] .classic-grid-actions::after {
+  content: " \25BE";
+  color: #333;
+}
+html[data-theme="classic"] .classic-grid-scroll {
+  height: auto;
+  max-height: none;
+  overflow-x: auto;
+  overflow-y: visible;
+  border-top: 0;
+}
+html[data-theme="classic"] .classic-grid-table {
+  min-width: 0;
+  /* content-sized columns by default so any grid (My Availability, Appointments,
+     Reports, …) sizes to its data instead of being crushed into 1-char columns */
+  table-layout: auto;
+  font-size: 13px;
+  line-height: 1.35;
+}
+/* only the Assigned Students grid uses the hand-tuned fixed column widths */
+html[data-theme="classic"] #grid-21 .classic-grid-table {
+  table-layout: fixed;
+}
+html[data-theme="classic"] .classic-grid-table th {
+  position: relative;
+  height: 34px;
+  padding: 8px 20px 8px 8px;
+  background: #f4f5f7;
+  border-top: 1px solid #dfe1e4;
+  border-bottom: 1px solid #dfe1e4;
+  color: #6a7078;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  vertical-align: middle;
+}
+html[data-theme="classic"] .classic-grid-table th .classic-grid-column-title {
+  white-space: nowrap;
+}
+html[data-theme="classic"] .classic-grid-table td {
+  height: auto;
+  padding: 11px 8px;
+  border-bottom: 1px solid #ececec;
+  color: #333;
+  font-size: 13px;
+  vertical-align: top;
+  word-wrap: break-word;
+}
+html[data-theme="classic"] #grid-21 .classic-grid-table td:nth-child(3),
+html[data-theme="classic"] #grid-21 .classic-grid-table td:nth-child(4) {
+  white-space: nowrap;
+}
+html[data-theme="classic"] #grid-21 .classic-grid-table td:nth-child(8) {
+  font-size: 11px;
+  line-height: 1.3;
+}
+html[data-theme="classic"] .classic-grid-table hi-link,
+html[data-theme="classic"] .classic-grid-table a {
+  color: var(--n360-link);
+  font-size: 13px;
+  font-weight: 700;
+}
+html[data-theme="classic"] #grid-21 .classic-grid-table th:nth-child(1),
+html[data-theme="classic"] #grid-21 .classic-grid-table td:nth-child(1) { width: 30px; }
+html[data-theme="classic"] #grid-21 .classic-grid-table th:nth-child(2),
+html[data-theme="classic"] #grid-21 .classic-grid-table td:nth-child(2) { width: 26px; }
+/* number + select header cells carry no sort arrow → no right gutter */
+html[data-theme="classic"] #grid-21 .classic-grid-table th:nth-child(1),
+html[data-theme="classic"] #grid-21 .classic-grid-table th:nth-child(2) { padding-right: 6px; }
+html[data-theme="classic"] #grid-21 .classic-grid-table th:nth-child(3),
+html[data-theme="classic"] #grid-21 .classic-grid-table td:nth-child(3) { width: 110px; }
+html[data-theme="classic"] #grid-21 .classic-grid-table th:nth-child(4),
+html[data-theme="classic"] #grid-21 .classic-grid-table td:nth-child(4) { width: 78px; }
+html[data-theme="classic"] #grid-21 .classic-grid-table th:nth-child(5),
+html[data-theme="classic"] #grid-21 .classic-grid-table td:nth-child(5) { width: 106px; }
+html[data-theme="classic"] #grid-21 .classic-grid-table th:nth-child(6),
+html[data-theme="classic"] #grid-21 .classic-grid-table td:nth-child(6) { width: 120px; }
+html[data-theme="classic"] #grid-21 .classic-grid-table th:nth-child(7),
+html[data-theme="classic"] #grid-21 .classic-grid-table td:nth-child(7) { width: 138px; }
+html[data-theme="classic"] #grid-21 .classic-grid-table th:nth-child(8),
+html[data-theme="classic"] #grid-21 .classic-grid-table td:nth-child(8) { width: auto; }
+/* sort arrows pinned to the right edge of each column header (label left,
+   up/down chevrons right), matching the real Navigate360 grid */
+html[data-theme="classic"] .classic-grid-table th .classic-grid-sort {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  margin: 0;
+  transform: translateY(-50%);
+}
+html[data-theme="classic"] .classic-grid-sort-up { border-bottom-color: #2d6cbe; }
+html[data-theme="classic"] .classic-grid-sort-down { border-top-color: #2d6cbe; }
+html[data-theme="classic"] .classic-grid-bottom {
+  height: auto;
+  padding: 12px;
+  background: #fff;
+  border-top: 1px solid #e6e8eb;
+}
+html[data-theme="classic"] .classic-grid-page {
+  height: 28px;
+  min-width: 32px;
+  font-size: 12px;
+}
+html[data-theme="classic"] .classic-grid-info {
+  position: static;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+/* ── right sidebar ──────────────────────────────────────────────────── */
+html[data-theme="classic"] [x-region="right"] .institution-badge {
+  top: 0;
+  left: 168px;
+  width: 52px;
+  height: 52px;
+}
+html[data-theme="classic"] [x-region="right"] .institution-badge .classic-image-node {
+  width: 52px;
+  height: 52px;
+}
+html[data-theme="classic"] [x-region="right"] hi-tile h5 {
+  height: auto;
+  padding: 8px 12px;
+  font-size: 13px;
+}
+html[data-theme="classic"] [x-region="right"] hi-tile p,
+html[data-theme="classic"] [x-region="right"] hi-tile hi-link {
+  font-size: 12px;
+}
+
+/* ── links ──────────────────────────────────────────────────────────── */
+html[data-theme="classic"] hi-link,
+html[data-theme="classic"] a {
+  color: var(--n360-link);
+}
+
+/* ===================================================================
+   GROUND-TRUTH CALIBRATION — Student Profile (James Wyatt) view
+   Source: Walkthrough Screenshots/screenshot_0048.png (Overview tab,
+   2036×1416 @2 → 1018 CSS px) + navigate-app.html #james-wyatt markup.
+   Restores the 3-column layout + right sidebar and the Student Summary
+   metrics strip (both were previously hidden), and rescales the body.
+   =================================================================== */
+
+/* keep the 3-column shell + sidebar in profile view (undo earlier hide) */
+html[data-theme="classic"] main#app[x-layout-screen="main_right"]:has(#james-wyatt:not([hidden])) {
+  grid-template-columns: 56px minmax(0, 1fr) 266px;
+}
+html[data-theme="classic"] main#app[x-layout-screen="main_right"]:has(#james-wyatt:not([hidden])) > [x-region="right"] {
+  display: block;
+}
+html[data-theme="classic"] main#app:has(#james-wyatt:not([hidden])) > [x-region="main"] {
+  padding: 16px 16px 28px 20px !important;
+}
+
+/* profile title */
+html[data-theme="classic"] #james-wyatt .page-title-flyout-anchor hi-title {
+  font-size: 26px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* profile tabs: same boxed folder style as everywhere else; 15 tabs →
+   horizontal scroll (inherits generic hi-tab-group/hi-tab rules) */
+html[data-theme="classic"] #james-tabs {
+  gap: 0;
+  margin: 10px 0 20px;
+}
+
+/* un-hide the Student Summary tile (was display:none earlier) */
+html[data-theme="classic"] #james-wyatt #jw-overview > section > hi-tile:first-child {
+  display: block;
+}
+
+/* profile tiles */
+html[data-theme="classic"] #james-wyatt hi-tile {
+  display: block;
+  margin: 0 0 18px;
+  padding: 0;
+  border: 1px solid #dfe1e4;
+  border-radius: 2px;
+  background: #fff;
+}
+html[data-theme="classic"] #james-wyatt hi-tile h5[slot="title"],
+html[data-theme="classic"] #james-wyatt hi-tile h5 {
+  display: block;
+  height: auto;
+  margin: 0;
+  padding: 10px 16px;
+  border: 0;
+  border-bottom: 1px solid #e3e6e9;
+  background: #fff;
+  color: #333;
+  font-size: 15px;
+  font-weight: 700;
+}
+html[data-theme="classic"] #james-wyatt hi-tile h5[slot="title"]::before {
+  content: "\2303";
+  margin-right: 8px;
+  color: #8a9099;
+  font-weight: 700;
+}
+/* tile body content sits in padding under the header */
+html[data-theme="classic"] #james-wyatt hi-tile > section,
+html[data-theme="classic"] #james-wyatt hi-tile > div,
+html[data-theme="classic"] #james-wyatt hi-tile > p,
+html[data-theme="classic"] #james-wyatt hi-tile > hi-search,
+html[data-theme="classic"] #james-wyatt hi-tile > hi-tag-group,
+html[data-theme="classic"] #james-wyatt hi-tile > hi-button {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+html[data-theme="classic"] #james-wyatt hi-tile > div[id^="student-"],
+html[data-theme="classic"] #james-wyatt hi-tile > div[l-kind] {
+  padding: 16px 0;
+}
+html[data-theme="classic"] #student-overview-details p,
+html[data-theme="classic"] #student-goals-content p {
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #333;
+}
+html[data-theme="classic"] #james-wyatt .clr-gray_80-txt,
+html[data-theme="classic"] #james-wyatt .text-sz-s {
+  color: #6a7078;
+  font-size: 11px;
+}
+
+/* ── Student Summary metrics strip ──────────────────────────────────── */
+html[data-theme="classic"] #student-summary-metrics-row1,
+html[data-theme="classic"] #student-summary-metrics-row2 {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 !important;
+  padding: 16px 16px 8px;
+  background: #e8f2fa;
+  gap: 0;
+}
+html[data-theme="classic"] #student-summary-metrics-row2 {
+  padding: 0 16px 16px;
+  border-top: 1px solid #d5e6f4;
+  padding-top: 12px;
+}
+html[data-theme="classic"] #james-wyatt vi-metric {
+  display: block;
+}
+html[data-theme="classic"] #student-summary-metrics-row1 vi-metric,
+html[data-theme="classic"] #student-summary-metrics-row2 vi-metric {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  padding-right: 12px;
+}
+html[data-theme="classic"] #james-wyatt .classic-metric {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+html[data-theme="classic"] #student-summary-metrics-row1 .classic-metric-value {
+  color: #333;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+html[data-theme="classic"] #student-summary-metrics-row1 .classic-metric-value::after {
+  content: " \25BE";
+  font-size: 12px;
+  color: #6a7078;
+  vertical-align: middle;
+}
+html[data-theme="classic"] #student-summary-metrics-row2 .classic-metric-value {
+  color: var(--n360-link);
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: underline;
+}
+html[data-theme="classic"] #james-wyatt .classic-metric-header {
+  margin-bottom: 4px;
+  color: #6a7078;
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+/* Categories / Tags: render pills as a simple bordered list (closest
+   approximation of the reference list within the existing hi-tag markup) */
+html[data-theme="classic"] #james-wyatt hi-tag-group {
+  display: block;
+  border-top: 1px solid #e6e8eb;
+  margin-top: 8px;
+}
+html[data-theme="classic"] #james-wyatt hi-tag {
+  display: block;
+  margin: 0;
+  padding: 8px 2px;
+  border: 0;
+  border-bottom: 1px solid #ececec;
+  border-radius: 0;
+  background: transparent;
+  color: #333;
+  font-size: 13px;
+  line-height: 1.3;
+}
+html[data-theme="classic"] #james-wyatt hi-search {
+  display: block;
+  width: 100%;
+  height: 30px;
+  margin: 12px 0;
+  border: 1px solid #c3c9cf;
+  border-radius: 2px;
+  background: #fff;
+}
+html[data-theme="classic"] #james-wyatt hi-search .classic-search-input {
+  font-size: 12px;
+  line-height: 28px;
+}
+html[data-theme="classic"] #james-wyatt hi-button[aesthetic="secondary"] {
+  height: 28px;
+  padding: 4px 12px;
+  border: 1px solid var(--n360-link);
+  background: #fff;
+  color: var(--n360-link);
+  font-size: 12px;
+  font-weight: 700;
+}
