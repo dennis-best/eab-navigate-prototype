@@ -18,7 +18,7 @@
                                      (icon injection + tag/attribute CSS
                                      selectors) without hydrating hi-*.
 
-   Theme choice precedence: ?theme= query param > classic preference > "classic".
+   Theme choice precedence: ?theme= query param > stored preference > "hip".
    Switching themes reloads the current page (safe, since un-injecting an
    already-hydrated HIF runtime isn't possible) rather than navigating to a
    different file. */
@@ -35,7 +35,7 @@
     } catch (e) {
       /* localStorage unavailable (e.g. privacy mode) — fall through */
     }
-    return "classic";
+    return "hip";
   }
 
   var theme = getRequestedTheme();

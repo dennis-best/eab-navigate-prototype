@@ -42,7 +42,7 @@
     var active =
       typeof window.EAB_activeTheme === "function"
         ? window.EAB_activeTheme()
-        : "classic";
+        : "hip";
     var label = active === "hip" ? "HI/P" : "Classic";
 
     document.querySelectorAll(".demo-menu__panel--theme").forEach(function (panel) {
