@@ -53,15 +53,18 @@
       panel.querySelectorAll("[data-theme-target]").forEach(function (btn) {
         var target = btn.getAttribute("data-theme-target");
         var isActive = target === active;
-        btn.hidden = isActive;
+        btn.hidden = false;
         btn.disabled = isActive;
-        if (!isActive) {
-          btn.onclick = function () {
-            if (typeof window.EAB_setTheme === "function") {
-              window.EAB_setTheme(target);
-            }
-          };
-        }
+        btn.setAttribute("aria-current", isActive ? "true" : "false");
+        btn.classList.toggle("demo-menu__link--current", isActive);
+        btn.onclick = function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (isActive) return;
+          if (typeof window.EAB_setTheme === "function") {
+            window.EAB_setTheme(target);
+          }
+        };
       });
     });
   }

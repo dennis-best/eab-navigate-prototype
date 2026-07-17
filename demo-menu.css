@@ -156,6 +156,18 @@
   outline: none;
 }
 
+.demo-menu__link:disabled,
+.demo-menu__link--current {
+  color: #64748b;
+  cursor: default;
+}
+
+.demo-menu__link:disabled:hover,
+.demo-menu__link--current:hover {
+  background: none;
+  color: #64748b;
+}
+
 .scenarios-menu-list {
   display: flex;
   flex-direction: column;

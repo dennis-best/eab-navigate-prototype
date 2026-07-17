@@ -23,7 +23,8 @@
    already-hydrated HIF runtime isn't possible) rather than navigating to a
    different file. */
 (function () {
-  var STORAGE_KEY = "eab_theme";
+  var STORAGE_KEY = "eab_theme_v2";
+  var LEGACY_STORAGE_KEY = "eab_theme";
 
   function getRequestedTheme() {
     var params = new URLSearchParams(location.search);
@@ -32,6 +33,9 @@
     try {
       var stored = localStorage.getItem(STORAGE_KEY);
       if (stored === "classic" || stored === "hip") return stored;
+      /* Drop the pre-v2 key so an old default of "classic" cannot override
+         the current hip default for returning visitors. */
+      localStorage.removeItem(LEGACY_STORAGE_KEY);
     } catch (e) {
       /* localStorage unavailable (e.g. privacy mode) — fall through */
     }
@@ -80,12 +84,16 @@
     if (nextTheme !== "classic" && nextTheme !== "hip") return;
     try {
       localStorage.setItem(STORAGE_KEY, nextTheme);
+      localStorage.removeItem(LEGACY_STORAGE_KEY);
     } catch (e) {
       /* ignore */
     }
     var params = new URLSearchParams(location.search);
     params.set("theme", nextTheme);
-    location.search = params.toString();
+    var nextSearch = params.toString();
+    location.assign(
+      location.pathname + (nextSearch ? "?" + nextSearch : "") + location.hash
+    );
   }
 
   function activeTheme() {
