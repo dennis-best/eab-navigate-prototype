@@ -713,9 +713,10 @@
           <button type="button" class="demo-menu__toggle" aria-haspopup="true" aria-expanded="false">
             Theme<span class="demo-menu__caret" aria-hidden="true">▴</span>
           </button>
-          <div class="demo-menu__panel" hidden>
-            <p class="demo-menu__note">HI/P — current</p>
-            <button type="button" class="demo-menu__link" onclick="EAB_setTheme('classic')">Classic</button>
+          <div class="demo-menu__panel demo-menu__panel--theme" hidden>
+            <p class="demo-menu__note" data-theme-current>Classic — current</p>
+            <button type="button" class="demo-menu__link" data-theme-target="classic">Classic</button>
+            <button type="button" class="demo-menu__link" data-theme-target="hip">HI/P</button>
             <p class="demo-menu__note demo-menu__note--muted">Modern (coming soon)</p>
           </div>
         </div>

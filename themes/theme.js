@@ -31,7 +31,7 @@
     if (fromParam === "classic" || fromParam === "hip") return fromParam;
     try {
       var stored = localStorage.getItem(STORAGE_KEY);
-      if (stored === "classic") return stored;
+      if (stored === "classic" || stored === "hip") return stored;
     } catch (e) {
       /* localStorage unavailable (e.g. privacy mode) — fall through */
     }
